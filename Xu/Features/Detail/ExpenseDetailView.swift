@@ -7,6 +7,7 @@ struct ExpenseDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @Environment(\.calendar) private var calendar
+    @Query private var customCategories: [CustomCategory]
     @Bindable var expense: Expense
     @State private var isEditing = false
     @State private var fields = ExpenseFields()
@@ -102,7 +103,7 @@ struct ExpenseDetailView: View {
 
     private var rows: some View {
         VStack(spacing: 0) {
-            row("Danh mục", value: String(localized: SpendingCategory(key: expense.categoryKey).title))
+            row("Danh mục", value: CategoryCatalog(custom: customCategories).info(for: expense.categoryKey).title)
             row("Thời gian", value: VietnameseDate.dayAndTime(expense.date, now: Date(), calendar: calendar))
             row("Nơi ghi", value: expense.placeName ?? (expense.latitude == nil
                 ? String(localized: "không lưu")

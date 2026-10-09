@@ -12,6 +12,7 @@ struct ReceiptView: View {
     @Environment(LocationProvider.self) private var location
     @Query private var expenses: [Expense]
     @Query private var rules: [CategoryRule]
+    @Query private var customCategories: [CustomCategory]
     @State private var image: UIImage?
     @State private var fields = ExpenseFields()
     @State private var isReading = false
@@ -135,7 +136,7 @@ struct ReceiptView: View {
                                 .font(.headline)
                                 .multilineTextAlignment(.leading)
                             HStack(spacing: 6) {
-                                Text(SpendingCategory(key: fields.categoryKey).title)
+                                Text(CategoryCatalog(custom: customCategories).info(for: fields.categoryKey).title)
                                 if fields.isOutsideBudget { ButterLabel(text: "ngoài ngân sách") }
                             }
                             .font(.subheadline)

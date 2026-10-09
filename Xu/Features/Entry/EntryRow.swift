@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 
 /// Một khoản trong phần xem trước, sau khi áp các chỗ người dùng đã sửa.
@@ -75,6 +76,7 @@ enum EntryRows {
 }
 
 struct EntryRowView: View {
+    @Query private var customCategories: [CustomCategory]
     let row: EntryRow
 
     var body: some View {
@@ -85,7 +87,7 @@ struct EntryRowView: View {
                     if row.isLoan {
                         Text("không tính vào chi tiêu")
                     } else {
-                        Text(SpendingCategory(key: row.categoryKey).title)
+                        Text(CategoryCatalog(custom: customCategories).info(for: row.categoryKey).title)
                         if let originalAmount = row.originalAmount, let splitCount = row.splitCount {
                             Text("· \(MoneyFormatter.short(originalAmount)) chia \(splitCount)")
                         }

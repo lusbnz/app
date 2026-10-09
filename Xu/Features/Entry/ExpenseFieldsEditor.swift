@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 
 /// Các trường sửa được của một khoản chi, dùng chung cho ô gõ, hóa đơn và Chi tiết.
@@ -68,14 +69,15 @@ struct ExpenseFieldsEditor: View {
 
 /// Hàng danh mục cuộn ngang, chạm để chọn.
 struct CategoryChips: View {
+    @Query private var customCategories: [CustomCategory]
     @Binding var selection: String
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
-                ForEach(SpendingCategory.allCases) { category in
-                    let isSelected = category.rawValue == selection
-                    Button { selection = category.rawValue } label: {
+                ForEach(CategoryCatalog(custom: customCategories).all) { category in
+                    let isSelected = category.key == selection
+                    Button { selection = category.key } label: {
                         Text(category.title)
                             .font(.subheadline)
                             .foregroundStyle(isSelected ? Color.xuOnButton : Color.xuTextPrimary)

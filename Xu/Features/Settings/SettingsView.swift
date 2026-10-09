@@ -43,6 +43,9 @@ struct SettingsView: View {
                 }
                 .listRowBackground(Color.xuSurface)
                 Section {
+                    NavigationLink("Danh mục và luật") {
+                        CategoriesView()
+                    }
                     NavigationLink("Siri, Phím tắt và Nút Tác vụ") {
                         ShortcutsGuideView()
                     }

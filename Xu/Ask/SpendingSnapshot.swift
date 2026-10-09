@@ -39,6 +39,8 @@ struct SpendingSnapshot: Equatable, Sendable {
     var byName: [Group]
     /// Tăng dần theo ngày, chỉ gồm khoản trong ngân sách.
     var byDay: [Day]
+    /// Tên hiện cho khóa danh mục tự thêm; khóa không có ở đây dùng tên có sẵn.
+    var categoryNames: [String: String] = [:]
 
     static func make(records: [SpendingRecord], monthlyBudget: Int, now: Date, calendar: Calendar) -> SpendingSnapshot {
         let month = calendar.dateInterval(of: .month, for: now) ?? DateInterval(start: now, duration: 0)

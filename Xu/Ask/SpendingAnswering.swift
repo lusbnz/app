@@ -55,7 +55,7 @@ struct OnDeviceAnswerer: SpendingAnswering {
 
     func answer(_ question: String, context: SpendingSnapshot) async throws -> String {
         let sheet = SpendingFacts.sheet(context, calendar: calendar) { key in
-            String(localized: SpendingCategory(key: key).title)
+            context.categoryNames[key] ?? String(localized: SpendingCategory(key: key).title)
         }
         let session = LanguageModelSession(instructions: Self.instructions)
         let response = try await session.respond(

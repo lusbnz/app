@@ -8,6 +8,7 @@ struct MonthView: View {
     @Environment(AppSettings.self) private var settings
     @Query(sort: \Expense.date, order: .reverse) private var allExpenses: [Expense]
     @Query(sort: \Loan.date, order: .reverse) private var allLoans: [Loan]
+    @Query private var customCategories: [CustomCategory]
     @State private var selected: Expense?
 
     let now: Date
@@ -19,14 +20,20 @@ struct MonthView: View {
         return allExpenses.filter { $0.date >= start }
     }
 
+    private func makeSnapshot(_ expenses: [Expense]) -> SpendingSnapshot {
+        var snapshot = SpendingSnapshot.make(
+            records: expenses.map(\.record), monthlyBudget: settings.monthlyBudget, now: now, calendar: calendar
+        )
+        snapshot.categoryNames = CategoryCatalog(custom: customCategories).titles
+        return snapshot
+    }
+
     var body: some View {
         let expenses = expenses
         let status = BudgetCalculator.status(
             monthlyBudget: settings.monthlyBudget, entries: expenses.map(\.budgetEntry), now: now, calendar: calendar
         )
-        let snapshot = SpendingSnapshot.make(
-            records: expenses.map(\.record), monthlyBudget: settings.monthlyBudget, now: now, calendar: calendar
-        )
+        let snapshot = makeSnapshot(expenses)
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
                 header(status)
@@ -79,7 +86,7 @@ struct MonthView: View {
         if let largest = snapshot.byCategory.first?.total, largest > 0 {
             VStack(spacing: 14) {
                 ForEach(snapshot.byCategory) { group in
-                    let category = SpendingCategory(key: group.key)
+                    let category = CategoryCatalog(custom: customCategories).info(for: group.key)
                     VStack(alignment: .leading, spacing: 6) {
                         HStack {
                             Text(category.title)

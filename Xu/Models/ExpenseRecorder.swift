@@ -127,6 +127,59 @@ struct ExpenseRecorder {
         }
     }
 
+    // MARK: - Danh mục và luật
+
+    /// Thêm danh mục tự thêm. `existing` là mọi tên đang có, gồm cả danh mục có sẵn.
+    @discardableResult
+    func addCategory(name: String, existing: [String]) -> Result<CustomCategory, CategoryNaming.Failure> {
+        switch CategoryNaming.validate(name, existing: existing) {
+        case .success(let cleaned):
+            let category = CustomCategory(name: cleaned)
+            context.insert(category)
+            commit()
+            return .success(category)
+        case .failure(let failure):
+            return .failure(failure)
+        }
+    }
+
+    func renameCategory(_ category: CustomCategory, to name: String, existing: [String]) -> Result<Void, CategoryNaming.Failure> {
+        let others = existing.filter { TextNormalizer.keyword($0) != TextNormalizer.keyword(category.name) }
+        switch CategoryNaming.validate(name, existing: others) {
+        case .success(let cleaned):
+            category.name = cleaned
+            commit()
+            return .success(())
+        case .failure(let failure):
+            return .failure(failure)
+        }
+    }
+
+    /// Xóa danh mục: khoản chi đã gán chuyển về "khác", luật trỏ tới nó bị xóa.
+    func deleteCategory(_ category: CustomCategory) {
+        let key = category.key
+        let expenses = (try? context.fetch(FetchDescriptor<Expense>(predicate: #Predicate { $0.categoryKey == key }))) ?? []
+        expenses.forEach { $0.categoryKey = SpendingCategory.other.rawValue }
+        let rules = (try? context.fetch(FetchDescriptor<CategoryRule>(predicate: #Predicate { $0.categoryKey == key }))) ?? []
+        rules.forEach(context.delete)
+        context.delete(category)
+        commit()
+    }
+
+    /// Thêm hoặc đổi luật theo từ khóa. Trả về false khi từ khóa rỗng.
+    @discardableResult
+    func setRule(keyword: String, categoryKey: String) -> Bool {
+        guard !TextNormalizer.keyword(keyword).isEmpty else { return false }
+        teach(name: keyword, categoryKey: categoryKey)
+        commit()
+        return true
+    }
+
+    func deleteRule(_ rule: CategoryRule) {
+        context.delete(rule)
+        commit()
+    }
+
     func rules() -> [String: String] {
         ((try? context.fetch(FetchDescriptor<CategoryRule>())) ?? []).lookup
     }
