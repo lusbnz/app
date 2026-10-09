@@ -14,6 +14,15 @@ struct StoreTests {
         return session
     }
 
+    /// Dịch vụ StoreKit thử nghiệm báo giao dịch trễ một nhịp, nhất là khi máy đang nặng tải.
+    private func waitUntil(_ store: EntitlementStore, _ condition: (EntitlementStore) -> Bool) async {
+        for _ in 0..<50 {
+            await store.refresh()
+            if condition(store) { return }
+            try? await Task.sleep(for: .milliseconds(200))
+        }
+    }
+
     @Test func bothPlansExistAndYearlyHasAWeekFree() async throws {
         _ = try session()
         let products = try await Product.products(for: EntitlementStore.productIDs)
@@ -41,12 +50,12 @@ struct StoreTests {
         #expect(store.products.map(\.id) == EntitlementStore.productIDs)
 
         try await session.buyProduct(identifier: EntitlementStore.yearlyID)
-        await store.refresh()
+        await waitUntil(store) { $0.isPro }
         #expect(store.isPro)
         #expect(SaveGate.isPro)
 
         session.clearTransactions()
-        await store.refresh()
+        await waitUntil(store) { !$0.isPro }
         #expect(!store.isPro)
         #expect(!SaveGate.isPro)
     }
