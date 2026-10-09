@@ -269,6 +269,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Xu;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Xu dùng camera để chụp hóa đơn và ảnh cho khoản chi.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Xu dùng micro để bạn nói khoản chi thay vì gõ.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Xu nghe giọng nói của bạn để ghi khoản chi.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -298,6 +299,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Xu;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Xu dùng camera để chụp hóa đơn và ảnh cho khoản chi.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Xu dùng micro để bạn nói khoản chi thay vì gõ.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Xu nghe giọng nói của bạn để ghi khoản chi.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

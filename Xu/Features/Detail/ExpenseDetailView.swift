@@ -14,6 +14,7 @@ struct ExpenseDetailView: View {
     @State private var showsPhoto = false
     @State private var confirmsDelete = false
     @State private var pickedPhoto: PhotosPickerItem?
+    @State private var showsCamera = false
 
     private var recorder: ExpenseRecorder { ExpenseRecorder(context: modelContext) }
     private var image: UIImage? { expense.photo.flatMap(UIImage.init(data:)) }
@@ -67,6 +68,13 @@ struct ExpenseDetailView: View {
         .fontDesign(.rounded)
         .fullScreenCover(isPresented: $showsPhoto) {
             if let image { PhotoViewer(image: image) }
+        }
+        .fullScreenCover(isPresented: $showsCamera) {
+            CameraPicker { picked in
+                expense.photo = ImageCompressor.jpeg(from: picked)
+                recorder.commit()
+            }
+            .ignoresSafeArea()
         }
         .confirmationDialog("Xóa khoản này?", isPresented: $confirmsDelete, titleVisibility: .visible) {
             Button("Xóa khoản này", role: .destructive) {
@@ -136,8 +144,12 @@ struct ExpenseDetailView: View {
     private var actions: some View {
         let hasPhoto = expense.photo != nil
         return HStack {
+            if CameraPicker.isAvailable {
+                Button(hasPhoto ? "Chụp lại" : "Chụp ảnh") { showsCamera = true }
+                    .buttonStyle(SecondaryButtonStyle())
+            }
             PhotosPicker(selection: $pickedPhoto, matching: .images) {
-                Text(hasPhoto ? "Đổi ảnh" : "Thêm ảnh")
+                Text(CameraPicker.isAvailable ? "Chọn từ Ảnh" : (hasPhoto ? "Đổi ảnh" : "Thêm ảnh"))
             }
             .buttonStyle(SecondaryButtonStyle())
             Spacer()

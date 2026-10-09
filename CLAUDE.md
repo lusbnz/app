@@ -11,7 +11,7 @@ Sổ chi tiêu kiểu tin nhắn cho người Việt. iOS, SwiftUI và SwiftData
 - Mọi phép tính ngày nhận `Calendar` và `Date` làm tham số. Ở tầng giao diện lấy từ `Calendar.current`.
 - Chuỗi giao diện bằng tiếng Việt, đặt trong `Xu/Localizable.xcstrings`.
 - Bundle ID `com.quocviet.Xu`, App Group `group.com.quocviet.Xu`.
-- Không sửa tay `Xu.xcodeproj/project.pbxproj`. Dự án dùng thư mục đồng bộ: tạo tệp `.swift` đúng thư mục là đủ. Việc cần thêm target hoặc capability thì dừng lại và hướng dẫn người dùng làm trong Xcode. Ngoại lệ đã được người dùng cho phép một lần: hai khóa `INFOPLIST_KEY_NSMicrophoneUsageDescription` và `INFOPLIST_KEY_NSSpeechRecognitionUsageDescription` cho giọng nói. Khóa quyền mới nào khác vẫn phải hỏi trước.
+- Không sửa tay `Xu.xcodeproj/project.pbxproj`. Dự án dùng thư mục đồng bộ: tạo tệp `.swift` đúng thư mục là đủ. Việc cần thêm target hoặc capability thì dừng lại và hướng dẫn người dùng làm trong Xcode. Ngoại lệ đã được người dùng cho phép, mỗi khóa một lần: `INFOPLIST_KEY_NSMicrophoneUsageDescription` và `INFOPLIST_KEY_NSSpeechRecognitionUsageDescription` (giọng nói), `INFOPLIST_KEY_NSCameraUsageDescription` (chụp ảnh). Khóa quyền mới nào khác vẫn phải hỏi trước.
 - Chưa có target widget, chưa bật App Group và iCloud: những việc này người dùng làm trong Xcode. `XuStore` phải chạy được khi thiếu chúng (lùi về Application Support).
 
 ## Cấu trúc
