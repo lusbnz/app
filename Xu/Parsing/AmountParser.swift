@@ -60,6 +60,11 @@ enum AmountParser {
         find(in: [token]) != nil
     }
 
+    /// Đọc một ô chỉ chứa số tiền, ví dụ `45k` hay `1 củ`.
+    static func amount(from text: String) -> Int? {
+        find(in: TextNormalizer.words(text))?.value
+    }
+
     // MARK: - Đọc một từ
 
     private struct Scanned {

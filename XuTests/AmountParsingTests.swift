@@ -42,3 +42,15 @@ struct AmountParsingTests {
         #expect(amount("sách 2 cũ 50k") == 50_000)
     }
 }
+
+struct BudgetInputTests {
+    @Test(arguments: [("9tr", 9_000_000), ("9", 9_000_000), ("9.000.000đ", 9_000_000), ("7,5tr", 7_500_000), ("12 triệu", 12_000_000)])
+    func readsBudget(text: String, expected: Int) {
+        #expect(BudgetInput.parse(text) == expected)
+    }
+
+    @Test func rejectsNonsense() {
+        #expect(BudgetInput.parse("") == nil)
+        #expect(BudgetInput.parse("nhiều") == nil)
+    }
+}
