@@ -52,6 +52,7 @@ extension View {
             .environment(PreviewData.settings(budget: budget))
             .environment(AppState())
             .environment(LocationProvider.shared)
+            .environment(EntitlementStore.shared)
             .fontDesign(.rounded)
             .tint(Color.xuToggle)
     }

@@ -24,6 +24,9 @@ struct RootView: View {
                 OnboardingView()
             }
         }
+        .sheet(isPresented: $appState.showsPaywall) {
+            PaywallView()
+        }
         .sensoryFeedback(.success, trigger: appState.saveCount)
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {

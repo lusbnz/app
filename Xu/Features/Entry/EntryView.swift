@@ -14,6 +14,7 @@ struct EntryView: View {
     @State private var text: String
     @State private var overrides: [Int: EntryOverride] = [:]
     @State private var editing: EntryRow?
+    @State private var showsPaywall = false
     @FocusState private var isFocused: Bool
 
     let now: Date
@@ -93,6 +94,9 @@ struct EntryView: View {
         .onAppear {
             isFocused = true
             if settings.suggestionsEnabled { location.refresh() }
+        }
+        .sheet(isPresented: $showsPaywall) {
+            PaywallView()
         }
         .sheet(item: $editing) { row in
             EntryRowEditor(row: row) { overrides[row.id] = $0 }
@@ -180,6 +184,11 @@ struct EntryView: View {
     }
 
     private func record(_ items: [RecordItem], rawText: String) {
+        // Bản miễn phí: lần lưu thứ 6 trong ngày mở Xu Pro.
+        guard SaveGate.canSave(now: Date(), calendar: calendar) else {
+            showsPaywall = true
+            return
+        }
         var info = RecordContext(rawText: rawText, date: Date())
         if settings.suggestionsEnabled, let coordinate = location.freshCoordinate {
             info.latitude = coordinate.latitude

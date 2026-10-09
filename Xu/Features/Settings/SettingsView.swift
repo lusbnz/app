@@ -7,6 +7,7 @@ struct SettingsView: View {
     @Environment(AppState.self) private var appState
     @Environment(LocationProvider.self) private var location
     @State private var budgetText = ""
+    @State private var showsPaywall = false
     @FocusState private var budgetFocused: Bool
 
     var body: some View {
@@ -40,7 +41,7 @@ struct SettingsView: View {
                         ShortcutsGuideView()
                     }
                     Button {
-                        appState.showsPaywall = true
+                        showsPaywall = true
                     } label: {
                         HStack {
                             Text("Xu Pro").foregroundStyle(Color.xuTextPrimary)
@@ -62,6 +63,9 @@ struct SettingsView: View {
                         dismiss()
                     }
                 }
+            }
+            .sheet(isPresented: $showsPaywall) {
+                PaywallView()
             }
             .onAppear { budgetText = MoneyFormatter.full(settings.monthlyBudget) }
             .onChange(of: settings.suggestionsEnabled) { _, isOn in

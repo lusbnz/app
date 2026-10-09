@@ -1,0 +1,77 @@
+{
+  "identifier": "58A7C3E1",
+  "nonRenewingSubscriptions": [],
+  "products": [],
+  "settings": {
+    "_failTransactionsEnabled": false,
+    "_locale": "vi",
+    "_storeKitErrors": [],
+    "_storefront": "VNM"
+  },
+  "subscriptionGroups": [
+    {
+      "id": "21600001",
+      "localizations": [
+        {
+          "description": "Gõ không giới hạn, chụp hóa đơn, Hỏi Xu và widget màn hình khóa.",
+          "displayName": "Xu Pro",
+          "locale": "vi"
+        }
+      ],
+      "name": "Xu Pro",
+      "subscriptions": [
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "399000",
+          "familyShareable": false,
+          "groupNumber": 1,
+          "internalID": "6700000011",
+          "introductoryOffer": {
+            "internalID": "7A3F09C2",
+            "numberOfPeriods": 1,
+            "paymentMode": "free",
+            "subscriptionPeriod": "P1W"
+          },
+          "localizations": [
+            {
+              "description": "Xu Pro theo năm, 7 ngày đầu miễn phí.",
+              "displayName": "Xu Pro gói năm",
+              "locale": "vi"
+            }
+          ],
+          "productID": "xu.pro.yearly",
+          "recurringSubscriptionPeriod": "P1Y",
+          "referenceName": "Xu Pro năm",
+          "subscriptionGroupID": "21600001",
+          "type": "RecurringSubscription"
+        },
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "49000",
+          "familyShareable": false,
+          "groupNumber": 2,
+          "internalID": "6700000012",
+          "introductoryOffer": null,
+          "localizations": [
+            {
+              "description": "Xu Pro theo tháng.",
+              "displayName": "Xu Pro gói tháng",
+              "locale": "vi"
+            }
+          ],
+          "productID": "xu.pro.monthly",
+          "recurringSubscriptionPeriod": "P1M",
+          "referenceName": "Xu Pro tháng",
+          "subscriptionGroupID": "21600001",
+          "type": "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version": {
+    "major": 3,
+    "minor": 0
+  }
+}

@@ -7,6 +7,7 @@ struct XuApp: App {
     @State private var appState = AppState.shared
 
     init() {
+        EntitlementStore.shared.start()
         NotificationManager.shared.start()
         ExpenseRecorder.afterCommit = { NotificationManager.shared.refreshDailyReminder() }
         #if DEBUG
@@ -20,6 +21,7 @@ struct XuApp: App {
                 .environment(settings)
                 .environment(appState)
                 .environment(LocationProvider.shared)
+                .environment(EntitlementStore.shared)
                 .fontDesign(.rounded)
                 .tint(Color.xuToggle)
         }
