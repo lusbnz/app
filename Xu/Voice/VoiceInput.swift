@@ -23,6 +23,13 @@ final class VoiceInput {
     @ObservationIgnored private let engine = AVAudioEngine()
     @ObservationIgnored private var request: SFSpeechAudioBufferRecognitionRequest?
     @ObservationIgnored private var task: SFSpeechRecognitionTask?
+    /// Tăng mỗi lần bắt đầu nói. Phản hồi muộn của phiên cũ (kể cả lỗi do hủy) không được tác động phiên mới.
+    @ObservationIgnored private var session = 0
+    @ObservationIgnored private var silenceTimer: Task<Void, Never>?
+
+    /// Tự dừng khi im lặng: chờ lâu hơn ở lúc chưa nói gì, ngắn hơn khi đã có chữ.
+    static let waitForSpeech: Duration = .seconds(8)
+    static let silenceAfterSpeech: Duration = .milliseconds(2_200)
 
     /// Thiếu khóa mô tả quyền trong Info thì xin quyền sẽ làm app bị đóng, nên ẩn nút micro.
     static var hasUsageDescriptions: Bool {
@@ -54,6 +61,7 @@ final class VoiceInput {
     /// Dừng thu âm, nhưng vẫn nhận nốt phần chữ còn lại.
     func stop() {
         guard state == .listening else { return }
+        silenceTimer?.cancel()
         stopAudio()
         request?.endAudio()
         state = .idle
@@ -61,6 +69,8 @@ final class VoiceInput {
 
     /// Dừng hẳn và bỏ phần chưa nhận.
     func cancel() {
+        session += 1
+        silenceTimer?.cancel()
         stopAudio()
         request?.endAudio()
         task?.cancel()
@@ -72,16 +82,22 @@ final class VoiceInput {
     // MARK: - Quyền
 
     private func authorize() async -> Bool {
-        let speech = await withCheckedContinuation { (continuation: CheckedContinuation<SFSpeechRecognizerAuthorizationStatus, Never>) in
+        guard await Self.requestSpeechAuthorization() == .authorized else { return false }
+        return await AVAudioApplication.requestRecordPermission()
+    }
+
+    /// Hệ thống gọi lại trên luồng nền, nên closure không được thừa hưởng @MainActor.
+    nonisolated private static func requestSpeechAuthorization() async -> SFSpeechRecognizerAuthorizationStatus {
+        await withCheckedContinuation { continuation in
             SFSpeechRecognizer.requestAuthorization { continuation.resume(returning: $0) }
         }
-        guard speech == .authorized else { return false }
-        return await AVAudioApplication.requestRecordPermission()
     }
 
     // MARK: - Thu âm
 
     private func begin(_ recognizer: SFSpeechRecognizer) throws {
+        session += 1
+        let id = session
         task?.cancel()
         transcript = ""
 
@@ -96,14 +112,15 @@ final class VoiceInput {
         request.requiresOnDeviceRecognition = recognizer.supportsOnDeviceRecognition
         self.request = request
 
-        Self.installTap(on: engine.inputNode, request: request)
+        try Self.installTap(on: engine.inputNode, request: request)
         engine.prepare()
         try engine.start()
 
         task = Self.startTask(recognizer: recognizer, request: request) { [weak self] text, isFinal, failed in
-            Task { @MainActor in self?.receive(text: text, isFinal: isFinal, failed: failed) }
+            Task { @MainActor in self?.receive(text: text, isFinal: isFinal, failed: failed, session: id) }
         }
         state = .listening
+        armSilenceTimer(Self.waitForSpeech)
     }
 
     private func stopAudio() {
@@ -112,9 +129,23 @@ final class VoiceInput {
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
 
-    private func receive(text: String?, isFinal: Bool, failed: Bool) {
-        if let text { transcript = text }
+    private func armSilenceTimer(_ duration: Duration) {
+        silenceTimer?.cancel()
+        silenceTimer = Task { [weak self] in
+            try? await Task.sleep(for: duration)
+            guard !Task.isCancelled else { return }
+            self?.stop()
+        }
+    }
+
+    private func receive(text: String?, isFinal: Bool, failed: Bool, session id: Int) {
+        guard id == session else { return }
+        if let text, text != transcript {
+            transcript = text
+            if state == .listening { armSilenceTimer(Self.silenceAfterSpeech) }
+        }
         if isFinal || failed {
+            silenceTimer?.cancel()
             stopAudio()
             request = nil
             task = nil
@@ -130,9 +161,14 @@ final class VoiceInput {
         init(_ request: SFSpeechAudioBufferRecognitionRequest) { self.request = request }
     }
 
-    nonisolated private static func installTap(on input: AVAudioInputNode, request: SFSpeechAudioBufferRecognitionRequest) {
+    private struct NoInputError: Error {}
+
+    nonisolated private static func installTap(on input: AVAudioInputNode, request: SFSpeechAudioBufferRecognitionRequest) throws {
+        let format = input.outputFormat(forBus: 0)
+        // Máy không có micro (máy ảo, Mac) trả về định dạng rỗng; installTap với định dạng đó làm app crash.
+        guard format.sampleRate > 0, format.channelCount > 0 else { throw NoInputError() }
         let box = RequestBox(request)
-        input.installTap(onBus: 0, bufferSize: 1024, format: input.outputFormat(forBus: 0)) { buffer, _ in
+        input.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, _ in
             box.request.append(buffer)
         }
     }

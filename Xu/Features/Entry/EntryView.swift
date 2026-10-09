@@ -102,6 +102,7 @@ struct EntryView: View {
                 }
             }
         }
+        .sensoryFeedback(.success, trigger: heardAmount(rows)) { old, new in !old && new }
         .onChange(of: voice.transcript) { _, spoken in
             // Chữ nói được thay phần đang nói; chữ gõ trước đó được giữ nguyên.
             guard !spoken.isEmpty else { return }
@@ -139,6 +140,11 @@ struct EntryView: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(isListening ? "Dừng nói" : "Nói khoản chi")
+    }
+
+    /// Đang nói và đã nghe ra ít nhất một số tiền: rung nhẹ một lần để biết Xu hiểu đúng.
+    private func heardAmount(_ rows: [EntryRow]) -> Bool {
+        voice.state == .listening && rows.contains { $0.amount != nil }
     }
 
     private var voiceMessage: String? {
