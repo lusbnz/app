@@ -11,6 +11,8 @@ struct TodayView: View {
     @Query private var customCategories: [CustomCategory]
     @State private var selected: Expense?
     @State private var reapply: ReapplyOffer?
+    @State private var isScrolling = false
+    @State private var hapticDay: Date?
 
     let now: Date
 
@@ -37,39 +39,8 @@ struct TodayView: View {
         List {
             Group {
                 header(status)
-                ForEach(todays) { expense in
-                    Button { selected = expense } label: { ExpenseRow(expense: expense) }
-                        .buttonStyle(.plain)
-                        .swipeActions(edge: .leading) {
-                            Button("Ghi lại", systemImage: "plus.circle") { repeatExpense(expense) }
-                                .tint(Color.xuToggle)
-                            Button(
-                                expense.isOutsideBudget ? "Tính vào ngân sách" : "Ngoài ngân sách",
-                                systemImage: expense.isOutsideBudget ? "arrow.uturn.backward" : "tray.and.arrow.up"
-                            ) {
-                                withAnimation { ExpenseRecorder(context: modelContext).toggleOutsideBudget(expense) }
-                            }
-                            .tint(Color.gray)
-                        }
-                        .swipeActions(edge: .trailing) {
-                            Button("Xóa", systemImage: "trash", role: .destructive) {
-                                ExpenseRecorder(context: modelContext).delete(expense)
-                            }
-                            Menu {
-                                ForEach(CategoryCatalog(custom: customCategories).all) { category in
-                                    Button(category.title) {
-                                        let recorder = ExpenseRecorder(context: modelContext)
-                                        recorder.setCategory(of: expense, to: category.key)
-                                        reapply = recorder.reapplyOffer(keyword: expense.name, categoryKey: category.key)
-                                    }
-                                }
-                            } label: {
-                                Label("Danh mục", systemImage: "tag")
-                            }
-                            .tint(Color.gray)
-                        }
-                }
-                previousDays
+                ForEach(todays) { expenseRow($0) }
+                pastDays
             }
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
@@ -78,6 +49,8 @@ struct TodayView: View {
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
         .animation(.default, value: todays.map(\.id))
+        .onScrollPhaseChange { _, phase in isScrolling = phase.isScrolling }
+        .sensoryFeedback(.selection, trigger: hapticDay)
         .xuScreen()
         .toolbar(.hidden, for: .navigationBar)
         .safeAreaInset(edge: .bottom, spacing: 0) { bottomBar }
@@ -164,23 +137,75 @@ struct TodayView: View {
         return String(localized: "Còn được tiêu hôm nay \(MoneyFormatter.spoken(status.remainingToday)), đã tiêu \(MoneyFormatter.spoken(status.spentToday))")
     }
 
-    // MARK: - Ba ngày trước
-
-    private var previousDays: some View {
-        let totals = BudgetCalculator.previousDayTotals(
-            entries: expenses.map(\.budgetEntry), days: 3, now: now, calendar: calendar
-        )
-        return VStack(alignment: .leading, spacing: 6) {
-            ForEach(totals, id: \.day) { item in
-                Text("\(VietnameseDate.relativeDay(item.day, now: now, calendar: calendar)) \(MoneyFormatter.short(item.total))")
-                    .monospacedDigit()
-                    .accessibilityLabel("\(VietnameseDate.relativeDay(item.day, now: now, calendar: calendar)) \(MoneyFormatter.spoken(item.total))")
+    /// Một dòng khoản chi, kèm các nút vuốt nhanh. Dùng cho hôm nay và các ngày trước.
+    private func expenseRow(_ expense: Expense) -> some View {
+        Button { selected = expense } label: { ExpenseRow(expense: expense) }
+            .buttonStyle(.plain)
+            .swipeActions(edge: .leading) {
+                Button("Ghi lại", systemImage: "plus.circle") { repeatExpense(expense) }
+                    .tint(Color.xuToggle)
+                Button(
+                    expense.isOutsideBudget ? "Tính vào ngân sách" : "Ngoài ngân sách",
+                    systemImage: expense.isOutsideBudget ? "arrow.uturn.backward" : "tray.and.arrow.up"
+                ) {
+                    withAnimation { ExpenseRecorder(context: modelContext).toggleOutsideBudget(expense) }
+                }
+                .tint(Color.gray)
             }
+            .swipeActions(edge: .trailing) {
+                Button("Xóa", systemImage: "trash", role: .destructive) {
+                    ExpenseRecorder(context: modelContext).delete(expense)
+                }
+                Menu {
+                    ForEach(CategoryCatalog(custom: customCategories).all) { category in
+                        Button(category.title) {
+                            let recorder = ExpenseRecorder(context: modelContext)
+                            recorder.setCategory(of: expense, to: category.key)
+                            reapply = recorder.reapplyOffer(keyword: expense.name, categoryKey: category.key)
+                        }
+                    }
+                } label: {
+                    Label("Danh mục", systemImage: "tag")
+                }
+                .tint(Color.gray)
+            }
+    }
+
+    // MARK: - Các ngày trước
+
+    /// Các ngày trước hôm nay có khoản chi, mới nhất trước. Cuộn xuống là xem tiếp, không cần bấm.
+    private var pastGroups: [(day: Date, expenses: [Expense])] {
+        let today = calendar.startOfDay(for: now)
+        let grouped = Dictionary(grouping: expenses.filter { $0.date < today }) { calendar.startOfDay(for: $0.date) }
+        return grouped
+            .map { (day: $0.key, expenses: $0.value.sorted { $0.createdAt > $1.createdAt }) }
+            .sorted { $0.day > $1.day }
+    }
+
+    @ViewBuilder
+    private var pastDays: some View {
+        ForEach(pastGroups, id: \.day) { group in
+            let total = group.expenses.filter { !$0.isOutsideBudget }.reduce(0) { $0 + $1.amount }
+            dayHeader(group.day, total: total)
+            ForEach(group.expenses) { expenseRow($0) }
         }
-        .font(.footnote)
+    }
+
+    private func dayHeader(_ day: Date, total: Int) -> some View {
+        HStack {
+            Text(VietnameseDate.relativeDay(day, now: now, calendar: calendar))
+            Spacer()
+            Text(MoneyFormatter.short(total)).money(total)
+        }
+        .font(.footnote.weight(.medium))
         .foregroundStyle(Color.xuTextSecondary)
-        .padding(.top, 20)
-        .padding(.bottom, 12)
+        .padding(.top, 24)
+        .padding(.bottom, 4)
+        .accessibilityAddTraits(.isHeader)
+        // Rung nhẹ mỗi khi một ngày mới trượt vào màn hình, chỉ khi người dùng đang cuộn.
+        .onScrollVisibilityChange(threshold: 0.9) { visible in
+            if visible, isScrolling { hapticDay = day }
+        }
     }
 
     // MARK: - Đáy màn hình
