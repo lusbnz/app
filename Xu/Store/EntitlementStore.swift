@@ -32,7 +32,21 @@ final class EntitlementStore {
         }
     }
 
+    #if DEBUG
+    @ObservationIgnored private var isGrantedForDebug = false
+
+    /// Mở Xu Pro không qua StoreKit, chỉ cho tham số khởi chạy `-pro` của bản Debug.
+    func grantForDebug() {
+        isGrantedForDebug = true
+        isPro = true
+        SaveGate.isPro = true
+    }
+    #endif
+
     func refresh() async {
+        #if DEBUG
+        if isGrantedForDebug { return }
+        #endif
         var active = false
         for await entitlement in Transaction.currentEntitlements {
             if case .verified(let transaction) = entitlement,

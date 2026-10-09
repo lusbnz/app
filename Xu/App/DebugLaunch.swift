@@ -4,7 +4,7 @@ import SwiftData
 
 /// Tham số khởi chạy chỉ có ở bản Debug, để xem nhanh các màn hình trên máy ảo:
 /// `-reset` xóa sạch, `-demo` nạp dữ liệu mẫu, `-open entry|month|settings|paywall|receipt`, `-text "phở 45k"`.
-/// `-open receipt` đưa sẵn một hóa đơn mẫu vào bộ đọc.
+/// `-open receipt` đưa sẵn một hóa đơn mẫu vào bộ đọc. `-pro` mở Xu Pro, `-ask "câu hỏi"` hỏi Xu.
 @MainActor
 enum DebugLaunch {
     static func apply(settings: AppSettings, appState: AppState, container: ModelContainer) {
@@ -32,9 +32,13 @@ enum DebugLaunch {
             let existing = (try? context.fetchCount(FetchDescriptor<Expense>())) ?? 0
             if existing == 0 { seed(context) }
         }
+        if arguments.contains("-pro") {
+            EntitlementStore.shared.grantForDebug()
+        }
         try? context.save()
         let screen = value(after: "-open")
         let text = value(after: "-text") ?? ""
+        let question = value(after: "-ask")
         // Chờ giao diện gốc dựng xong rồi mới điều hướng, như khi người dùng chạm.
         Task {
             try? await Task.sleep(for: .seconds(1))
@@ -48,6 +52,7 @@ enum DebugLaunch {
                 appState.showsReceipt = true
             default: break
             }
+            if let question { appState.ask(question) }
         }
     }
 

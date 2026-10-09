@@ -46,3 +46,40 @@ struct SpendingSnapshotTests {
         #expect(snapshot.byDay.map(\.total) == [29_000, 67_000])
     }
 }
+
+struct SpendingFactsTests {
+    private let calendar: Calendar = {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "Asia/Ho_Chi_Minh")!
+        return calendar
+    }()
+
+    private var sheet: String {
+        let day = calendar.date(from: DateComponents(year: 2026, month: 10, day: 8, hour: 12))!
+        let records = (0..<8).map { _ in SpendingRecord(name: "cf", amount: 29_000, categoryKey: "food", date: day) }
+            + [SpendingRecord(name: "grab", amount: 32_000, categoryKey: "transport", date: day)]
+        let snapshot = SpendingSnapshot.make(records: records, monthlyBudget: 9_000_000, now: day, calendar: calendar)
+        return SpendingFacts.sheet(snapshot, calendar: calendar) { $0 == "food" ? "ăn uống" : "đi lại" }
+    }
+
+    @Test func sheetCarriesPrecomputedFigures() {
+        #expect(sheet.contains("Ngân sách tháng: 9tr"))
+        #expect(sheet.contains("Đã tiêu tháng này: 264k"))
+        #expect(sheet.contains("- cf: 232k cho 8 lần, trung bình 29k mỗi lần"))
+        #expect(sheet.contains("- grab: 32k cho 1 lần"))
+        #expect(sheet.contains("- ăn uống: 232k cho 8 lần"))
+        #expect(sheet.contains("- ngày 8/10: 264k"))
+    }
+
+    @Test func acceptsAnswersThatOnlyQuoteTheSheet() {
+        #expect(SpendingFacts.usesOnlyKnownNumbers("232k cho 8 lần, trung bình 29k mỗi lần.", sheet: sheet, question: "cf hết bao nhiêu?"))
+        #expect(SpendingFacts.usesOnlyKnownNumbers("Xu chưa có số liệu cho câu này.", sheet: sheet, question: "?"))
+        #expect(SpendingFacts.usesOnlyKnownNumbers("Tháng 10 bạn tiêu 264k.", sheet: sheet, question: "tháng 10 tiêu bao nhiêu?"))
+    }
+
+    @Test func rejectsInventedOrComputedNumbers() {
+        #expect(!SpendingFacts.usesOnlyKnownNumbers("Khoảng 250k cho cf.", sheet: sheet, question: "cf hết bao nhiêu?"))
+        #expect(!SpendingFacts.usesOnlyKnownNumbers("cf và grab hết 296k.", sheet: sheet, question: "cf và grab?"))
+        #expect(!SpendingFacts.usesOnlyKnownNumbers("232k cho 9 lần.", sheet: sheet, question: "cf?"))
+    }
+}

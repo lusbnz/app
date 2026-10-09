@@ -151,7 +151,8 @@ enum PaywallBenefit {
     /// Chỉ liệt kê quyền lợi đã có trong bản này.
     @MainActor static var current: [String] {
         [
-            String(localized: "Gõ không giới hạn"),
+            // Hỏi Xu chỉ được nhắc tới khi máy này dùng được.
+            AskEngine.isAvailable ? String(localized: "Gõ và hỏi Xu không giới hạn") : String(localized: "Gõ không giới hạn"),
             String(localized: "Chụp hóa đơn"),
             String(localized: "Widget màn hình khóa"),
         ]
