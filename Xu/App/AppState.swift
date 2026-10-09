@@ -15,6 +15,7 @@ final class AppState {
     var entry: EntryRequest?
     var showsMonth = false
     var showsSettings = false
+    var showsSearch = false
     var showsPaywall = false
     var showsReceipt = false
     /// Ảnh đưa sẵn cho màn hình hóa đơn; nil thì màn hình tự mở camera hoặc chờ chọn ảnh.
@@ -37,6 +38,7 @@ final class AppState {
 
     func openEntry(text: String = "") {
         showsSettings = false
+        showsSearch = false
         showsPaywall = false
         showsReceipt = false
         entry = EntryRequest(text: text)

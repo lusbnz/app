@@ -24,9 +24,10 @@ Xu/
   Budget/         công thức ngân sách
   Formatting/     định dạng tiền kiểu "194k", "7,1tr"
   Suggestions/    gợi ý theo giờ và vị trí
+  Search/         điều kiện tìm và lọc khoản chi (ExpenseFilter)
   Receipt/        đọc hóa đơn bằng Vision
   Ask/            Hỏi Xu
-  Features/       Onboarding/, Today/, Entry/, Detail/, Month/, Settings/, Paywall/
+  Features/       Onboarding/, Today/, Entry/, Detail/, Month/, Search/, Settings/, Paywall/
   Store/          StoreKit 2
   Intents/        App Intents
   Notifications/  nhắc 21:00, nhắc khi rời quán quen
@@ -35,7 +36,7 @@ Xu/
 XuTests/
 ```
 
-- `Parsing`, `Budget`, `Formatting`, `Suggestions` là logic thuần: chỉ `import Foundation`, không phụ thuộc SwiftUI hay SwiftData, phải có unit test đầy đủ.
+- `Parsing`, `Budget`, `Formatting`, `Suggestions`, `Search` là logic thuần: chỉ `import Foundation`, không phụ thuộc SwiftUI hay SwiftData, phải có unit test đầy đủ.
 - View đọc dữ liệu bằng `@Query`, ghi qua `modelContext`. Mỗi View có `#Preview` với dữ liệu mẫu trong bộ nhớ.
 - Mô hình SwiftData tương thích CloudKit: mọi thuộc tính có mặc định hoặc optional, không `@Attribute(.unique)`, quan hệ optional.
 - Khóa của luật danh mục (`CategoryRule.keyword`, tham số `rules` của bộ tách) luôn chuẩn hóa bằng `TextNormalizer.keyword`.
@@ -46,6 +47,7 @@ XuTests/
 - **Danh mục:** có sẵn là `SpendingCategory`, tự thêm là `CustomCategory` với khóa `custom-<uuid>` (không đổi khi đổi tên). Giao diện luôn tra bằng `CategoryCatalog` (đọc `@Query CustomCategory`), không gọi `SpendingCategory(key:).title` trực tiếp. Khóa không còn tồn tại hiện là "khác". Xóa danh mục chuyển các khoản về "khác" và xóa luật trỏ tới nó (`ExpenseRecorder.deleteCategory`). Tên danh mục kiểm tra bằng `CategoryNaming`. Đổi danh mục của một khoản (vuốt, Chi tiết, thêm hoặc sửa luật) thì hỏi có áp cho các khoản cũ cùng từ khóa không (`ReapplyOffer`, `reapplyDialog`); luật dài hơn vẫn thắng luật ngắn.
 - **Thao tác nhanh:** danh sách khoản chi ở màn Hôm nay vuốt phải để "Ghi lại" và bật tắt "Ngoài ngân sách", vuốt trái để xóa và đổi danh mục. Logic nằm trong `ExpenseRecorder` (`repeatExpense`, `setCategory`, `toggleOutsideBudget`), không đặt trong View.
 - **Giọng nói (`Voice/`):** `VoiceInput` chỉ thu âm và trả chữ, ưu tiên nhận dạng trên máy. Đổi số đọc bằng chữ ("bốn mươi lăm nghìn") thành chữ số là việc của `SpokenNumbers` (logic thuần, trong `Parsing/`). Chữ nói ra chỉ điền vào ô gõ, không tự ghi. Nút micro ẩn khi thiếu hai khóa quyền. Closure chạy trên luồng âm thanh phải tạo trong hàm `nonisolated`, nếu không sẽ crash do bị gắn `@MainActor`.
+- **Tìm và lọc:** nút kính lúp ở màn Hôm nay mở `SearchView` (sheet). Tìm theo tên không phân biệt dấu và hoa thường, mọi từ gõ vào phải có trong tên; lọc theo nhiều danh mục và khoảng ngày (`DatePreset`). Quét toàn bộ khoản chi, không bị giới hạn 35 ngày. Logic nằm ở `ExpenseFilter`, test ở `ExpenseFilterTests`.
 - **Màn Hôm nay:** hôm nay ở trên, các ngày trước nối tiếp bên dưới thành từng nhóm có tiêu đề (tên ngày và tổng), cuộn để xem, không cần bấm. Rung nhẹ khi một ngày mới trượt vào màn hình, chỉ khi người dùng đang cuộn. Dữ liệu lấy từ truy vấn 35 ngày gần nhất.
 - **Hóa đơn:** `ReceiptParser` trả thêm danh sách món (`items`) và `isTotalConfident`; màn Hóa đơn cho chọn món của mình (tổng = các món đã chọn, chọn hết thì quay về tổng trên hóa đơn) và nhắc kiểm tra khi không chắc tổng.
 - **Ghi trùng:** ô gõ hỏi lại khi khoản sắp ghi giống hệt (cùng tên, số tiền, ngày phát sinh) một khoản vừa ghi trong 5 phút (`DuplicateDetector`, logic thuần trong `Suggestions/`). Vuốt "Ghi lại" là chủ ý của người dùng nên không hỏi.

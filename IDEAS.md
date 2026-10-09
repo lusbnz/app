@@ -4,7 +4,6 @@ Những thứ nằm ngoài tài liệu yêu cầu, chưa làm.
 
 ## Người dùng đã yêu cầu, đang chờ
 
-- Lọc và tìm khoản chi (theo tên, danh mục, khoảng ngày).
 - Khoản chi định kỳ (tiền nhà, Netflix). Cần quyết định ghi tự động hay chỉ nhắc.
 
 ## Đã đề xuất, chưa được chọn

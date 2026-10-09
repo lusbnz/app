@@ -64,6 +64,9 @@ struct TodayView: View {
         .sheet(isPresented: $appState.showsSettings) {
             SettingsView()
         }
+        .sheet(isPresented: $appState.showsSearch) {
+            SearchView(now: now)
+        }
     }
 
     /// Ghi lại một khoản y như cũ. Bản miễn phí vẫn bị giới hạn số lần ghi mỗi ngày.
@@ -85,6 +88,14 @@ struct TodayView: View {
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(Color.xuTextSecondary)
                 Spacer()
+                Button { appState.showsSearch = true } label: {
+                    Image(systemName: "magnifyingglass")
+                        .font(.title3)
+                        .frame(width: 44, height: 44)
+                        .contentShape(.rect)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Tìm khoản chi")
                 Button { appState.showsSettings = true } label: {
                     Image(systemName: "ellipsis")
                         .font(.title3)

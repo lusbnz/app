@@ -3,7 +3,7 @@ import Foundation
 import SwiftData
 
 /// Tham số khởi chạy chỉ có ở bản Debug, để xem nhanh các màn hình trên máy ảo:
-/// `-reset` xóa sạch, `-demo` nạp dữ liệu mẫu, `-open entry|month|settings|paywall|receipt`, `-text "phở 45k"`.
+/// `-reset` xóa sạch, `-demo` nạp dữ liệu mẫu, `-open entry|month|settings|paywall|receipt|search`, `-text "phở 45k"`.
 /// `-open receipt` đưa sẵn một hóa đơn mẫu vào bộ đọc. `-pro` mở Xu Pro, `-ask "câu hỏi"` hỏi Xu, `-budget 3tr` đặt ngân sách.
 @MainActor
 enum DebugLaunch {
@@ -49,6 +49,7 @@ enum DebugLaunch {
             case "entry": appState.openEntry(text: text)
             case "month": appState.showsMonth = true
             case "settings": appState.showsSettings = true
+            case "search": appState.showsSearch = true
             case "paywall": appState.showsPaywall = true
             case "receipt":
                 appState.receiptImage = SampleReceipt.image()
