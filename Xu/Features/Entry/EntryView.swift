@@ -8,6 +8,7 @@ struct EntryView: View {
     @Environment(\.calendar) private var calendar
     @Environment(AppSettings.self) private var settings
     @Environment(AppState.self) private var appState
+    @Environment(LocationProvider.self) private var location
     @Query private var expenses: [Expense]
     @Query private var rules: [CategoryRule]
     @State private var text: String
@@ -54,6 +55,9 @@ struct EntryView: View {
                         Text("Hỏi cũng được: tháng này cf hết bao nhiêu?")
                             .font(.footnote)
                             .foregroundStyle(Color.xuTextSecondary)
+                        if settings.suggestionsEnabled {
+                            suggestions
+                        }
                     } else {
                         VStack(spacing: 0) {
                             ForEach(rows) { row in
@@ -86,7 +90,10 @@ struct EntryView: View {
                 }
             }
         }
-        .onAppear { isFocused = true }
+        .onAppear {
+            isFocused = true
+            if settings.suggestionsEnabled { location.refresh() }
+        }
         .sheet(item: $editing) { row in
             EntryRowEditor(row: row) { overrides[row.id] = $0 }
         }
@@ -109,10 +116,76 @@ struct EntryView: View {
             : "Còn được tiêu hôm nay \(MoneyFormatter.spoken(after))")
     }
 
+    // MARK: - Gợi ý
+
+    /// Tối đa ba gợi ý: nơi quen đang ở gần, rồi những khoản hay ghi vào buổi này.
+    @ViewBuilder
+    private var suggestions: some View {
+        let current = Date()
+        let records = expenses.map(\.suggestionRecord)
+        let nearby = location.freshCoordinate.flatMap {
+            PlaceSuggester.suggestion(near: $0, records: records, now: current, calendar: calendar)
+        }
+        let timed = TimeSuggester.suggestions(records: records, now: current, calendar: calendar)
+            .filter { $0.id != nearby?.suggestion.id }
+            .prefix(nearby == nil ? 3 : 2)
+        VStack(alignment: .leading, spacing: 0) {
+            if let nearby {
+                suggestionLabel(String(localized: "Bạn đang gần \(nearby.place.label)"))
+                suggestionRow(nearby.suggestion)
+            }
+            if !timed.isEmpty {
+                suggestionLabel(TimeSuggester.label(now: current, calendar: calendar))
+                ForEach(Array(timed)) { suggestionRow($0) }
+            }
+        }
+    }
+
+    private func suggestionLabel(_ text: String) -> some View {
+        Text(text)
+            .font(.caption)
+            .foregroundStyle(Color.xuTextSecondary)
+            .padding(.top, 14)
+    }
+
+    private func suggestionRow(_ suggestion: Suggestion) -> some View {
+        Button {
+            let draft = ExpenseDraft(name: suggestion.name, amount: suggestion.amount, categoryKey: suggestion.categoryKey)
+            record([.expense(draft)], rawText: suggestion.name)
+        } label: {
+            HStack {
+                Text(suggestion.name)
+                Text(MoneyFormatter.short(suggestion.amount))
+                    .foregroundStyle(Color.xuTextSecondary)
+                    .money(suggestion.amount)
+                Spacer()
+                Image(systemName: "plus")
+                    .font(.body.weight(.semibold))
+                    .frame(width: 32, height: 32)
+                    .background(Color.xuSurface, in: .circle)
+            }
+            .frame(minHeight: 48)
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .accessibilityHint("Ghi ngay")
+    }
+
+    // MARK: - Lưu
+
     private func save(_ rows: [EntryRow]) {
         let items = rows.compactMap(\.recordItem)
         guard !items.isEmpty, items.count == rows.count else { return }
-        let batch = ExpenseRecorder(context: modelContext).record(items, in: RecordContext(rawText: text, date: Date()))
+        record(items, rawText: text)
+    }
+
+    private func record(_ items: [RecordItem], rawText: String) {
+        var info = RecordContext(rawText: rawText, date: Date())
+        if settings.suggestionsEnabled, let coordinate = location.freshCoordinate {
+            info.latitude = coordinate.latitude
+            info.longitude = coordinate.longitude
+        }
+        let batch = ExpenseRecorder(context: modelContext).record(items, in: info)
         appState.didSave(batch)
         dismiss()
     }

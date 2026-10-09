@@ -18,12 +18,16 @@ enum DebugLaunch {
             try? context.delete(model: Loan.self)
             try? context.delete(model: CategoryRule.self)
             settings.monthlyBudget = 0
+            settings.suggestionsEnabled = false
+            settings.remindsAtNine = false
+            settings.leaveReminderEnabled = false
             settings.lastQuestion = ""
             settings.lastAnswer = ""
             AppGroup.defaults.removeObject(forKey: "saveQuota")
         }
         if arguments.contains("-demo") {
             settings.monthlyBudget = 9_000_000
+            settings.suggestionsEnabled = true
             let existing = (try? context.fetchCount(FetchDescriptor<Expense>())) ?? 0
             if existing == 0 { seed(context) }
         }
@@ -59,7 +63,6 @@ enum DebugLaunch {
         }
         add("phở", 45_000, "food", daysAgo: 0, hour: 7)
         add("grab", 32_000, "transport", daysAgo: 0, hour: 8)
-        add("cf", 29_000, "food", daysAgo: 0, hour: 9)
         for day in 1...min(7, max(1, calendar.component(.day, from: now) - 1)) {
             add("phở", 45_000, "food", daysAgo: day, hour: 7)
             add("cf", 29_000, "food", daysAgo: day, hour: 9)

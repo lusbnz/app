@@ -5,6 +5,7 @@ struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(AppSettings.self) private var settings
     @Environment(AppState.self) private var appState
+    @Environment(LocationProvider.self) private var location
     @State private var budgetText = ""
     @FocusState private var budgetFocused: Bool
 
@@ -63,6 +64,13 @@ struct SettingsView: View {
                 }
             }
             .onAppear { budgetText = MoneyFormatter.full(settings.monthlyBudget) }
+            .onChange(of: settings.suggestionsEnabled) { _, isOn in
+                // Chỉ xin quyền vị trí khi người dùng bật công tắc.
+                if isOn {
+                    location.requestWhenInUse()
+                    location.refresh()
+                }
+            }
             .onChange(of: budgetFocused) { _, focused in
                 if !focused { commitBudget() }
             }

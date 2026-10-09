@@ -17,6 +17,7 @@ struct XuApp: App {
             RootView()
                 .environment(settings)
                 .environment(appState)
+                .environment(LocationProvider.shared)
                 .fontDesign(.rounded)
                 .tint(Color.xuToggle)
         }

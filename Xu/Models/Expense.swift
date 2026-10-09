@@ -49,3 +49,13 @@ extension Expense {
         SpendingRecord(name: name, amount: amount, categoryKey: categoryKey, date: date, isOutsideBudget: isOutsideBudget)
     }
 }
+
+extension Expense {
+    var suggestionRecord: SuggestionRecord {
+        var coordinate: Coordinate?
+        if let latitude, let longitude {
+            coordinate = Coordinate(latitude: latitude, longitude: longitude)
+        }
+        return SuggestionRecord(name: name, amount: amount, categoryKey: categoryKey, date: date, coordinate: coordinate)
+    }
+}

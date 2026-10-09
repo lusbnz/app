@@ -133,9 +133,10 @@ struct ExpenseDetailView: View {
     }
 
     private var actions: some View {
-        HStack {
+        let hasPhoto = expense.photo != nil
+        return HStack {
             PhotosPicker(selection: $pickedPhoto, matching: .images) {
-                Text(expense.photo == nil ? "Thêm ảnh" : "Đổi ảnh")
+                Text(hasPhoto ? "Đổi ảnh" : "Thêm ảnh")
             }
             .buttonStyle(SecondaryButtonStyle())
             Spacer()

@@ -51,6 +51,7 @@ extension View {
         modelContainer(PreviewData.container)
             .environment(PreviewData.settings(budget: budget))
             .environment(AppState())
+            .environment(LocationProvider.shared)
             .fontDesign(.rounded)
             .tint(Color.xuToggle)
     }
