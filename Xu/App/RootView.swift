@@ -17,6 +17,9 @@ struct RootView: View {
                 .sheet(item: $appState.entry) { request in
                     EntryView(request: request, now: now)
                 }
+                .sheet(isPresented: $appState.showsReceipt) {
+                    ReceiptView(now: now, image: appState.receiptImage)
+                }
             } else {
                 OnboardingView()
             }

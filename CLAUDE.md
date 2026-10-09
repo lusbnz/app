@@ -50,6 +50,14 @@ xcodebuild -scheme Xu -destination 'platform=iOS Simulator,name=iPhone 17,OS=27.
 
 Máy này có nhiều runtime máy ảo, nên phải ghi rõ `OS=`; chỉ ghi tên máy thì `xcodebuild` không tìm ra.
 
+Khi máy đang nặng tải hoặc gần hết ổ đĩa, lệnh `test` có thể treo ở bước nhân bản máy ảo. Thêm `-parallel-testing-enabled NO` để test chạy thẳng trên máy ảo đã chọn.
+
+Bản Debug nhận tham số khởi chạy để xem nhanh các màn hình trên máy ảo (xem `Xu/App/DebugLaunch.swift`), ví dụ:
+
+```bash
+xcrun simctl launch booted com.quocviet.Xu -demo -open month
+```
+
 ## Cách làm việc
 
 - Làm theo giai đoạn. Cuối mỗi giai đoạn: build và test xanh, một commit, tóm tắt, rồi dừng chờ xác nhận.

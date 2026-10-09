@@ -4,6 +4,7 @@ import SwiftData
 
 /// Tham số khởi chạy chỉ có ở bản Debug, để xem nhanh các màn hình trên máy ảo:
 /// `-reset` xóa sạch, `-demo` nạp dữ liệu mẫu, `-open entry|month|settings|paywall|receipt`, `-text "phở 45k"`.
+/// `-open receipt` đưa sẵn một hóa đơn mẫu vào bộ đọc.
 @MainActor
 enum DebugLaunch {
     static func apply(settings: AppSettings, appState: AppState, container: ModelContainer) {
@@ -42,7 +43,9 @@ enum DebugLaunch {
             case "month": appState.showsMonth = true
             case "settings": appState.showsSettings = true
             case "paywall": appState.showsPaywall = true
-            case "receipt": appState.showsReceipt = true
+            case "receipt":
+                appState.receiptImage = SampleReceipt.image()
+                appState.showsReceipt = true
             default: break
             }
         }

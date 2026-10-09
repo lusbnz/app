@@ -1,5 +1,5 @@
-import Foundation
 import Observation
+import UIKit
 
 /// Một lần mở ô gõ, có thể điền sẵn chữ.
 struct EntryRequest: Identifiable, Equatable {
@@ -17,6 +17,8 @@ final class AppState {
     var showsSettings = false
     var showsPaywall = false
     var showsReceipt = false
+    /// Ảnh đưa sẵn cho màn hình hóa đơn; nil thì màn hình tự mở camera hoặc chờ chọn ảnh.
+    var receiptImage: UIImage?
     /// Câu hỏi vừa gõ ở ô gõ, chờ màn hình Tháng trả lời.
     var pendingQuestion: String?
     var undoable: SavedBatch?
