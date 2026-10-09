@@ -1,7 +1,7 @@
 import SwiftData
 import SwiftUI
 
-/// Màn hình Tháng: còn lại của tháng, dự báo, các danh mục, các khoản không tính vào ngân sách.
+/// Màn hình Tháng: còn lại của tháng, dự báo, hạn mức danh mục, các danh mục, các khoản không tính vào ngân sách.
 struct MonthView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.calendar) private var calendar
@@ -9,6 +9,7 @@ struct MonthView: View {
     @Query(sort: \Expense.date, order: .reverse) private var allExpenses: [Expense]
     @Query(sort: \Loan.date, order: .reverse) private var allLoans: [Loan]
     @Query private var customCategories: [CustomCategory]
+    @Query private var budgets: [CategoryBudget]
     @State private var selected: Expense?
 
     let now: Date
@@ -37,6 +38,7 @@ struct MonthView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
                 header(status)
+                limits(expenses)
                 categories(snapshot)
                 outside(expenses)
                 AskSection(snapshot: snapshot)
@@ -77,6 +79,56 @@ struct MonthView: View {
             return String(localized: "Giữ nhịp \(pace) mỗi ngày, cuối tháng dư khoảng \(MoneyFormatter.short(forecast.projectedLeftover)).")
         }
         return String(localized: "Giữ nhịp \(pace) mỗi ngày, cuối tháng vượt khoảng \(MoneyFormatter.short(-forecast.projectedLeftover)).")
+    }
+
+    // MARK: - Hạn mức danh mục
+
+    @ViewBuilder
+    private func limits(_ expenses: [Expense]) -> some View {
+        let statuses = CategoryBudgetCalculator.statuses(
+            limits: budgets.lookup, records: expenses.map(\.record), now: now, calendar: calendar
+        )
+        if !statuses.isEmpty {
+            let catalog = CategoryCatalog(custom: customCategories)
+            VStack(alignment: .leading, spacing: 14) {
+                Text("Hạn mức danh mục")
+                    .font(.subheadline.weight(.semibold))
+                ForEach(statuses) { status in
+                    let category = catalog.info(for: status.key)
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack {
+                            Text(category.title)
+                            Spacer()
+                            Text("\(MoneyFormatter.short(status.spent)) / \(MoneyFormatter.short(status.limit))")
+                                .fontWeight(.medium)
+                                .monospacedDigit()
+                        }
+                        GeometryReader { proxy in
+                            Capsule()
+                                .fill(status.level == .over ? Color.red : category.color)
+                                .frame(width: max(6, proxy.size.width * status.fraction))
+                        }
+                        .frame(height: 6)
+                        .accessibilityHidden(true)
+                        if let note = limitNote(status) {
+                            Text(note)
+                                .font(.footnote)
+                                .foregroundStyle(status.level == .over ? Color.red : Color.xuTextSecondary)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .accessibilityElement(children: .combine)
+                }
+            }
+        }
+    }
+
+    private func limitNote(_ status: CategoryLimitStatus) -> String? {
+        switch status.level {
+        case .ok: nil
+        case .near: String(localized: "gần chạm hạn mức, còn \(MoneyFormatter.short(status.remaining))")
+        case .over: String(localized: "vượt hạn mức \(MoneyFormatter.short(-status.remaining))")
+        }
     }
 
     // MARK: - Danh mục

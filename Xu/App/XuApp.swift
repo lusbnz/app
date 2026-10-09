@@ -11,6 +11,7 @@ struct XuApp: App {
         NotificationManager.shared.start()
         ExpenseRecorder.afterCommit = {
             NotificationManager.shared.refreshDailyReminder()
+            NotificationManager.shared.refreshRecurringReminders()
             Task { await PlaceMonitor.shared.refresh() }
         }
         // Dựng lại CLMonitor mỗi lần app chạy, kể cả khi hệ thống mở app ngầm vì một vùng theo dõi.

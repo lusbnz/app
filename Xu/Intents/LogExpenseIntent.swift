@@ -29,6 +29,7 @@ struct LogExpenseIntent: AppIntent {
             return .result(dialog: "Xu chưa đọc được số tiền trong “\(text)”.")
         }
         let remaining = recorder.status(monthlyBudget: budget, now: now, calendar: calendar).remainingToday
-        return .result(dialog: "\(batch.summary). Hôm nay còn \(MoneyFormatter.short(remaining)).")
+        let warning = batch.warning.map { " \($0)." } ?? ""
+        return .result(dialog: "\(batch.summary). Hôm nay còn \(MoneyFormatter.short(remaining)).\(warning)")
     }
 }

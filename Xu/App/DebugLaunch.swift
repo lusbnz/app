@@ -18,6 +18,8 @@ enum DebugLaunch {
             try? context.delete(model: Expense.self)
             try? context.delete(model: Loan.self)
             try? context.delete(model: CategoryRule.self)
+            try? context.delete(model: RecurringExpense.self)
+            try? context.delete(model: CategoryBudget.self)
             settings.monthlyBudget = 0
             settings.suggestionsEnabled = false
             settings.remindsAtNine = false

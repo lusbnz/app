@@ -25,9 +25,10 @@ Xu/
   Formatting/     định dạng tiền kiểu "194k", "7,1tr"
   Suggestions/    gợi ý theo giờ và vị trí
   Search/         điều kiện tìm và lọc khoản chi (ExpenseFilter)
+  Recurring/      lịch khoản định kỳ (RecurringPlanner)
   Receipt/        đọc hóa đơn bằng Vision
   Ask/            Hỏi Xu
-  Features/       Onboarding/, Today/, Entry/, Detail/, Month/, Search/, Settings/, Paywall/
+  Features/       Onboarding/, Today/, Entry/, Detail/, Month/, Search/, Recurring/, Settings/, Paywall/
   Store/          StoreKit 2
   Intents/        App Intents
   Notifications/  nhắc 21:00, nhắc khi rời quán quen
@@ -36,7 +37,7 @@ Xu/
 XuTests/
 ```
 
-- `Parsing`, `Budget`, `Formatting`, `Suggestions`, `Search` là logic thuần: chỉ `import Foundation`, không phụ thuộc SwiftUI hay SwiftData, phải có unit test đầy đủ.
+- `Parsing`, `Budget`, `Formatting`, `Suggestions`, `Search`, `Recurring` là logic thuần: chỉ `import Foundation`, không phụ thuộc SwiftUI hay SwiftData, phải có unit test đầy đủ.
 - View đọc dữ liệu bằng `@Query`, ghi qua `modelContext`. Mỗi View có `#Preview` với dữ liệu mẫu trong bộ nhớ.
 - Mô hình SwiftData tương thích CloudKit: mọi thuộc tính có mặc định hoặc optional, không `@Attribute(.unique)`, quan hệ optional.
 - Khóa của luật danh mục (`CategoryRule.keyword`, tham số `rules` của bộ tách) luôn chuẩn hóa bằng `TextNormalizer.keyword`.
@@ -48,6 +49,9 @@ XuTests/
 - **Thao tác nhanh:** danh sách khoản chi ở màn Hôm nay vuốt phải để "Ghi lại" và bật tắt "Ngoài ngân sách", vuốt trái để xóa và đổi danh mục. Logic nằm trong `ExpenseRecorder` (`repeatExpense`, `setCategory`, `toggleOutsideBudget`), không đặt trong View.
 - **Giọng nói (`Voice/`):** `VoiceInput` chỉ thu âm và trả chữ, ưu tiên nhận dạng trên máy. Đổi số đọc bằng chữ ("bốn mươi lăm nghìn") thành chữ số là việc của `SpokenNumbers` (logic thuần, trong `Parsing/`). Chữ nói ra chỉ điền vào ô gõ, không tự ghi. Nút micro ẩn khi thiếu hai khóa quyền. Closure chạy trên luồng âm thanh phải tạo trong hàm `nonisolated`, nếu không sẽ crash do bị gắn `@MainActor`.
 - **Tìm và lọc:** nút kính lúp ở màn Hôm nay mở `SearchView` (sheet). Tìm theo tên không phân biệt dấu và hoa thường, mọi từ gõ vào phải có trong tên; lọc theo nhiều danh mục và khoảng ngày (`DatePreset`). Quét toàn bộ khoản chi, không bị giới hạn 35 ngày. Logic nằm ở `ExpenseFilter`, test ở `ExpenseFilterTests`.
+- **Khoản định kỳ:** `RecurringExpense` (tiền nhà, Netflix) lặp mỗi tháng vào `dayOfMonth` (tháng ngắn thì lùi về ngày cuối). Xu chỉ nhắc, không tự ghi: đến hạn thì hiện `DueRecurringRow` ở màn Hôm nay (Ghi hoặc Bỏ qua) và thông báo 9:00 có nút Ghi, Bỏ qua. `handledMonth` ("2026-10") đánh dấu tháng đã ghi hoặc bỏ qua. Khoản tạo sau ngày đến hạn của tháng này chờ tháng sau. Lịch nằm trong `RecurringPlanner` (logic thuần), ghi và bỏ qua trong `ExpenseRecorder+Plans`, và vẫn qua `SaveGate.canSave`. `NotificationManager` luôn đặt lại gộp nhóm hành động của quán quen lẫn của khoản định kỳ vì `setNotificationCategories` thay cả bộ.
+- **Hạn mức danh mục:** `CategoryBudget` đặt hạn mức tháng cho từng danh mục, chỉ để cảnh báo; hạn mức ngày vẫn tính từ ngân sách tháng. Từ 80% là "gần chạm", vượt hẳn mới là "vượt" (`CategoryBudgetCalculator`, logic thuần trong `Budget/`). Cảnh báo hiện ở `UndoBar` khi một lần ghi làm danh mục xấu đi (`SavedBatch.warning`, khoản ngoài ngân sách và khoản ngoài tháng này không tính) và ở mục "Hạn mức danh mục" của màn Tháng. Xóa danh mục thì xóa luôn hạn mức của nó.
+- **Giới thiệu:** `OnboardingView` có ba bước: cách gõ, nhắc và gợi ý (công tắc tùy chọn, chỉ xin quyền khi bật), rồi ngân sách tháng. Có ngân sách nghĩa là đã xong, nên bước ngân sách phải là bước cuối. Các ví dụ cách gõ ở bước đầu có test trong `OnboardingExamplesTests`; đổi ví dụ thì đổi test.
 - **Màn Hôm nay:** hôm nay ở trên, các ngày trước nối tiếp bên dưới thành từng nhóm có tiêu đề (tên ngày và tổng), cuộn để xem, không cần bấm. Rung nhẹ khi một ngày mới trượt vào màn hình, chỉ khi người dùng đang cuộn. Dữ liệu lấy từ truy vấn 35 ngày gần nhất.
 - **Hóa đơn:** `ReceiptParser` trả thêm danh sách món (`items`) và `isTotalConfident`; màn Hóa đơn cho chọn món của mình (tổng = các món đã chọn, chọn hết thì quay về tổng trên hóa đơn) và nhắc kiểm tra khi không chắc tổng.
 - **Ghi trùng:** ô gõ hỏi lại khi khoản sắp ghi giống hệt (cùng tên, số tiền, ngày phát sinh) một khoản vừa ghi trong 5 phút (`DuplicateDetector`, logic thuần trong `Suggestions/`). Vuốt "Ghi lại" là chủ ý của người dùng nên không hỏi.

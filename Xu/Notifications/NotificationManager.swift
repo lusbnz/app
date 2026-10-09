@@ -1,7 +1,8 @@
 import Foundation
+import SwiftData
 import UserNotifications
 
-/// Thông báo cục bộ: nhắc 21:00 và nhắc khi rời quán quen.
+/// Thông báo cục bộ: nhắc 21:00, nhắc khi rời quán quen và nhắc khoản định kỳ đến hạn.
 @MainActor
 final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     static let shared = NotificationManager()
@@ -12,10 +13,29 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     private static let logAction = "leave.log"
     private static let editAction = "leave.edit"
     private static let skipAction = "leave.skip"
+    private static let recurringPrefix = "recurring."
+    private static let recurringLogAction = "recurring.log"
+    private static let recurringSkipAction = "recurring.skip"
+    private static let recurringCategory = "recurring.due"
     private let center = UNUserNotificationCenter.current()
+    private var leaveCategories: Set<UNNotificationCategory> = []
 
     func start() {
         center.delegate = self
+        applyCategories()
+    }
+
+    /// `setNotificationCategories` thay cả bộ, nên luôn đặt lại gộp cả nhóm của quán quen lẫn của khoản định kỳ.
+    private func applyCategories() {
+        let recurring = UNNotificationCategory(
+            identifier: Self.recurringCategory,
+            actions: [
+                UNNotificationAction(identifier: Self.recurringLogAction, title: String(localized: "Ghi")),
+                UNNotificationAction(identifier: Self.recurringSkipAction, title: String(localized: "Bỏ qua")),
+            ],
+            intentIdentifiers: []
+        )
+        center.setNotificationCategories(leaveCategories.union([recurring]))
     }
 
     /// Chỉ gọi khi người dùng bật một công tắc nhắc.
@@ -45,6 +65,61 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         }
     }
 
+    // MARK: - Khoản định kỳ
+
+    /// Xếp lại lời nhắc 9:00 vào ngày đến hạn của mọi khoản định kỳ (tháng này và tháng sau).
+    /// Xóa hết lời nhắc cũ rồi xếp lại, nên khoản đã ghi, bỏ qua hay xóa tự biến mất khỏi lịch.
+    func refreshRecurringReminders() {
+        let now = Date()
+        let calendar = Calendar.current
+        let items = ((try? XuStore.shared.mainContext.fetch(FetchDescriptor<RecurringExpense>())) ?? [])
+        let byID = Dictionary(items.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        // Lịch cục bộ giữ tối đa 64 thông báo; lời nhắc 21:00 đã chiếm 14.
+        let dates = RecurringPlanner.fireDates(for: items.map(\.item), now: now, calendar: calendar).prefix(40)
+        Task {
+            let pending = await center.pendingNotificationRequests()
+            center.removePendingNotificationRequests(
+                withIdentifiers: pending.map(\.identifier).filter { $0.hasPrefix(Self.recurringPrefix) }
+            )
+            for (id, date) in dates {
+                guard let item = byID[id] else { continue }
+                let content = UNMutableNotificationContent()
+                content.title = String(localized: "Đến hạn: \(item.name)")
+                content.body = String(localized: "\(MoneyFormatter.short(item.amount)). Chạm Ghi để ghi, hoặc Bỏ qua tháng này.")
+                content.sound = .default
+                content.categoryIdentifier = Self.recurringCategory
+                content.userInfo = ["recurringID": id.uuidString]
+                let parts = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
+                let trigger = UNCalendarNotificationTrigger(dateMatching: parts, repeats: false)
+                let key = RecurringPlanner.monthKey(date, calendar: calendar)
+                try? await center.add(UNNotificationRequest(
+                    identifier: "\(Self.recurringPrefix)\(id.uuidString).\(key)", content: content, trigger: trigger
+                ))
+            }
+        }
+    }
+
+    private func handleRecurringAction(_ action: String, id: UUID) {
+        let now = Date()
+        let calendar = Calendar.current
+        let recorder = ExpenseRecorder(context: XuStore.shared.mainContext)
+        guard let item = recorder.recurring(id: id) else { return }
+        switch action {
+        case Self.recurringLogAction:
+            guard SaveGate.canSave(now: now, calendar: calendar) else {
+                AppState.shared.showsPaywall = true
+                return
+            }
+            if let batch = recorder.recordRecurring(item, now: now, calendar: calendar) {
+                AppState.shared.didSave(batch)
+            }
+        case Self.recurringSkipAction:
+            recorder.skipRecurring(item, now: now, calendar: calendar)
+        default:
+            break
+        }
+    }
+
     // MARK: - Rời quán quen
 
     /// Mỗi nơi một nhóm hành động, vì nút "Ghi 45k" mang số tiền của nơi đó.
@@ -63,7 +138,8 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
                 intentIdentifiers: []
             )
         }
-        center.setNotificationCategories(Set(categories))
+        leaveCategories = Set(categories)
+        applyCategories()
     }
 
     func notifyLeaving(_ place: FamiliarPlace) {
@@ -114,6 +190,7 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         let identifier = response.notification.request.identifier
         let action = response.actionIdentifier
         let info = response.notification.request.content.userInfo
+        let recurringID = (info["recurringID"] as? String).flatMap(UUID.init(uuidString:))
         let name = info["name"] as? String
         let amount = info["amount"] as? Int
         var coordinate: Coordinate?
@@ -123,6 +200,8 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         await MainActor.run {
             if identifier.hasPrefix(Self.dailyPrefix), action == UNNotificationDefaultActionIdentifier {
                 AppState.shared.openEntry()
+            } else if identifier.hasPrefix(Self.recurringPrefix), let recurringID {
+                handleRecurringAction(action, id: recurringID)
             } else if identifier.hasPrefix(Self.leavePrefix), let name, let amount {
                 handleLeaveAction(action, name: name, amount: amount, coordinate: coordinate)
             }

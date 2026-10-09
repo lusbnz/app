@@ -1,6 +1,12 @@
 {
   "sourceLanguage" : "vi",
   "strings" : {
+    " " : {
+
+    },
+    "· %@" : {
+
+    },
     "· %@ chia %lld" : {
       "localizations" : {
         "vi" : {
@@ -11,22 +17,22 @@
         }
       }
     },
+    "“%@” %@ %@." : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "“%1$@” %2$@ %3$@."
+          }
+        }
+      }
+    },
     "%@ · %@ %@ bạn hay ghi" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "%1$@ · %2$@ %3$@ bạn hay ghi"
-          }
-        }
-      }
-    },
-    "%@ %@" : {
-      "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ %2$@"
           }
         }
       }
@@ -66,6 +72,26 @@
     },
     "%@/tháng" : {
 
+    },
+    "%lld khoản · %@" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld khoản · %2$@"
+          }
+        }
+      }
+    },
+    "%lld khoản, tổng %@" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld khoản, tổng %2$@"
+          }
+        }
+      }
     },
     "%lld tháng %lld" : {
       "localizations" : {
@@ -116,16 +142,38 @@
     "Bỏ qua" : {
 
     },
+    "Các khoản có tên “%@” sẽ chuyển sang %@." : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Các khoản có tên “%1$@” sẽ chuyển sang %2$@."
+          }
+        }
+      }
+    },
     "Các khoản và luật đang dùng danh mục này sẽ chuyển về “khác”." : {
 
     },
     "Chạm để sửa" : {
 
     },
+    "Chỉ từ nay" : {
+
+    },
     "chiều" : {
 
     },
     "chỗ %@ quen" : {
+
+    },
+    "Chọn hết" : {
+
+    },
+    "Chọn món của bạn" : {
+
+    },
+    "Chọn ngày…" : {
 
     },
     "Chọn từ Ảnh" : {
@@ -153,6 +201,9 @@
 
     },
     "Chụp lại" : {
+
+    },
+    "Chuyển %lld khoản" : {
 
     },
     "có ảnh" : {
@@ -209,6 +260,9 @@
         }
       }
     },
+    "đã ghi cách đây %lld phút" : {
+
+    },
     "Đã ghi ứng cho %@ %@" : {
       "localizations" : {
         "vi" : {
@@ -262,6 +316,9 @@
     "Để sau" : {
 
     },
+    "đến" : {
+
+    },
     "đi lại" : {
 
     },
@@ -298,13 +355,10 @@
     "Ghi một hoặc nhiều khoản chi bằng một dòng chữ, ví dụ “phở 45k, grab 32”." : {
 
     },
-    "Ghi một khoản chi với tên và số tiền cho sẵn, không mở app." : {
-
-    },
     "Ghi ngay" : {
 
     },
-    "Ghi nhanh một khoản" : {
+    "Ghi trùng?" : {
 
     },
     "giải trí" : {
@@ -412,7 +466,16 @@
     "Khoản có tên chứa từ khóa sẽ tự vào danh mục tương ứng. Từ khóa không phân biệt hoa thường và dấu." : {
 
     },
+    "Khoảng ngày" : {
+
+    },
     "Khôi phục giao dịch" : {
+
+    },
+    "Không có khoản nào khớp." : {
+
+    },
+    "Không ghi" : {
 
     },
     "không lưu" : {
@@ -428,6 +491,9 @@
 
     },
     "Không tính vào ngân sách" : {
+
+    },
+    "kiểm tra lại" : {
 
     },
     "Luật đã học" : {
@@ -455,6 +521,9 @@
 
     },
     "Mở Xu ngay ở ô gõ để ghi khoản chi." : {
+
+    },
+    "Mọi lúc" : {
 
     },
     "Mỗi tháng bạn muốn tiêu bao nhiêu?" : {
@@ -511,6 +580,9 @@
     "phở 45k" : {
 
     },
+    "phở, grab, cf…" : {
+
+    },
     "PRO" : {
 
     },
@@ -529,12 +601,6 @@
     "Số tiền" : {
 
     },
-    "Số tiền (đồng)" : {
-
-    },
-    "Số tiền phải lớn hơn 0." : {
-
-    },
     "Sửa" : {
 
     },
@@ -550,13 +616,13 @@
     "Tên" : {
 
     },
-    "Tên khoản" : {
-
-    },
     "Tên tối đa %lld ký tự." : {
 
     },
     "Tháng %lld" : {
+
+    },
+    "Tháng này" : {
 
     },
     "Tháng này chưa tiêu gì." : {
@@ -571,6 +637,9 @@
           }
         }
       }
+    },
+    "Tháng trước" : {
+
     },
     "Thêm ảnh" : {
 
@@ -602,6 +671,9 @@
     "Tiếp tục" : {
 
     },
+    "Tìm khoản chi" : {
+
+    },
     "Tính vào ngân sách" : {
 
     },
@@ -614,7 +686,13 @@
     "trưa" : {
 
     },
+    "Từ" : {
+
+    },
     "Từ khóa" : {
+
+    },
+    "Tuần này" : {
 
     },
     "Tức khoảng %@ mỗi ngày." : {
@@ -646,10 +724,16 @@
         }
       }
     },
+    "Vẫn ghi" : {
+
+    },
     "Vào Cài đặt, Nút Tác vụ, chọn Phím tắt rồi chọn “Mở ô gõ” của Xu. Bấm giữ nút là gõ được ngay." : {
 
     },
     "Vị trí và ảnh hóa đơn được xử lý trên máy, không gửi đi đâu." : {
+
+    },
+    "vừa được ghi" : {
 
     },
     "Vừa rời %@. Ghi %@ %@ như mọi lần?" : {
@@ -699,6 +783,9 @@
 
     },
     "Xu chưa trả lời chắc được câu này. Bạn thử hỏi cách khác nhé." : {
+
+    },
+    "Xu không chắc đây là tổng tiền. Bạn xem lại với hóa đơn nhé." : {
 
     },
     "Xu Pro" : {

@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Tùy chỉnh: ngân sách tháng, nhắc và gợi ý, hướng dẫn Siri, Xu Pro.
+/// Tùy chỉnh: ngân sách tháng, nhắc và gợi ý, khoản định kỳ, hạn mức danh mục, hướng dẫn Siri, Xu Pro.
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(AppSettings.self) private var settings
@@ -43,6 +43,12 @@ struct SettingsView: View {
                 }
                 .listRowBackground(Color.xuSurface)
                 Section {
+                    NavigationLink("Khoản định kỳ") {
+                        RecurringView()
+                    }
+                    NavigationLink("Hạn mức danh mục") {
+                        CategoryLimitsView()
+                    }
                     NavigationLink("Danh mục và luật") {
                         CategoriesView()
                     }

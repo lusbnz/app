@@ -45,6 +45,8 @@ struct SavedBatch: Equatable, Sendable {
     var batchID: UUID
     var loanIDs: [UUID]
     var summary: String
+    /// Danh mục vừa gần chạm hoặc vượt hạn mức nhờ lần ghi này; nil nếu không có.
+    var warning: String?
 }
 
 /// Nơi duy nhất ghi khoản chi, dùng chung cho ô gõ, gợi ý, intent và thông báo.
@@ -83,7 +85,10 @@ struct ExpenseRecorder {
         }
         SaveGate.didSave(now: Date(), calendar: .current)
         commit()
-        return SavedBatch(batchID: batchID, loanIDs: loanIDs, summary: Self.summary(of: items))
+        return SavedBatch(
+            batchID: batchID, loanIDs: loanIDs, summary: Self.summary(of: items),
+            warning: limitWarning(for: items, defaultDate: info.date, now: Date(), calendar: .current)
+        )
     }
 
     /// Tách một dòng chữ rồi lưu. Trả về nil khi không có khoản nào đủ số tiền.
@@ -200,6 +205,8 @@ struct ExpenseRecorder {
         expenses.forEach { $0.categoryKey = SpendingCategory.other.rawValue }
         let rules = (try? context.fetch(FetchDescriptor<CategoryRule>(predicate: #Predicate { $0.categoryKey == key }))) ?? []
         rules.forEach(context.delete)
+        let limits = (try? context.fetch(FetchDescriptor<CategoryBudget>(predicate: #Predicate { $0.categoryKey == key }))) ?? []
+        limits.forEach(context.delete)
         context.delete(category)
         commit()
     }

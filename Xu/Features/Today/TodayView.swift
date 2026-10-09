@@ -9,6 +9,7 @@ struct TodayView: View {
     @Environment(AppState.self) private var appState
     @Query private var expenses: [Expense]
     @Query private var customCategories: [CustomCategory]
+    @Query private var recurring: [RecurringExpense]
     @State private var selected: Expense?
     @State private var reapply: ReapplyOffer?
     @State private var isScrolling = false
@@ -33,12 +34,22 @@ struct TodayView: View {
         expenses.filter { calendar.isDate($0.date, inSameDayAs: now) }
     }
 
+    /// Khoản định kỳ đã đến hạn tháng này mà chưa ghi hay bỏ qua.
+    private var dueRecurring: [RecurringExpense] {
+        recurring
+            .filter { RecurringPlanner.isDue($0.item, now: now, calendar: calendar) }
+            .sorted { ($0.dayOfMonth, $0.name) < ($1.dayOfMonth, $1.name) }
+    }
+
     var body: some View {
         @Bindable var appState = appState
         let status = status
         List {
             Group {
                 header(status)
+                ForEach(dueRecurring) { item in
+                    DueRecurringRow(item: item) { recordRecurring(item) } skip: { skipRecurring(item) }
+                }
                 ForEach(todays) { expenseRow($0) }
                 pastDays
             }
@@ -77,6 +88,22 @@ struct TodayView: View {
         }
         let batch = ExpenseRecorder(context: modelContext).repeatExpense(expense, now: Date())
         appState.didSave(batch)
+    }
+
+    private func recordRecurring(_ item: RecurringExpense) {
+        guard SaveGate.canSave(now: Date(), calendar: calendar) else {
+            appState.showsPaywall = true
+            return
+        }
+        withAnimation {
+            if let batch = ExpenseRecorder(context: modelContext).recordRecurring(item, now: Date(), calendar: calendar) {
+                appState.didSave(batch)
+            }
+        }
+    }
+
+    private func skipRecurring(_ item: RecurringExpense) {
+        withAnimation { ExpenseRecorder(context: modelContext).skipRecurring(item, now: Date(), calendar: calendar) }
     }
 
     // MARK: - Phần đầu

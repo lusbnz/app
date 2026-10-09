@@ -32,6 +32,7 @@ struct RootView: View {
             if phase == .active {
                 now = Date()
                 NotificationManager.shared.refreshDailyReminder()
+                NotificationManager.shared.refreshRecurringReminders()
             }
         }
     }

@@ -142,3 +142,25 @@ struct ExpenseParserTests {
         #expect(TextNormalizer.keyword("  Cà   Phê Đá ") == "ca phe da")
     }
 }
+
+/// Các ví dụ ở màn giới thiệu phải đúng như đã hứa.
+struct OnboardingExamplesTests {
+    private let parser = ExpenseParser()
+
+    private func lines(_ text: String) -> [ParsedLine] {
+        parser.parse(text, rules: [:], dailyAllowance: 300_000, now: TestClock.now, calendar: TestClock.calendar)
+    }
+
+    private func expenses(_ text: String) -> [ParsedExpense] {
+        lines(text).compactMap { if case .expense(let expense) = $0 { expense } else { nil } }
+    }
+
+    @Test func promisedExamplesParse() {
+        #expect(expenses("phở 45k, grab 32").map(\.amount) == [45_000, 32_000])
+        #expect(expenses("nhậu 460k chia 4").first?.amount == 115_000)
+        #expect(expenses("hôm qua cơm 55k").first?.date != nil)
+        #expect(expenses("1 củ 2 tai nghe").first?.amount == 1_200_000)
+        let loans = lines("ứng cho Minh 200k").filter { if case .loan = $0 { true } else { false } }
+        #expect(loans.count == 1)
+    }
+}
