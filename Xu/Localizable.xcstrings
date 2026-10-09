@@ -37,12 +37,42 @@
         }
       }
     },
+    "%@ / %@" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ / %2$@"
+          }
+        }
+      }
+    },
     "%@ chia %lld" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "%1$@ chia %2$lld"
+          }
+        }
+      }
+    },
+    "%@ đã dùng %lld%% hạn mức" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ đã dùng %2$lld%% hạn mức"
+          }
+        }
+      }
+    },
+    "%@ vượt hạn mức %@" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ vượt hạn mức %2$@"
           }
         }
       }
@@ -57,12 +87,15 @@
         }
       }
     },
-    "%@. Hôm nay còn %@." : {
+    "%@. Chạm Ghi để ghi, hoặc Bỏ qua tháng này." : {
+
+    },
+    "%@. Hôm nay còn %@.%@" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "%1$@. Hôm nay còn %2$@."
+            "value" : "%1$@. Hôm nay còn %2$@.%3$@"
           }
         }
       }
@@ -71,6 +104,9 @@
 
     },
     "%@/tháng" : {
+
+    },
+    "%lld" : {
 
     },
     "%lld khoản · %@" : {
@@ -102,6 +138,12 @@
           }
         }
       }
+    },
+    "1 củ 2 tai nghe" : {
+
+    },
+    "1,2 triệu, cứ gõ như nói" : {
+
     },
     "7 ngày đầu miễn phí" : {
 
@@ -142,6 +184,12 @@
     "Bỏ qua" : {
 
     },
+    "Bỏ qua %@ tháng này" : {
+
+    },
+    "Cả hai đều tùy chọn, mặc định tắt. Bật hay tắt lúc nào cũng được trong Tùy chỉnh." : {
+
+    },
     "Các khoản có tên “%@” sẽ chuyển sang %@." : {
       "localizations" : {
         "vi" : {
@@ -158,6 +206,12 @@
     "Chạm để sửa" : {
 
     },
+    "chỉ ghi phần của bạn: 115k" : {
+
+    },
+    "Chỉ nhắc nếu hôm đó bạn chưa ghi gì." : {
+
+    },
     "Chỉ từ nay" : {
 
     },
@@ -165,6 +219,9 @@
 
     },
     "chỗ %@ quen" : {
+
+    },
+    "cho mượn, không tính vào ngân sách" : {
 
     },
     "Chọn hết" : {
@@ -235,6 +292,9 @@
 
     },
     "Còn lại sau khi ghi %@" : {
+
+    },
+    "Cũng nói được bằng micro, và chụp hóa đơn để chọn món của bạn." : {
 
     },
     "Đã có danh mục tên này." : {
@@ -319,6 +379,15 @@
     "đến" : {
 
     },
+    "đến hạn ngày %lld · mỗi tháng" : {
+
+    },
+    "Đến hạn: %@" : {
+
+    },
+    "Đến ngày, Xu nhắc lúc 9:00 và hiện khoản đó ở màn Hôm nay. Bạn chạm Ghi thì mới ghi, Xu không tự trừ tiền." : {
+
+    },
     "đi lại" : {
 
     },
@@ -337,13 +406,29 @@
     "Dùng thử 7 ngày miễn phí" : {
 
     },
+    "gần chạm hạn mức, còn %@" : {
+
+    },
     "Ghi" : {
 
     },
     "Ghi %@" : {
 
     },
+    "Ghi %@ %@" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Ghi %1$@ %2$@"
+          }
+        }
+      }
+    },
     "Ghi chi tiêu" : {
+
+    },
+    "ghi cho ngày đã qua" : {
 
     },
     "Ghi khoản chi" : {
@@ -387,6 +472,9 @@
     "Gõ không giới hạn" : {
 
     },
+    "Gõ một dòng là xong" : {
+
+    },
     "Gõ một dòng là xong, ví dụ “phở 45k, grab 32”." : {
 
     },
@@ -396,7 +484,16 @@
     "Gói tháng" : {
 
     },
+    "Gợi ý theo giờ và vị trí" : {
+
+    },
     "Gợi ý theo vị trí và giờ" : {
+
+    },
+    "Hạn mức %@" : {
+
+    },
+    "Hạn mức danh mục" : {
 
     },
     "Hãy nhập tên danh mục." : {
@@ -451,10 +548,16 @@
     "hôm qua" : {
 
     },
+    "hôm qua cơm 55k" : {
+
+    },
     "Hủy" : {
 
     },
     "khác" : {
+
+    },
+    "Khi một danh mục dùng từ 80% hạn mức hoặc vượt, Xu báo lúc bạn ghi và ở màn Tháng. Hạn mức mỗi ngày vẫn tính từ ngân sách tháng. Để trống nghĩa là không đặt hạn mức." : {
 
     },
     "khoản chi" : {
@@ -466,13 +569,25 @@
     "Khoản có tên chứa từ khóa sẽ tự vào danh mục tương ứng. Từ khóa không phân biệt hoa thường và dấu." : {
 
     },
+    "Khoản định kỳ" : {
+
+    },
+    "Khoản định kỳ mới" : {
+
+    },
     "Khoảng ngày" : {
 
     },
     "Khôi phục giao dịch" : {
 
     },
+    "Không cần chọn danh mục hay nhập từng ô. Xu tự tách tên, số tiền và ngày." : {
+
+    },
     "Không có khoản nào khớp." : {
+
+    },
+    "không đặt" : {
 
     },
     "Không ghi" : {
@@ -482,9 +597,6 @@
 
     },
     "Không tìm thấy giao dịch Xu Pro nào để khôi phục." : {
-
-    },
-    "Không tính tiền nhà và các khoản cố định. Đổi lúc nào cũng được, không cần tài khoản." : {
 
     },
     "không tính vào chi tiêu" : {
@@ -538,13 +650,29 @@
     "Ngân sách tháng" : {
 
     },
+    "ngày %lld · %@%@" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "ngày %1$lld · %2$@%3$@"
+          }
+        }
+      }
+    },
     "Ngày trên hóa đơn: %@" : {
+
+    },
+    "Ngày trong tháng" : {
 
     },
     "ngoài ngân sách" : {
 
     },
     "Ngoài ngân sách" : {
+
+    },
+    "Nhắc ghi lúc 21:00" : {
 
     },
     "Nhắc ghi lúc 21:00 nếu hôm đó chưa ghi gì" : {
@@ -554,6 +682,12 @@
 
     },
     "Nhắc và gợi ý" : {
+
+    },
+    "nhậu 460k chia 4" : {
+
+    },
+    "nhiều khoản trong một dòng" : {
 
     },
     "Nói “Ghi chi tiêu trong Xu”, Siri sẽ hỏi bạn tiêu gì. Trả lời như khi gõ: “phở 45k”." : {
@@ -580,6 +714,9 @@
     "phở 45k" : {
 
     },
+    "phở 45k, grab 32" : {
+
+    },
     "phở, grab, cf…" : {
 
     },
@@ -587,6 +724,12 @@
 
     },
     "quán %@ quen" : {
+
+    },
+    "Quán quen hiện sẵn một chạm là ghi. Vị trí chỉ xử lý trên máy, không gửi đi đâu." : {
+
+    },
+    "Quay lại" : {
 
     },
     "sáng" : {
@@ -607,6 +750,9 @@
     "Sửa khoản chi" : {
 
     },
+    "Sửa khoản định kỳ" : {
+
+    },
     "Sửa luật" : {
 
     },
@@ -620,6 +766,9 @@
 
     },
     "Tháng %lld" : {
+
+    },
+    "Tháng nào không có ngày này thì tính vào ngày cuối tháng. Xu nhắc lúc 9:00." : {
 
     },
     "Tháng này" : {
@@ -647,6 +796,9 @@
     "Thêm danh mục" : {
 
     },
+    "Thêm khoản định kỳ" : {
+
+    },
     "Thêm luật" : {
 
     },
@@ -666,6 +818,12 @@
 
     },
     "Thử lại" : {
+
+    },
+    "Tiền nhà và các khoản cố định thì thêm ở Tùy chỉnh, mục Khoản định kỳ: Xu nhắc đến hạn và bạn chạm để ghi. Đổi ngân sách lúc nào cũng được, không cần tài khoản." : {
+
+    },
+    "Tiếp" : {
 
     },
     "Tiếp tục" : {
@@ -724,6 +882,9 @@
         }
       }
     },
+    "ứng cho Minh 200k" : {
+
+    },
     "Vẫn ghi" : {
 
     },
@@ -745,6 +906,9 @@
           }
         }
       }
+    },
+    "vượt hạn mức %@" : {
+
     },
     "vượt hôm nay" : {
 
@@ -786,6 +950,9 @@
 
     },
     "Xu không chắc đây là tổng tiền. Bạn xem lại với hóa đơn nhé." : {
+
+    },
+    "Xu nhắc khi bạn quên" : {
 
     },
     "Xu Pro" : {

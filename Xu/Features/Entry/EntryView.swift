@@ -51,7 +51,7 @@ struct EntryView: View {
                         TextField("phở 45k", text: $text, axis: .vertical)
                             .focused($isFocused)
                             .autocorrectionDisabled()
-                            .textInputAutocapitalization(.never)
+                            .textInputAutocapitalization(.sentences)
                             .padding(.vertical, 14)
                             .accessibilityLabel("Khoản chi")
                         if voice.isSupported { microphoneButton }
@@ -107,7 +107,9 @@ struct EntryView: View {
         .onChange(of: voice.transcript) { _, spoken in
             // Chữ nói được thay phần đang nói; chữ gõ trước đó được giữ nguyên.
             guard !spoken.isEmpty else { return }
-            text = voiceBase + SpokenNumbers.normalize(spoken)
+            let heard = voiceBase + SpokenNumbers.normalize(spoken)
+            // Chữ nói ra không tự viết hoa như chữ gõ.
+            text = voiceBase.isEmpty ? heard.prefix(1).uppercased() + heard.dropFirst() : heard
         }
         .onDisappear { voice.cancel() }
         .onAppear {

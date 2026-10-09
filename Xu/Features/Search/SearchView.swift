@@ -112,6 +112,7 @@ struct SearchView: View {
 
     @ViewBuilder
     private func resultList(_ results: [Expense]) -> some View {
+        let catalog = CategoryCatalog(custom: customCategories)
         Section {
             if results.isEmpty {
                 Text("Không có khoản nào khớp.")
@@ -122,7 +123,7 @@ struct SearchView: View {
                 ForEach(groups, id: \.day) { group in
                     dayHeader(group.day)
                     ForEach(group.expenses) { expense in
-                        Button { selected = expense } label: { ExpenseRow(expense: expense) }
+                        Button { selected = expense } label: { ExpenseRow(expense: expense, categoryTitle: catalog.info(for: expense.categoryKey).title) }
                             .buttonStyle(.plain)
                     }
                 }

@@ -3,6 +3,8 @@ import SwiftUI
 /// Một dòng chữ trần: tên bên trái, số tiền bên phải.
 struct ExpenseRow: View {
     let expense: Expense
+    /// Tên danh mục hiện ở dòng phụ; nil thì không hiện (xem `CategoryCatalog`).
+    var categoryTitle: String?
 
     var body: some View {
         HStack(alignment: .firstTextBaseline, spacing: 10) {
@@ -36,7 +38,7 @@ struct ExpenseRow: View {
     }
 
     private var note: String? {
-        let parts = [expense.splitNote, expense.isOutsideBudget ? String(localized: "ngoài ngân sách") : nil]
+        let parts = [categoryTitle, expense.splitNote, expense.isOutsideBudget ? String(localized: "ngoài ngân sách") : nil]
             .compactMap(\.self)
         return parts.isEmpty ? nil : parts.joined(separator: " · ")
     }
@@ -44,8 +46,8 @@ struct ExpenseRow: View {
 
 #Preview {
     VStack(spacing: 0) {
-        ExpenseRow(expense: PreviewData.expense)
-        ExpenseRow(expense: Expense(name: "phở", amount: 45_000, categoryKey: "food"))
+        ExpenseRow(expense: PreviewData.expense, categoryTitle: "ăn uống")
+        ExpenseRow(expense: Expense(name: "phở", amount: 45_000, categoryKey: "food"), categoryTitle: "ăn uống")
     }
     .padding()
     .xuScreen()

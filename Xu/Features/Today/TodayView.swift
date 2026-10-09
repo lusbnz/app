@@ -50,6 +50,7 @@ struct TodayView: View {
                 ForEach(dueRecurring) { item in
                     DueRecurringRow(item: item) { recordRecurring(item) } skip: { skipRecurring(item) }
                 }
+                if !todays.isEmpty { todayHeader }
                 ForEach(todays) { expenseRow($0) }
                 pastDays
             }
@@ -177,7 +178,7 @@ struct TodayView: View {
 
     /// Một dòng khoản chi, kèm các nút vuốt nhanh. Dùng cho hôm nay và các ngày trước.
     private func expenseRow(_ expense: Expense) -> some View {
-        Button { selected = expense } label: { ExpenseRow(expense: expense) }
+        Button { selected = expense } label: { ExpenseRow(expense: expense, categoryTitle: CategoryCatalog(custom: customCategories).info(for: expense.categoryKey).title) }
             .buttonStyle(.plain)
             .swipeActions(edge: .leading) {
                 Button("Ghi lại", systemImage: "plus.circle") { repeatExpense(expense) }
@@ -229,17 +230,29 @@ struct TodayView: View {
         }
     }
 
-    private func dayHeader(_ day: Date, total: Int) -> some View {
+    /// Tiêu đề và tổng của hôm nay, cùng kiểu với các ngày trước. Không tính khoản ngoài ngân sách.
+    private var todayHeader: some View {
+        let total = todays.filter { !$0.isOutsideBudget }.reduce(0) { $0 + $1.amount }
+        return groupTitle(VietnameseDate.relativeDay(now, now: now, calendar: calendar), total: total)
+            .padding(.top, 8)
+    }
+
+    private func groupTitle(_ title: String, total: Int) -> some View {
         HStack {
-            Text(VietnameseDate.relativeDay(day, now: now, calendar: calendar))
+            Text(title)
             Spacer()
             Text(MoneyFormatter.short(total)).money(total)
         }
         .font(.footnote.weight(.medium))
         .foregroundStyle(Color.xuTextSecondary)
-        .padding(.top, 24)
         .padding(.bottom, 4)
+        .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isHeader)
+    }
+
+    private func dayHeader(_ day: Date, total: Int) -> some View {
+        groupTitle(VietnameseDate.relativeDay(day, now: now, calendar: calendar), total: total)
+            .padding(.top, 24)
         // Rung nhẹ mỗi khi một ngày mới trượt vào màn hình, chỉ khi người dùng đang cuộn.
         .onScrollVisibilityChange(threshold: 0.9) { visible in
             if visible, isScrolling { hapticDay = day }
