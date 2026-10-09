@@ -144,9 +144,18 @@ struct EntryView: View {
                 Task { await voice.start() }
             }
         } label: {
-            Image(systemName: isListening ? "stop.circle.fill" : "mic")
-                .font(.title3)
-                .frame(width: 44, height: 44)
+            // Cao bằng một dòng của ô gõ (cùng padding dọc 14), nên nút nằm giữa dòng đầu
+            // cả khi ô gõ xuống nhiều dòng.
+            ZStack {
+                Text(" ")
+                    .padding(.vertical, 14)
+                    .hidden()
+                Image(systemName: isListening ? "stop.circle.fill" : "mic")
+                    .font(.title3)
+            }
+            .frame(width: 44)
+            .frame(minHeight: 44)
+            .contentShape(.rect)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(isListening ? "Dừng nói" : "Nói khoản chi")
