@@ -3,7 +3,7 @@ import Foundation
 enum AppGroup {
     static let identifier = "group.com.quocviet.Xu"
 
-    /// UserDefaults dùng chung với widget và intent. Lùi về mặc định của app khi chưa bật App Group.
+    /// UserDefaults dùng chung với intent. Lùi về mặc định của app khi chưa bật App Group.
     nonisolated(unsafe) static let defaults: UserDefaults = UserDefaults(suiteName: identifier) ?? .standard
 
     /// Thư mục dùng chung; nil khi chưa bật App Group.

@@ -1,6 +1,5 @@
 import Observation
 import StoreKit
-import WidgetKit
 
 /// Trạng thái Xu Pro, đọc từ StoreKit 2.
 @MainActor @Observable
@@ -57,7 +56,6 @@ final class EntitlementStore {
         guard active != isPro || active != SaveGate.isPro else { return }
         isPro = active
         SaveGate.isPro = active
-        WidgetCenter.shared.reloadAllTimelines()
     }
 
     func loadProducts() async {

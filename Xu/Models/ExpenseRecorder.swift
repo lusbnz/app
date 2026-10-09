@@ -1,6 +1,5 @@
 import Foundation
 import SwiftData
-import WidgetKit
 
 struct ExpenseDraft: Equatable, Sendable {
     var name: String
@@ -53,7 +52,7 @@ struct SavedBatch: Equatable, Sendable {
 struct ExpenseRecorder {
     let context: ModelContext
 
-    /// App gắn vào đây để làm việc sau mỗi lần ghi xuống đĩa (xếp lại lịch nhắc). Ở widget thì để trống.
+    /// App gắn vào đây để làm việc sau mỗi lần ghi xuống đĩa (xếp lại lịch nhắc).
     static var afterCommit: (@MainActor () -> Void)?
 
     @discardableResult
@@ -266,10 +265,9 @@ struct ExpenseRecorder {
         )
     }
 
-    /// Lưu xuống đĩa và báo widget vẽ lại.
+    /// Lưu xuống đĩa.
     func commit() {
         try? context.save()
-        WidgetCenter.shared.reloadAllTimelines()
         Self.afterCommit?()
     }
 
@@ -280,7 +278,7 @@ struct ExpenseRecorder {
         return count > 0
     }
 
-    /// Ghi một khoản biết sẵn tên và số tiền (gợi ý, nút widget, thông báo).
+    /// Ghi một khoản biết sẵn tên và số tiền (gợi ý, thông báo).
     @discardableResult
     func recordQuick(
         name: String, amount: Int, monthlyBudget: Int, now: Date, calendar: Calendar, coordinate: Coordinate? = nil

@@ -27,12 +27,12 @@ struct SaveQuota: Equatable, Sendable {
     }
 }
 
-/// Giới hạn bản miễn phí, lưu trong App Group để app, intent và widget cùng đếm.
+/// Giới hạn bản miễn phí, lưu trong App Group để app và intent cùng đếm.
 enum SaveGate {
     private static let quotaKey = "saveQuota"
     private static let proKey = "isPro"
 
-    /// EntitlementStore ghi vào đây để intent và widget đọc được mà không cần StoreKit.
+    /// EntitlementStore ghi vào đây để intent đọc được mà không cần StoreKit.
     static var isPro: Bool {
         get { AppGroup.defaults.bool(forKey: proKey) }
         set { AppGroup.defaults.set(newValue, forKey: proKey) }

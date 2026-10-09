@@ -6,13 +6,13 @@ Sổ chi tiêu kiểu tin nhắn cho người Việt. iOS, SwiftUI và SwiftData
 
 - iOS tối thiểu 18.0. Chỉ iPhone, chỉ dọc. API mới hơn phải bọc trong `if #available`.
 - Swift 6, kiểm tra concurrency nghiêm ngặt. Dùng `@Observable` và `async/await`. Không dùng Combine, không dùng `ObservableObject`.
-- Chỉ dùng framework của Apple: SwiftUI, SwiftData, WidgetKit, AppIntents, StoreKit 2, Vision, CoreLocation, UserNotifications, FoundationModels, Speech, AVFoundation (chỉ để thu âm đưa vào Speech), Swift Testing. Không thư viện bên thứ ba, không backend, không analytics.
+- Chỉ dùng framework của Apple: SwiftUI, SwiftData, AppIntents, StoreKit 2, Vision, CoreLocation, UserNotifications, FoundationModels, Speech, AVFoundation (chỉ để thu âm đưa vào Speech), Swift Testing. Không thư viện bên thứ ba, không backend, không analytics.
 - Tiền lưu bằng `Int` đơn vị đồng. Không bao giờ dùng `Double` cho tiền.
 - Mọi phép tính ngày nhận `Calendar` và `Date` làm tham số. Ở tầng giao diện lấy từ `Calendar.current`.
 - Chuỗi giao diện bằng tiếng Việt, đặt trong `Xu/Localizable.xcstrings`.
 - Bundle ID `com.quocviet.Xu`, App Group `group.com.quocviet.Xu`.
 - Không sửa tay `Xu.xcodeproj/project.pbxproj`. Dự án dùng thư mục đồng bộ: tạo tệp `.swift` đúng thư mục là đủ. Việc cần thêm target hoặc capability thì dừng lại và hướng dẫn người dùng làm trong Xcode. Ngoại lệ đã được người dùng cho phép, mỗi khóa một lần: `INFOPLIST_KEY_NSMicrophoneUsageDescription` và `INFOPLIST_KEY_NSSpeechRecognitionUsageDescription` (giọng nói), `INFOPLIST_KEY_NSCameraUsageDescription` (chụp ảnh). Khóa quyền mới nào khác vẫn phải hỏi trước.
-- Chưa có target widget, chưa bật App Group và iCloud: những việc này người dùng làm trong Xcode. `XuStore` phải chạy được khi thiếu chúng (lùi về Application Support).
+- Chưa bật App Group và iCloud: những việc này người dùng làm trong Xcode. `XuStore` phải chạy được khi thiếu chúng (lùi về Application Support).
 
 ## Cấu trúc
 
@@ -32,7 +32,6 @@ Xu/
   Notifications/  nhắc 21:00, nhắc khi rời quán quen
   Voice/          nhập khoản chi bằng giọng nói (Speech)
   DesignSystem/   màu, font, HighlightedNumber
-XuWidgets/        mã của target widget
 XuTests/
 ```
 
@@ -43,7 +42,7 @@ XuTests/
 
 ## Quy ước theo tính năng
 
-- **Xu Pro:** chỉ bỏ giới hạn 5 lần ghi mỗi ngày của bản miễn phí (`SaveGate`, `SaveQuota`). Chụp hóa đơn, Hỏi Xu và widget màn hình khóa miễn phí cho mọi người. Mọi đường ghi (ô gõ, intent, widget, thông báo, vuốt "Ghi lại") đều phải qua `SaveGate.canSave`.
+- **Xu Pro:** chỉ bỏ giới hạn 5 lần ghi mỗi ngày của bản miễn phí (`SaveGate`, `SaveQuota`). Chụp hóa đơn và Hỏi Xu miễn phí cho mọi người. Mọi đường ghi (ô gõ, intent, thông báo, vuốt "Ghi lại") đều phải qua `SaveGate.canSave`.
 - **Danh mục:** có sẵn là `SpendingCategory`, tự thêm là `CustomCategory` với khóa `custom-<uuid>` (không đổi khi đổi tên). Giao diện luôn tra bằng `CategoryCatalog` (đọc `@Query CustomCategory`), không gọi `SpendingCategory(key:).title` trực tiếp. Khóa không còn tồn tại hiện là "khác". Xóa danh mục chuyển các khoản về "khác" và xóa luật trỏ tới nó (`ExpenseRecorder.deleteCategory`). Tên danh mục kiểm tra bằng `CategoryNaming`. Đổi danh mục của một khoản (vuốt, Chi tiết, thêm hoặc sửa luật) thì hỏi có áp cho các khoản cũ cùng từ khóa không (`ReapplyOffer`, `reapplyDialog`); luật dài hơn vẫn thắng luật ngắn.
 - **Thao tác nhanh:** danh sách khoản chi ở màn Hôm nay vuốt phải để "Ghi lại" và bật tắt "Ngoài ngân sách", vuốt trái để xóa và đổi danh mục. Logic nằm trong `ExpenseRecorder` (`repeatExpense`, `setCategory`, `toggleOutsideBudget`), không đặt trong View.
 - **Giọng nói (`Voice/`):** `VoiceInput` chỉ thu âm và trả chữ, ưu tiên nhận dạng trên máy. Đổi số đọc bằng chữ ("bốn mươi lăm nghìn") thành chữ số là việc của `SpokenNumbers` (logic thuần, trong `Parsing/`). Chữ nói ra chỉ điền vào ô gõ, không tự ghi. Nút micro ẩn khi thiếu hai khóa quyền. Closure chạy trên luồng âm thanh phải tạo trong hàm `nonisolated`, nếu không sẽ crash do bị gắn `@MainActor`.

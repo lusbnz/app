@@ -4,7 +4,7 @@ import SwiftData
 enum XuStore {
     static let schema = Schema([Expense.self, Loan.self, CategoryRule.self, CustomCategory.self])
 
-    /// Kho dùng chung cho app, intent và widget, đặt trong App Group khi có.
+    /// Kho dùng chung cho app và intent, đặt trong App Group khi có.
     static let shared: ModelContainer = {
         let configuration = ModelConfiguration(
             schema: schema,
