@@ -28,6 +28,27 @@ struct ExpenseParserTests {
         #expect(expense?.splitCount == 4)
     }
 
+    @Test(arguments: [
+        ("nhậu 460k chia ba", 3), ("nhậu 460k chia tư", 4), ("nhậu 460k chia bốn người", 4),
+        ("nhậu 460k chia đôi", 2), ("nhậu 460k chia sáu", 6), ("nhậu 460k chia tu", 4), ("nhậu 460k /ba", 3),
+    ])
+    func spokenSplit(text: String, count: Int) {
+        let expense = expenses(text).first
+        #expect(expense?.name == "nhậu")
+        #expect(expense?.splitCount == count)
+        #expect(expense?.originalAmount == 460_000)
+    }
+
+    @Test func splitKeepsFullAmountWithSpokenFraction() {
+        let expense = expenses("tiệc 1 củ 2 chia 4").first
+        #expect(expense?.originalAmount == 1_200_000)
+        #expect(expense?.amount == 300_000)
+    }
+
+    @Test func nameStartingWithSplitWordIsNotSplit() {
+        #expect(expenses("chia sẻ 50k").first?.splitCount == nil)
+    }
+
     @Test func splitRoundsToThousand() {
         #expect(expenses("lẩu 500k chia 3").first?.amount == 167_000)
     }

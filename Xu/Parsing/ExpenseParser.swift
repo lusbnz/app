@@ -161,14 +161,21 @@ struct ExpenseParser: LineParsing {
         }
     }
 
+    private static let splitWords: [(count: Int, words: [String])] = [
+        (2, ["đôi", "hai"]), (3, ["ba"]), (4, ["bốn", "tư"]), (5, ["năm"]),
+        (6, ["sáu"]), (7, ["bảy"]), (8, ["tám"]), (9, ["chín"]), (10, ["mười"]),
+    ]
+
     private static func splitCount(_ text: String) -> Int? {
-        if TextNormalizer.matches(text, "đôi") { return 2 }
+        if let spoken = splitWords.first(where: { entry in entry.words.contains { TextNormalizer.matches(text, $0) } }) {
+            return spoken.count
+        }
         guard !text.isEmpty, text.allSatisfy({ $0.isASCII && $0.isNumber }),
               let count = Int(text), (2...99).contains(count) else { return nil }
         return count
     }
 
-    /// Nhận `chia 4`, `chia4`, `/4`, `/ 4`, có thể kèm chữ "người".
+    /// Nhận `chia 4`, `chia4`, `chia ba`, `/4`, `/ 4`, có thể kèm chữ "người".
     private static func extractSplit(from tokens: [String]) -> ([String], Int?) {
         var tokens = tokens
         for index in tokens.indices {

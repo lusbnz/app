@@ -1,6 +1,6 @@
 import Foundation
 
-/// Đọc số tiền kiểu người Việt hay gõ: `45k`, `45k5`, `1tr2`, `1,5tr`, `45.000`, `5 lít`.
+/// Đọc số tiền kiểu người Việt hay gõ: `45k`, `45k5`, `45k rưỡi`, `1tr2`, `1 củ 2`, `1,5tr`, `45.000`, `5 lít`.
 enum AmountParser {
     struct Match: Equatable, Sendable {
         var range: Range<Int>
@@ -34,14 +34,17 @@ enum AmountParser {
             if !scanned.unit.isEmpty {
                 if let multiplier = multiplier(forUnit: scanned.unit),
                    let value = value(of: scanned, multiplier: multiplier) {
-                    matches.append(Match(range: index..<index + 1, value: value, hasUnit: true))
+                    let (extra, length) = suffix(in: tokens, after: index + 1, scanned: scanned, multiplier: multiplier)
+                    matches.append(Match(range: index..<index + 1 + length, value: value + extra, hasUnit: true))
+                    index += length
                 }
                 index += 1
             } else if index + 1 < tokens.count,
                       let multiplier = multiplier(forUnit: tokens[index + 1]),
                       let value = value(of: scanned, multiplier: multiplier) {
-                matches.append(Match(range: index..<index + 2, value: value, hasUnit: true))
-                index += 2
+                let (extra, length) = suffix(in: tokens, after: index + 2, scanned: scanned, multiplier: multiplier)
+                matches.append(Match(range: index..<index + 2 + length, value: value + extra, hasUnit: true))
+                index += 2 + length
             } else {
                 if let value = value(of: scanned, multiplier: nil) {
                     matches.append(Match(range: index..<index + 1, value: value, hasUnit: false))
@@ -63,6 +66,29 @@ enum AmountParser {
     /// Đọc một ô chỉ chứa số tiền, ví dụ `45k` hay `1 củ`.
     static func amount(from text: String) -> Int? {
         find(in: TextNormalizer.words(text))?.value
+    }
+
+
+    /// Từ đếm đứng sau số: `1 triệu 2 cái` thì `2` là số lượng, không phải số lẻ của tiền.
+    private static let counters = ["cái", "ly", "phần", "chai", "lon", "bát", "tô", "hộp", "lần", "ngày", "tháng", "người", "kg", "g"]
+
+    /// Phần đọc thêm sau đơn vị: `45k rưỡi`, `1 triệu rưỡi` (thêm nửa đơn vị),
+    /// `1 củ 2`, `1 triệu 250` (số lẻ của triệu). Trả về số tiền thêm và số từ đã dùng.
+    private static func suffix(in tokens: [String], after start: Int, scanned: Scanned, multiplier: Int) -> (extra: Int, length: Int) {
+        guard multiplier > 1, scanned.tail.isEmpty, scanned.number.allSatisfy(\.isNumber), start < tokens.count else {
+            return (0, 0)
+        }
+        let next = tokens[start]
+        if TextNormalizer.matches(next, "rưỡi") {
+            return (multiplier / 2, 1)
+        }
+        guard multiplier >= 1_000_000, (1...3).contains(next.count), next.allSatisfy({ $0.isASCII && $0.isNumber }) else {
+            return (0, 0)
+        }
+        if start + 1 < tokens.count, counters.contains(where: { TextNormalizer.matches(tokens[start + 1], $0) }) {
+            return (0, 0)
+        }
+        return (scaled(whole: 0, decimals: next, by: multiplier), 1)
     }
 
     // MARK: - Đọc một từ

@@ -22,6 +22,11 @@ struct AmountParsingTests {
         ("áo 2 xị", 200_000),
         ("45k phở", 45_000), ("45 phở", 45_000),
         ("phở 1.250.000", 1_250_000), ("phở 45.5k", 45_500),
+        ("phở 45k rưỡi", 45_500), ("phở 45 k rưỡi", 45_500), ("pho 45k ruoi", 45_500),
+        ("sách 1 triệu rưỡi", 1_500_000), ("sách 2tr rưỡi", 2_500_000), ("sách 1 củ rưỡi", 1_500_000),
+        ("trà 5 nghìn rưỡi", 5_500), ("áo 5 lít rưỡi", 550_000),
+        ("sách 1 củ 2", 1_200_000), ("sách 1 triệu 2", 1_200_000), ("sách 1 triệu 250", 1_250_000),
+        ("sách 1 củ 2 chia 4", 300_000), ("1 củ 2 sách", 1_200_000),
     ])
     func readsAmount(text: String, expected: Int) {
         #expect(amount(text) == expected)
@@ -35,6 +40,13 @@ struct AmountParsingTests {
     @Test func prefersAmountWithUnit() {
         #expect(amount("bia 2 lon 60k") == 60_000)
         #expect(amount("7up 15") == 15_000)
+    }
+
+    @Test func trailingDigitsAfterMillionAreNotAlwaysDecimals() {
+        // "2 cái" là số lượng, không phải 1,2 triệu.
+        #expect(amount("bút 1 triệu 2 cái") == 1_000_000)
+        // Đơn vị nghìn không nhận số lẻ rời: "45k 5" vẫn là 45k.
+        #expect(amount("phở 45k 5") == 45_000)
     }
 
     @Test func accentedLookalikesAreNotUnits() {
