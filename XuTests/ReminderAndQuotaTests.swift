@@ -62,3 +62,45 @@ struct SaveQuotaTests {
         #expect(SaveQuota(day: "", count: 0).adding(-1, on: date(8), calendar: calendar).count == 0)
     }
 }
+
+struct LeaveReminderPolicyTests {
+    private let calendar: Calendar = {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "Asia/Ho_Chi_Minh")!
+        return calendar
+    }()
+
+    private func date(_ day: Int, hour: Int = 8) -> Date {
+        calendar.date(from: DateComponents(year: 2026, month: 10, day: day, hour: hour))!
+    }
+
+    private let place = FamiliarPlace(
+        center: Coordinate(latitude: 10.7769, longitude: 106.7009), visits: 4,
+        lastVisit: Date(timeIntervalSince1970: 0), usual: Suggestion(name: "phở", amount: 45_000, categoryKey: "food")
+    )
+
+    @Test func message() {
+        #expect(LeaveReminderPolicy.message(for: place) == "Vừa rời quán phở quen. Ghi phở 45k như mọi lần?")
+    }
+
+    @Test func oncePerPlacePerDay() {
+        var last: [String: String] = [:]
+        #expect(LeaveReminderPolicy.shouldNotify(place: place, lastNotified: last, records: [], now: date(8), calendar: calendar))
+        last = LeaveReminderPolicy.marking(place.id, in: last, now: date(8), calendar: calendar)
+        #expect(!LeaveReminderPolicy.shouldNotify(place: place, lastNotified: last, records: [], now: date(8, hour: 19), calendar: calendar))
+        #expect(LeaveReminderPolicy.shouldNotify(place: place, lastNotified: last, records: [], now: date(9), calendar: calendar))
+    }
+
+    @Test func markingDropsOlderDays() {
+        let old = ["a": SaveQuota.dayKey(date(7), calendar: calendar)]
+        let marked = LeaveReminderPolicy.marking("b", in: old, now: date(8), calendar: calendar)
+        #expect(marked == ["b": SaveQuota.dayKey(date(8), calendar: calendar)])
+    }
+
+    @Test func silentWhenTheUsualIsAlreadyLoggedToday() {
+        let logged = [SuggestionRecord(name: "Phở", amount: 45_000, categoryKey: "food", date: date(8, hour: 7))]
+        #expect(!LeaveReminderPolicy.shouldNotify(place: place, lastNotified: [:], records: logged, now: date(8), calendar: calendar))
+        let other = [SuggestionRecord(name: "phở", amount: 60_000, categoryKey: "food", date: date(8, hour: 7))]
+        #expect(LeaveReminderPolicy.shouldNotify(place: place, lastNotified: [:], records: other, now: date(8), calendar: calendar))
+    }
+}

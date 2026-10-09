@@ -8,6 +8,10 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 
     private static let dailyPrefix = "daily-"
     private static let dailySlots = 14
+    private static let leavePrefix = "leave."
+    private static let logAction = "leave.log"
+    private static let editAction = "leave.edit"
+    private static let skipAction = "leave.skip"
     private let center = UNUserNotificationCenter.current()
 
     func start() {
@@ -41,6 +45,61 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         }
     }
 
+    // MARK: - Rời quán quen
+
+    /// Mỗi nơi một nhóm hành động, vì nút "Ghi 45k" mang số tiền của nơi đó.
+    func registerLeaveCategories(for places: [FamiliarPlace]) {
+        let categories = places.map { place in
+            UNNotificationCategory(
+                identifier: Self.leavePrefix + place.id,
+                actions: [
+                    UNNotificationAction(
+                        identifier: Self.logAction,
+                        title: String(localized: "Ghi \(MoneyFormatter.short(place.usual.amount))")
+                    ),
+                    UNNotificationAction(identifier: Self.editAction, title: String(localized: "Sửa"), options: [.foreground]),
+                    UNNotificationAction(identifier: Self.skipAction, title: String(localized: "Bỏ qua")),
+                ],
+                intentIdentifiers: []
+            )
+        }
+        center.setNotificationCategories(Set(categories))
+    }
+
+    func notifyLeaving(_ place: FamiliarPlace) {
+        let content = UNMutableNotificationContent()
+        content.body = LeaveReminderPolicy.message(for: place)
+        content.sound = .default
+        content.categoryIdentifier = Self.leavePrefix + place.id
+        content.userInfo = [
+            "name": place.usual.name, "amount": place.usual.amount,
+            "latitude": place.center.latitude, "longitude": place.center.longitude,
+        ]
+        center.add(UNNotificationRequest(identifier: Self.leavePrefix + place.id, content: content, trigger: nil))
+    }
+
+    private func handleLeaveAction(_ action: String, name: String, amount: Int, coordinate: Coordinate?) {
+        let text = "\(name) \(MoneyFormatter.short(amount))"
+        switch action {
+        case Self.logAction:
+            // Lưu không mở app. Hết lượt miễn phí thì mở ô gõ, nơi sẽ hiện Xu Pro.
+            let now = Date()
+            guard SaveGate.canSave(now: now, calendar: .current) else {
+                AppState.shared.openEntry(text: text)
+                return
+            }
+            let budget = AppGroup.defaults.integer(forKey: SettingsKey.monthlyBudget)
+            let batch = ExpenseRecorder(context: XuStore.shared.mainContext).recordQuick(
+                name: name, amount: amount, monthlyBudget: budget, now: now, calendar: .current, coordinate: coordinate
+            )
+            AppState.shared.didSave(batch)
+        case Self.editAction, UNNotificationDefaultActionIdentifier:
+            AppState.shared.openEntry(text: text)
+        default:
+            break
+        }
+    }
+
     // MARK: - UNUserNotificationCenterDelegate
 
     nonisolated func userNotificationCenter(
@@ -54,9 +113,18 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     ) async {
         let identifier = response.notification.request.identifier
         let action = response.actionIdentifier
+        let info = response.notification.request.content.userInfo
+        let name = info["name"] as? String
+        let amount = info["amount"] as? Int
+        var coordinate: Coordinate?
+        if let latitude = info["latitude"] as? Double, let longitude = info["longitude"] as? Double {
+            coordinate = Coordinate(latitude: latitude, longitude: longitude)
+        }
         await MainActor.run {
             if identifier.hasPrefix(Self.dailyPrefix), action == UNNotificationDefaultActionIdentifier {
                 AppState.shared.openEntry()
+            } else if identifier.hasPrefix(Self.leavePrefix), let name, let amount {
+                handleLeaveAction(action, name: name, amount: amount, coordinate: coordinate)
             }
         }
     }

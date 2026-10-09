@@ -163,14 +163,18 @@ struct ExpenseRecorder {
 
     /// Ghi một khoản biết sẵn tên và số tiền (gợi ý, nút widget, thông báo).
     @discardableResult
-    func recordQuick(name: String, amount: Int, monthlyBudget: Int, now: Date, calendar: Calendar) -> SavedBatch {
+    func recordQuick(
+        name: String, amount: Int, monthlyBudget: Int, now: Date, calendar: Calendar, coordinate: Coordinate? = nil
+    ) -> SavedBatch {
         let allowance = status(monthlyBudget: monthlyBudget, now: now, calendar: calendar).allowanceToday
         let draft = ExpenseDraft(
             name: name, amount: amount,
             categoryKey: CategoryClassifier.categoryKey(for: name, rules: rules()),
             isOutsideBudget: ExpenseParser.isOutsideBudget(amount: amount, dailyAllowance: allowance)
         )
-        return record([.expense(draft)], in: RecordContext(rawText: name, date: now))
+        return record([.expense(draft)], in: RecordContext(
+            rawText: name, date: now, latitude: coordinate?.latitude, longitude: coordinate?.longitude
+        ))
     }
 
     static func summary(of items: [RecordItem]) -> String {

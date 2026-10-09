@@ -52,6 +52,7 @@ final class LocationProvider: NSObject, CLLocationManagerDelegate {
         Task { @MainActor in
             authorization = status
             refresh()
+            await PlaceMonitor.shared.refresh()
         }
     }
 

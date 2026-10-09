@@ -9,7 +9,12 @@ struct XuApp: App {
     init() {
         EntitlementStore.shared.start()
         NotificationManager.shared.start()
-        ExpenseRecorder.afterCommit = { NotificationManager.shared.refreshDailyReminder() }
+        ExpenseRecorder.afterCommit = {
+            NotificationManager.shared.refreshDailyReminder()
+            Task { await PlaceMonitor.shared.refresh() }
+        }
+        // Dựng lại CLMonitor mỗi lần app chạy, kể cả khi hệ thống mở app ngầm vì một vùng theo dõi.
+        Task { await PlaceMonitor.shared.refresh() }
         #if DEBUG
         DebugLaunch.apply(settings: settings, appState: appState, container: XuStore.shared)
         #endif

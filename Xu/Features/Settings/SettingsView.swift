@@ -8,6 +8,7 @@ struct SettingsView: View {
     @Environment(LocationProvider.self) private var location
     @State private var budgetText = ""
     @State private var showsPaywall = false
+    @State private var explainsAlwaysLocation = false
     @FocusState private var budgetFocused: Bool
 
     var body: some View {
@@ -29,7 +30,12 @@ struct SettingsView: View {
                 Section {
                     Toggle("Nhắc ghi lúc 21:00 nếu hôm đó chưa ghi gì", isOn: $settings.remindsAtNine)
                     Toggle("Gợi ý theo vị trí và giờ", isOn: $settings.suggestionsEnabled)
-                    Toggle("Nhắc khi rời quán quen", isOn: $settings.leaveReminderEnabled)
+                    Toggle("Nhắc khi rời quán quen", isOn: Binding {
+                        settings.leaveReminderEnabled
+                    } set: { isOn in
+                        // Giải thích trước, rồi mới xin quyền vị trí "Luôn luôn".
+                        if isOn { explainsAlwaysLocation = true } else { setLeaveReminder(false) }
+                    })
                 } header: {
                     Text("Nhắc và gợi ý")
                 } footer: {
@@ -64,6 +70,12 @@ struct SettingsView: View {
                     }
                 }
             }
+            .alert("Nhắc khi rời quán quen", isPresented: $explainsAlwaysLocation) {
+                Button("Tiếp tục") { setLeaveReminder(true) }
+                Button("Để sau", role: .cancel) {}
+            } message: {
+                Text("Để biết lúc bạn rời một quán đã ghi từ 3 lần, Xu cần quyền vị trí “Luôn luôn” và quyền gửi thông báo. Xu chỉ theo dõi tối đa 20 nơi như vậy, xử lý ngay trên máy và không gửi vị trí đi đâu.")
+            }
             .sheet(isPresented: $showsPaywall) {
                 PaywallView()
             }
@@ -87,6 +99,17 @@ struct SettingsView: View {
             }
         }
         .fontDesign(.rounded)
+    }
+
+    private func setLeaveReminder(_ isOn: Bool) {
+        settings.leaveReminderEnabled = isOn
+        Task {
+            if isOn {
+                _ = await NotificationManager.shared.requestAuthorization()
+                location.requestAlways()
+            }
+            await PlaceMonitor.shared.refresh()
+        }
     }
 
     private func commitBudget() {
