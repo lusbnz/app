@@ -6,11 +6,9 @@ enum XuStore {
 
     /// Kho dùng chung cho app, intent và widget, đặt trong App Group khi có.
     static let shared: ModelContainer = {
-        let folder = AppGroup.containerURL ?? URL.applicationSupportDirectory
-        try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         let configuration = ModelConfiguration(
             schema: schema,
-            url: folder.appending(path: "Xu.store"),
+            url: storeFolder().appending(path: "Xu.store"),
             cloudKitDatabase: .automatic
         )
         do {
@@ -20,7 +18,18 @@ enum XuStore {
         }
     }()
 
-    static func inMemory() -> ModelContainer {
+    /// Thư mục App Group nếu dùng được, không thì Application Support.
+    /// `containerURL` có thể trả về đường dẫn không tạo được (ví dụ app chạy trên Mac mà chưa có entitlement).
+    private static func storeFolder() -> URL {
+        for folder in [AppGroup.containerURL, URL.applicationSupportDirectory].compactMap({ $0 }) {
+            if (try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)) != nil {
+                return folder
+            }
+        }
+        return URL.applicationSupportDirectory
+    }
+
+    static func inMemory()-> ModelContainer {
         let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true, cloudKitDatabase: .none)
         do {
             return try ModelContainer(for: schema, configurations: configuration)
