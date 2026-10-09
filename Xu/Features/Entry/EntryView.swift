@@ -15,6 +15,8 @@ struct EntryView: View {
     @State private var overrides: [Int: EntryOverride] = [:]
     @State private var editing: EntryRow?
     @State private var showsPaywall = false
+    @State private var voice = VoiceInput()
+    @State private var voiceBase = ""
     @FocusState private var isFocused: Bool
 
     let now: Date
@@ -44,14 +46,23 @@ struct EntryView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     remaining(status, rows: rows)
-                    TextField("phở 45k", text: $text, axis: .vertical)
-                        .focused($isFocused)
-                        .autocorrectionDisabled()
-                        .textInputAutocapitalization(.never)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 14)
-                        .background(Color.xuSurface, in: .rect(cornerRadius: 26))
-                        .accessibilityLabel("Khoản chi")
+                    HStack(alignment: .top, spacing: 4) {
+                        TextField("phở 45k", text: $text, axis: .vertical)
+                            .focused($isFocused)
+                            .autocorrectionDisabled()
+                            .textInputAutocapitalization(.never)
+                            .padding(.vertical, 14)
+                            .accessibilityLabel("Khoản chi")
+                        if voice.isSupported { microphoneButton }
+                    }
+                    .padding(.leading, 20)
+                    .padding(.trailing, voice.isSupported ? 6 : 20)
+                    .background(Color.xuSurface, in: .rect(cornerRadius: 26))
+                    if let message = voiceMessage {
+                        Text(message)
+                            .font(.footnote)
+                            .foregroundStyle(Color.xuTextSecondary)
+                    }
                     if isEmpty {
                         Text("Hỏi cũng được: tháng này cf hết bao nhiêu?")
                             .font(.footnote)
@@ -91,6 +102,12 @@ struct EntryView: View {
                 }
             }
         }
+        .onChange(of: voice.transcript) { _, spoken in
+            // Chữ nói được thay phần đang nói; chữ gõ trước đó được giữ nguyên.
+            guard !spoken.isEmpty else { return }
+            text = voiceBase + SpokenNumbers.normalize(spoken)
+        }
+        .onDisappear { voice.cancel() }
         .onAppear {
             isFocused = true
             if settings.suggestionsEnabled { location.refresh() }
@@ -100,6 +117,35 @@ struct EntryView: View {
         }
         .sheet(item: $editing) { row in
             EntryRowEditor(row: row) { overrides[row.id] = $0 }
+        }
+    }
+
+    // MARK: - Giọng nói
+
+    private var microphoneButton: some View {
+        let isListening = voice.state == .listening
+        return Button {
+            if isListening {
+                voice.stop()
+            } else {
+                isFocused = false
+                voiceBase = text.isEmpty || text.hasSuffix(" ") ? text : text + " "
+                Task { await voice.start() }
+            }
+        } label: {
+            Image(systemName: isListening ? "stop.circle.fill" : "mic")
+                .font(.title3)
+                .frame(width: 44, height: 44)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(isListening ? "Dừng nói" : "Nói khoản chi")
+    }
+
+    private var voiceMessage: String? {
+        switch voice.state {
+        case .denied: String(localized: "Xu chưa được dùng micro hoặc nhận dạng giọng nói. Bạn bật lại trong Cài đặt của iPhone.")
+        case .unavailable: String(localized: "Máy này chưa nhận dạng được giọng nói tiếng Việt.")
+        case .idle, .listening: nil
         }
     }
 

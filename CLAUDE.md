@@ -6,7 +6,7 @@ Sổ chi tiêu kiểu tin nhắn cho người Việt. iOS, SwiftUI và SwiftData
 
 - iOS tối thiểu 18.0. Chỉ iPhone, chỉ dọc. API mới hơn phải bọc trong `if #available`.
 - Swift 6, kiểm tra concurrency nghiêm ngặt. Dùng `@Observable` và `async/await`. Không dùng Combine, không dùng `ObservableObject`.
-- Chỉ dùng framework của Apple: SwiftUI, SwiftData, WidgetKit, AppIntents, StoreKit 2, Vision, CoreLocation, UserNotifications, FoundationModels, Swift Testing. Không thư viện bên thứ ba, không backend, không analytics.
+- Chỉ dùng framework của Apple: SwiftUI, SwiftData, WidgetKit, AppIntents, StoreKit 2, Vision, CoreLocation, UserNotifications, FoundationModels, Speech, AVFoundation (chỉ để thu âm đưa vào Speech), Swift Testing. Không thư viện bên thứ ba, không backend, không analytics.
 - Tiền lưu bằng `Int` đơn vị đồng. Không bao giờ dùng `Double` cho tiền.
 - Mọi phép tính ngày nhận `Calendar` và `Date` làm tham số. Ở tầng giao diện lấy từ `Calendar.current`.
 - Chuỗi giao diện bằng tiếng Việt, đặt trong `Xu/Localizable.xcstrings`.
@@ -29,6 +29,7 @@ Xu/
   Store/          StoreKit 2
   Intents/        App Intents
   Notifications/  nhắc 21:00, nhắc khi rời quán quen
+  Voice/          nhập khoản chi bằng giọng nói (Speech)
   DesignSystem/   màu, font, HighlightedNumber
 XuWidgets/        mã của target widget
 XuTests/

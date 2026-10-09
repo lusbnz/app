@@ -116,6 +116,9 @@
     "Bỏ qua" : {
 
     },
+    "Các khoản và luật đang dùng danh mục này sẽ chuyển về “khác”." : {
+
+    },
     "Chạm để sửa" : {
 
     },
@@ -183,6 +186,9 @@
     "Còn lại sau khi ghi %@" : {
 
     },
+    "Đã có danh mục tên này." : {
+
+    },
     "Đã ghi %@ %@" : {
       "localizations" : {
         "vi" : {
@@ -241,6 +247,15 @@
     "Danh mục" : {
 
     },
+    "Danh mục của bạn" : {
+
+    },
+    "Danh mục mới" : {
+
+    },
+    "Danh mục và luật" : {
+
+    },
     "Để biết lúc bạn rời một quán đã ghi từ 3 lần, Xu cần quyền vị trí “Luôn luôn” và quyền gửi thông báo. Xu chỉ theo dõi tối đa 20 nơi như vậy, xử lý ngay trên máy và không gửi vị trí đi đâu." : {
 
     },
@@ -251,6 +266,9 @@
 
     },
     "Đổi ảnh" : {
+
+    },
+    "Đổi tên" : {
 
     },
     "Đóng" : {
@@ -321,6 +339,12 @@
     "Gợi ý theo vị trí và giờ" : {
 
     },
+    "Hãy nhập tên danh mục." : {
+
+    },
+    "Hãy nhập từ khóa." : {
+
+    },
     "hóa đơn" : {
 
     },
@@ -379,6 +403,9 @@
     "Khoản chi" : {
 
     },
+    "Khoản có tên chứa từ khóa sẽ tự vào danh mục tương ứng. Từ khóa không phân biệt hoa thường và dấu." : {
+
+    },
     "Khôi phục giao dịch" : {
 
     },
@@ -395,6 +422,15 @@
 
     },
     "Không tính vào ngân sách" : {
+
+    },
+    "Luật đã học" : {
+
+    },
+    "Luật mới" : {
+
+    },
+    "Lưu" : {
 
     },
     "Máy này chưa hỗ trợ Hỏi Xu" : {
@@ -493,6 +529,9 @@
     "Sửa khoản chi" : {
 
     },
+    "Sửa luật" : {
+
+    },
     "sức khỏe" : {
 
     },
@@ -500,6 +539,9 @@
 
     },
     "Tên khoản" : {
+
+    },
+    "Tên tối đa %lld ký tự." : {
 
     },
     "Tháng %lld" : {
@@ -521,6 +563,12 @@
     "Thêm ảnh" : {
 
     },
+    "Thêm danh mục" : {
+
+    },
+    "Thêm luật" : {
+
+    },
     "thiếu số tiền" : {
 
     },
@@ -533,6 +581,9 @@
     "thứ %lld" : {
 
     },
+    "Thú cưng" : {
+
+    },
     "Thử lại" : {
 
     },
@@ -542,7 +593,13 @@
     "tối" : {
 
     },
+    "trà sữa" : {
+
+    },
     "trưa" : {
+
+    },
+    "Từ khóa" : {
 
     },
     "Tức khoảng %@ mỗi ngày." : {
@@ -602,10 +659,19 @@
     "Xóa" : {
 
     },
+    "Xóa “%@”" : {
+
+    },
+    "Xóa danh mục?" : {
+
+    },
     "Xóa khoản này" : {
 
     },
     "Xóa khoản này?" : {
+
+    },
+    "Xóa một danh mục thì các khoản đã gán chuyển về “khác”." : {
 
     },
     "Xong" : {
