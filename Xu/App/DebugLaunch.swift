@@ -4,7 +4,7 @@ import SwiftData
 
 /// Tham số khởi chạy chỉ có ở bản Debug, để xem nhanh các màn hình trên máy ảo:
 /// `-reset` xóa sạch, `-demo` nạp dữ liệu mẫu, `-open entry|month|settings|paywall|receipt`, `-text "phở 45k"`.
-/// `-open receipt` đưa sẵn một hóa đơn mẫu vào bộ đọc. `-pro` mở Xu Pro, `-ask "câu hỏi"` hỏi Xu.
+/// `-open receipt` đưa sẵn một hóa đơn mẫu vào bộ đọc. `-pro` mở Xu Pro, `-ask "câu hỏi"` hỏi Xu, `-budget 3tr` đặt ngân sách.
 @MainActor
 enum DebugLaunch {
     static func apply(settings: AppSettings, appState: AppState, container: ModelContainer) {
@@ -31,6 +31,9 @@ enum DebugLaunch {
             settings.suggestionsEnabled = true
             let existing = (try? context.fetchCount(FetchDescriptor<Expense>())) ?? 0
             if existing == 0 { seed(context) }
+        }
+        if let budget = value(after: "-budget").flatMap(BudgetInput.parse) {
+            settings.monthlyBudget = budget
         }
         if arguments.contains("-pro") {
             EntitlementStore.shared.grantForDebug()
