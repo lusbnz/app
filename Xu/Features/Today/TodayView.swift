@@ -7,7 +7,6 @@ struct TodayView: View {
     @Environment(\.calendar) private var calendar
     @Environment(AppSettings.self) private var settings
     @Environment(AppState.self) private var appState
-    @Environment(EntitlementStore.self) private var entitlements
     @Query private var expenses: [Expense]
     @State private var selected: Expense?
 
@@ -172,13 +171,8 @@ struct TodayView: View {
                 .buttonStyle(.plain)
                 .accessibilityLabel("Ghi khoản chi")
                 Button {
-                    // Chụp hóa đơn là quyền lợi PRO.
-                    if entitlements.isPro {
-                        appState.receiptImage = nil
-                        appState.showsReceipt = true
-                    } else {
-                        appState.showsPaywall = true
-                    }
+                    appState.receiptImage = nil
+                    appState.showsReceipt = true
                 } label: {
                     Image(systemName: "camera")
                         .font(.title3)

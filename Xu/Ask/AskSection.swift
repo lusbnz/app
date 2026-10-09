@@ -1,11 +1,10 @@
 import SwiftUI
 
-/// Khối Hỏi Xu ở đáy màn hình Tháng: câu hỏi gần nhất, câu trả lời, và ô hỏi câu khác (PRO).
+/// Khối Hỏi Xu ở đáy màn hình Tháng: câu hỏi gần nhất, câu trả lời, và ô hỏi câu khác.
 struct AskSection: View {
     @Environment(\.calendar) private var calendar
     @Environment(AppSettings.self) private var settings
     @Environment(AppState.self) private var appState
-    @Environment(EntitlementStore.self) private var entitlements
     @State private var text = ""
     @State private var isAsking = false
 
@@ -35,7 +34,6 @@ struct AskSection: View {
                     TextField("Hỏi Xu câu khác", text: $text)
                         .submitLabel(.send)
                         .onSubmit { ask(text) }
-                    if !entitlements.isPro { ButterLabel(text: "PRO") }
                 }
                 .padding(.horizontal, 20)
                 .frame(minHeight: 50)
@@ -61,11 +59,6 @@ struct AskSection: View {
         guard isAvailable, let answerer = answerer ?? AskEngine.makeAnswerer(calendar: calendar) else {
             settings.lastQuestion = question
             settings.lastAnswer = ""
-            return
-        }
-        // Hỏi Xu là quyền lợi PRO.
-        guard entitlements.isPro else {
-            appState.showsPaywall = true
             return
         }
         text = ""
