@@ -13,6 +13,8 @@ struct ExpenseDraft: Equatable, Sendable {
     var teachesCategory: Bool = false
     /// Ngày phát sinh người dùng đã nói ("hôm qua"); nil thì lấy ngày của lần ghi.
     var date: Date?
+
+    var displayName: String { name.isEmpty ? String(localized: "khoản chi") : name }
 }
 
 enum RecordItem: Equatable, Sendable {

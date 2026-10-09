@@ -15,6 +15,7 @@ struct EntryView: View {
     @State private var overrides: [Int: EntryOverride] = [:]
     @State private var editing: EntryRow?
     @State private var showsPaywall = false
+    @State private var duplicate: PendingDuplicate?
     @State private var voice = VoiceInput()
     @State private var voiceBase = ""
     @FocusState private var isFocused: Bool
@@ -112,6 +113,15 @@ struct EntryView: View {
         .onAppear {
             isFocused = true
             if settings.suggestionsEnabled { location.refresh() }
+        }
+        .confirmationDialog(
+            "Ghi trùng?", isPresented: Binding { duplicate != nil } set: { if !$0 { duplicate = nil } },
+            titleVisibility: .visible, presenting: duplicate
+        ) { pending in
+            Button("Vẫn ghi") { record(pending.items, rawText: pending.rawText, confirmedDuplicate: true) }
+            Button("Không ghi", role: .cancel) {}
+        } message: { pending in
+            Text("“\(pending.name)” \(MoneyFormatter.short(pending.amount)) \(pending.minutesAgo < 1 ? String(localized: "vừa được ghi") : String(localized: "đã ghi cách đây \(pending.minutesAgo) phút")).")
         }
         .sheet(isPresented: $showsPaywall) {
             PaywallView()
@@ -235,10 +245,29 @@ struct EntryView: View {
         record(items, rawText: text)
     }
 
-    private func record(_ items: [RecordItem], rawText: String) {
+    /// Khoản vừa ghi giống hệt khoản sắp ghi (trong 5 phút), nếu có.
+    private func firstDuplicate(of items: [RecordItem]) -> PendingDuplicate? {
+        let current = Date()
+        let recent = expenses.map { RecentEntry(name: $0.name, amount: $0.amount, date: $0.date, createdAt: $0.createdAt) }
+        for case .expense(let draft) in items {
+            if let match = DuplicateDetector.match(
+                name: draft.name, amount: draft.amount, date: draft.date ?? current, among: recent, now: current, calendar: calendar
+            ) {
+                let minutes = Int(current.timeIntervalSince(match.createdAt) / 60)
+                return PendingDuplicate(items: items, name: draft.displayName, amount: draft.amount, minutesAgo: minutes)
+            }
+        }
+        return nil
+    }
+
+    private func record(_ items: [RecordItem], rawText: String, confirmedDuplicate: Bool = false) {
         // Bản miễn phí: lần lưu thứ 6 trong ngày mở Xu Pro.
         guard SaveGate.canSave(now: Date(), calendar: calendar) else {
             showsPaywall = true
+            return
+        }
+        if !confirmedDuplicate, let pending = firstDuplicate(of: items) {
+            duplicate = pending.withRawText(rawText)
             return
         }
         var info = RecordContext(rawText: rawText, date: Date())
@@ -302,4 +331,20 @@ struct EntryRowEditor: View {
 
 #Preview("Đang gõ") {
     EntryView(request: EntryRequest(text: "cơm tấm 55, đổ xăng 80k, tai nghe 1tr2"), now: Date()).xuPreview()
+}
+
+/// Lần ghi đang chờ người dùng xác nhận vì giống khoản vừa ghi.
+struct PendingDuplicate: Identifiable {
+    let id = UUID()
+    var items: [RecordItem]
+    var name: String
+    var amount: Int
+    var minutesAgo: Int
+    var rawText = ""
+
+    func withRawText(_ text: String) -> PendingDuplicate {
+        var copy = self
+        copy.rawText = text
+        return copy
+    }
 }
