@@ -9,6 +9,7 @@ struct CategoriesView: View {
     @State private var categoryForm: CategoryForm?
     @State private var ruleForm: RuleForm?
     @State private var pendingDelete: CustomCategory?
+    @State private var reapply: ReapplyOffer?
 
     private var catalog: CategoryCatalog { CategoryCatalog(custom: customCategories) }
     private var recorder: ExpenseRecorder { ExpenseRecorder(context: modelContext) }
@@ -63,8 +64,9 @@ struct CategoriesView: View {
             CategoryFormView(form: form, existingNames: catalog.all.map(\.title))
         }
         .sheet(item: $ruleForm) { form in
-            RuleFormView(form: form)
+            RuleFormView(form: form) { reapply = $0 }
         }
+        .reapplyDialog($reapply)
         .confirmationDialog(
             "Xóa danh mục?", isPresented: Binding { pendingDelete != nil } set: { if !$0 { pendingDelete = nil } },
             titleVisibility: .visible, presenting: pendingDelete
@@ -146,6 +148,8 @@ private struct RuleFormView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     let form: RuleForm
+    /// Gọi sau khi lưu, kèm đề nghị áp luật cho khoản cũ nếu có.
+    let onSaved: (ReapplyOffer?) -> Void
     @State private var keyword = ""
     @State private var categoryKey = SpendingCategory.other.rawValue
     @State private var showsEmptyError = false
@@ -188,7 +192,9 @@ private struct RuleFormView: View {
     }
 
     private func save() {
-        if ExpenseRecorder(context: modelContext).setRule(keyword: keyword, categoryKey: categoryKey) {
+        let recorder = ExpenseRecorder(context: modelContext)
+        if recorder.setRule(keyword: keyword, categoryKey: categoryKey) {
+            onSaved(recorder.reapplyOffer(keyword: keyword, categoryKey: categoryKey))
             dismiss()
         } else {
             showsEmptyError = true

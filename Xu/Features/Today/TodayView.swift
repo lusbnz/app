@@ -10,6 +10,7 @@ struct TodayView: View {
     @Query private var expenses: [Expense]
     @Query private var customCategories: [CustomCategory]
     @State private var selected: Expense?
+    @State private var reapply: ReapplyOffer?
 
     let now: Date
 
@@ -57,7 +58,9 @@ struct TodayView: View {
                             Menu {
                                 ForEach(CategoryCatalog(custom: customCategories).all) { category in
                                     Button(category.title) {
-                                        ExpenseRecorder(context: modelContext).setCategory(of: expense, to: category.key)
+                                        let recorder = ExpenseRecorder(context: modelContext)
+                                        recorder.setCategory(of: expense, to: category.key)
+                                        reapply = recorder.reapplyOffer(keyword: expense.name, categoryKey: category.key)
                                     }
                                 }
                             } label: {
@@ -84,6 +87,7 @@ struct TodayView: View {
         .sheet(item: $selected) { expense in
             ExpenseDetailView(expense: expense)
         }
+        .reapplyDialog($reapply)
         .sheet(isPresented: $appState.showsSettings) {
             SettingsView()
         }

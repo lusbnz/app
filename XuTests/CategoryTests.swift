@@ -207,3 +207,77 @@ struct QuickActionTests {
         #expect(!expense.isOutsideBudget)
     }
 }
+
+struct RuleMatchingTests {
+    @Test(arguments: [
+        ("pho", "Phở bò", true), ("phở", "pho", true), ("tra sua", "trà sữa trân châu", true),
+        ("tra", "trà sữa", true), ("tra sua", "trà đá", false), ("pho", "phòng trọ", false), ("", "phở", false),
+    ])
+    func matchesWholePhraseIgnoringAccents(keyword: String, name: String, expected: Bool) {
+        #expect(CategoryClassifier.ruleMatches(keyword: keyword, name: name) == expected)
+    }
+}
+
+@MainActor
+struct ReapplyRuleTests {
+    private func makeRecorder() -> (ExpenseRecorder, ModelContext, ModelContainer) {
+        let container = XuStore.inMemory()
+        return (ExpenseRecorder(context: container.mainContext), container.mainContext, container)
+    }
+
+    @Test func offersAndAppliesToOlderExpensesWithSameKeyword() throws {
+        let (recorder, context, container) = makeRecorder()
+        defer { withExtendedLifetime(container) {} }
+        let tapped = Expense(name: "cát mèo", amount: 80_000, categoryKey: "other")
+        context.insert(tapped)
+        context.insert(Expense(name: "Cát mèo", amount: 70_000, categoryKey: "other"))
+        context.insert(Expense(name: "cát mèo hạt", amount: 90_000, categoryKey: "food"))
+        context.insert(Expense(name: "phở", amount: 45_000, categoryKey: "food"))
+
+        recorder.setCategory(of: tapped, to: "shopping")
+        let offer = try #require(recorder.reapplyOffer(keyword: "cát mèo", categoryKey: "shopping"))
+        #expect(offer.count == 2)
+
+        #expect(recorder.apply(offer) == 2)
+        let all = try context.fetch(FetchDescriptor<Expense>())
+        #expect(all.filter { $0.name.lowercased().hasPrefix("cát mèo") }.allSatisfy { $0.categoryKey == "shopping" })
+        #expect(all.first { $0.name == "phở" }?.categoryKey == "food")
+    }
+
+    @Test func noOfferWhenNothingElseMatches() {
+        let (recorder, context, container) = makeRecorder()
+        defer { withExtendedLifetime(container) {} }
+        let only = Expense(name: "cát mèo", amount: 80_000, categoryKey: "other")
+        context.insert(only)
+        recorder.setCategory(of: only, to: "shopping")
+        #expect(recorder.reapplyOffer(keyword: "cát mèo", categoryKey: "shopping") == nil)
+    }
+
+    @Test func moreSpecificRuleStillWinsOverShortRule() throws {
+        let (recorder, context, container) = makeRecorder()
+        defer { withExtendedLifetime(container) {} }
+        recorder.setRule(keyword: "trà sữa", categoryKey: "fun")
+        context.insert(Expense(name: "trà sữa", amount: 45_000, categoryKey: "fun"))
+        context.insert(Expense(name: "trà chanh", amount: 30_000, categoryKey: "food"))
+
+        // Đổi luật ngắn "trà": "trà sữa" vẫn theo luật dài hơn nên không bị chuyển.
+        recorder.setRule(keyword: "trà", categoryKey: "shopping")
+        let offer = try #require(recorder.reapplyOffer(keyword: "trà", categoryKey: "shopping"))
+        #expect(offer.count == 1)
+        recorder.apply(offer)
+
+        let all = try context.fetch(FetchDescriptor<Expense>())
+        #expect(all.first { $0.name == "trà sữa" }?.categoryKey == "fun")
+        #expect(all.first { $0.name == "trà chanh" }?.categoryKey == "shopping")
+    }
+
+    @Test func applyingTwiceChangesNothingSecondTime() throws {
+        let (recorder, context, container) = makeRecorder()
+        defer { withExtendedLifetime(container) {} }
+        context.insert(Expense(name: "gym", amount: 300_000, categoryKey: "other"))
+        recorder.setRule(keyword: "gym", categoryKey: "health")
+        let offer = try #require(recorder.reapplyOffer(keyword: "gym", categoryKey: "health"))
+        #expect(recorder.apply(offer) == 1)
+        #expect(recorder.apply(offer) == 0)
+    }
+}

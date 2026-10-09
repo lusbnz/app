@@ -38,6 +38,13 @@ enum CategoryClassifier {
             group.phrases.map { (group.category, TextNormalizer.words($0)) }
         }
 
+    /// Luật `keyword` có nằm trong tên khoản không (cả cụm, không phân biệt dấu và hoa thường).
+    static func ruleMatches(keyword: String, name: String) -> Bool {
+        let phrase = TextNormalizer.words(TextNormalizer.keyword(keyword))
+        let words = TextNormalizer.words(TextNormalizer.keyword(name))
+        return TextNormalizer.firstIndex(of: phrase, in: words) != nil
+    }
+
     static func categoryKey(for name: String, rules: [String: String]) -> String {
         let key = TextNormalizer.keyword(name)
         if let taught = rules[key] { return taught }

@@ -20,6 +20,15 @@ enum RecordItem: Equatable, Sendable {
     case loan(person: String, amount: Int)
 }
 
+/// Đề nghị áp một luật danh mục vừa lưu cho các khoản đã ghi từ trước.
+struct ReapplyOffer: Identifiable, Equatable, Sendable {
+    var keyword: String
+    var categoryKey: String
+    var count: Int
+
+    var id: String { "\(keyword)|\(categoryKey)" }
+}
+
 /// Ngữ cảnh chung cho một lần lưu.
 struct RecordContext: Sendable {
     var rawText: String = ""
@@ -206,6 +215,33 @@ struct ExpenseRecorder {
     func deleteRule(_ rule: CategoryRule) {
         context.delete(rule)
         commit()
+    }
+
+    /// Các khoản đã ghi mà luật `keyword` đang xếp vào `categoryKey` nhưng chúng còn nằm ở danh mục khác.
+    /// Dùng bảng luật hiện tại để luật cụ thể hơn (dài hơn) vẫn thắng luật ngắn vừa đổi.
+    func misfiledExpenses(keyword: String, categoryKey: String) -> [Expense] {
+        let table = rules()
+        let all = (try? context.fetch(FetchDescriptor<Expense>())) ?? []
+        return all.filter {
+            $0.categoryKey != categoryKey
+                && CategoryClassifier.ruleMatches(keyword: keyword, name: $0.name)
+                && CategoryClassifier.categoryKey(for: $0.name, rules: table) == categoryKey
+        }
+    }
+
+    /// nil khi không có khoản cũ nào cần chuyển.
+    func reapplyOffer(keyword: String, categoryKey: String) -> ReapplyOffer? {
+        let count = misfiledExpenses(keyword: keyword, categoryKey: categoryKey).count
+        return count > 0 ? ReapplyOffer(keyword: keyword, categoryKey: categoryKey, count: count) : nil
+    }
+
+    /// Chuyển các khoản cũ sang danh mục của luật. Trả về số khoản đã chuyển.
+    @discardableResult
+    func apply(_ offer: ReapplyOffer) -> Int {
+        let expenses = misfiledExpenses(keyword: offer.keyword, categoryKey: offer.categoryKey)
+        expenses.forEach { $0.categoryKey = offer.categoryKey }
+        if !expenses.isEmpty { commit() }
+        return expenses.count
     }
 
     func rules() -> [String: String] {

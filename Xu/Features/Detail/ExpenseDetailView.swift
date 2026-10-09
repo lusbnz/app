@@ -15,6 +15,7 @@ struct ExpenseDetailView: View {
     @State private var confirmsDelete = false
     @State private var pickedPhoto: PhotosPickerItem?
     @State private var showsCamera = false
+    @State private var reapply: ReapplyOffer?
 
     private var recorder: ExpenseRecorder { ExpenseRecorder(context: modelContext) }
     private var image: UIImage? { expense.photo.flatMap(UIImage.init(data:)) }
@@ -69,6 +70,7 @@ struct ExpenseDetailView: View {
         .fullScreenCover(isPresented: $showsPhoto) {
             if let image { PhotoViewer(image: image) }
         }
+        .reapplyDialog($reapply)
         .fullScreenCover(isPresented: $showsCamera) {
             CameraPicker { picked in
                 expense.photo = ImageCompressor.jpeg(from: picked)
@@ -175,13 +177,17 @@ struct ExpenseDetailView: View {
             expense.originalAmount = nil
             expense.splitCount = nil
         }
-        if fields.categoryKey != expense.categoryKey {
+        let changedCategory = fields.categoryKey != expense.categoryKey
+        if changedCategory {
             expense.categoryKey = fields.categoryKey
             recorder.teach(name: expense.name, categoryKey: fields.categoryKey)
         }
         expense.isOutsideBudget = fields.isOutsideBudget
         expense.date = fields.date
         recorder.commit()
+        if changedCategory {
+            reapply = recorder.reapplyOffer(keyword: expense.name, categoryKey: fields.categoryKey)
+        }
         isEditing = false
     }
 }
