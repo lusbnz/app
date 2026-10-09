@@ -19,6 +19,10 @@ struct ReceiptView: View {
     @State private var hasReceiptDate = false
     @State private var showsCamera = false
     @State private var showsEditor = false
+    @State private var items: [ReceiptItem] = []
+    @State private var selectedItems: Set<Int> = []
+    @State private var receiptTotal: Int?
+    @State private var totalIsConfident = true
     @State private var pickedPhoto: PhotosPickerItem?
 
     let now: Date
@@ -37,6 +41,10 @@ struct ReceiptView: View {
                     impact
                     if let image {
                         reading(image)
+                        if !isReading {
+                            if !totalIsConfident, fields.amount != nil { uncertainTotalNotice }
+                            if items.count >= 2 { itemsPicker }
+                        }
                     } else {
                         Text("Chụp hoặc chọn một ảnh hóa đơn. Xu sẽ đọc tổng tiền và ngày giờ.")
                             .foregroundStyle(Color.xuTextSecondary)
@@ -167,6 +175,46 @@ struct ReceiptView: View {
         .accessibilityHint("Chạm để sửa")
     }
 
+    private var uncertainTotalNotice: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 8) {
+            ButterLabel(text: "kiểm tra lại")
+            Text("Xu không chắc đây là tổng tiền. Bạn xem lại với hóa đơn nhé.")
+                .font(.footnote)
+                .foregroundStyle(Color.xuTextSecondary)
+        }
+        .accessibilityElement(children: .combine)
+    }
+
+    /// Chọn các món của mình khi đi ăn chung: số tiền bằng tổng các món đã chọn.
+    private var itemsPicker: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack {
+                Text("Chọn món của bạn").font(.subheadline.weight(.semibold))
+                Spacer()
+                if selectedItems.count != items.count {
+                    Button("Chọn hết") { selectAllItems() }.font(.subheadline)
+                }
+            }
+            .padding(.bottom, 4)
+            ForEach(items) { item in
+                let isSelected = selectedItems.contains(item.id)
+                Button { toggle(item) } label: {
+                    HStack(spacing: 10) {
+                        Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                            .foregroundStyle(isSelected ? Color.xuToggle : Color.xuTextSecondary)
+                        Text(item.name).multilineTextAlignment(.leading)
+                        Spacer(minLength: 8)
+                        Text(MoneyFormatter.short(item.amount)).money(item.amount)
+                    }
+                    .frame(minHeight: 44)
+                    .contentShape(.rect)
+                }
+                .buttonStyle(.plain)
+                .accessibilityAddTraits(isSelected ? .isSelected : [])
+            }
+        }
+    }
+
     private var editor: some View {
         NavigationStack {
             ScrollView {
@@ -193,14 +241,44 @@ struct ReceiptView: View {
         Task { await read(picked) }
     }
 
+    private var dailyAllowance: Int {
+        BudgetCalculator.status(
+            monthlyBudget: settings.monthlyBudget, entries: expenses.map(\.budgetEntry), now: now, calendar: calendar
+        ).allowanceToday
+    }
+
+    private func toggle(_ item: ReceiptItem) {
+        if selectedItems.contains(item.id) { selectedItems.remove(item.id) } else { selectedItems.insert(item.id) }
+        applySelectedItems()
+    }
+
+    private func selectAllItems() {
+        selectedItems = Set(items.map(\.id))
+        applySelectedItems()
+    }
+
+    /// Chọn hết thì quay về tổng trên hóa đơn (đã gồm thuế, giảm giá); chọn một phần thì cộng các món.
+    private func applySelectedItems() {
+        let amount: Int? = if selectedItems.count == items.count, let receiptTotal {
+            receiptTotal
+        } else {
+            items.filter { selectedItems.contains($0.id) }.reduce(0) { $0 + $1.amount }
+        }
+        let value = amount.flatMap { $0 > 0 ? $0 : nil }
+        fields.amountText = ExpenseFields.amountText(for: value)
+        fields.isOutsideBudget = value.map { ExpenseParser.isOutsideBudget(amount: $0, dailyAllowance: dailyAllowance) } ?? false
+    }
+
     private func read(_ image: UIImage) async {
         isReading = true
         defer { isReading = false }
         let lines = (try? await ReceiptReader.lines(in: image)) ?? []
         let reading = ReceiptParser.parse(lines: lines, now: Date(), calendar: calendar)
-        let allowance = BudgetCalculator.status(
-            monthlyBudget: settings.monthlyBudget, entries: expenses.map(\.budgetEntry), now: now, calendar: calendar
-        ).allowanceToday
+        let allowance = dailyAllowance
+        items = reading.items
+        selectedItems = Set(reading.items.map(\.id))
+        receiptTotal = reading.total
+        totalIsConfident = reading.isTotalConfident
         hasReceiptDate = reading.date != nil
         fields = ExpenseFields(
             name: reading.merchant,

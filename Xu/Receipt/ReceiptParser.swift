@@ -1,28 +1,103 @@
 import Foundation
 
+/// Một món trên hóa đơn.
+struct ReceiptItem: Equatable, Sendable, Identifiable {
+    var id: Int
+    var name: String
+    var amount: Int
+}
+
 /// Những gì đọc được từ một hóa đơn.
 struct ReceiptReading: Equatable, Sendable {
     var merchant: String
     var total: Int?
     var date: Date?
+    /// Các món đọc được, theo thứ tự trên hóa đơn. Có thể trống hoặc thiếu món.
+    var items: [ReceiptItem] = []
+    /// false khi tổng tiền không đứng cạnh từ khóa "tổng", hoặc nhỏ hơn một món lẻ: nên nhắc người dùng kiểm tra.
+    var isTotalConfident = true
 }
 
 /// Luật tìm tổng tiền, ngày giờ và tên cửa hàng trong các dòng chữ đã nhận dạng. Không tách từng món.
 enum ReceiptParser {
     static func parse(lines: [String], now: Date, calendar: Calendar) -> ReceiptReading {
         let lines = lines.map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
+        let found = totalDetail(in: lines)
+        let items = items(in: lines)
+        let largestItem = items.map(\.amount).max() ?? 0
         return ReceiptReading(
             merchant: merchant(in: lines),
-            total: total(in: lines),
-            date: date(in: lines, now: now, calendar: calendar)
+            total: found?.value,
+            date: date(in: lines, now: now, calendar: calendar),
+            items: items,
+            isTotalConfident: found.map { $0.viaKeyword && $0.value >= largestItem } ?? false
         )
     }
 
     // MARK: - Tên cửa hàng
 
-    /// Dòng đầu tiên có chữ.
+    /// Cụm từ cho biết dòng là tiêu đề, địa chỉ hay liên hệ chứ không phải tên cửa hàng.
+    private static let nonMerchantPhrases = [
+        "hoa don", "phieu", "receipt", "invoice", "ban hang", "cam on", "dia chi", "dc", "dt", "sdt", "tel", "hotline",
+        "mst", "ma so thue", "website", "www", "wifi", "duong", "phuong", "huyen", "thanh pho", "tp",
+    ]
+
+    /// "84 Đặng Văn Ngữ, Phú Nhuận": bắt đầu bằng số nhà và có từ ba từ trở lên.
+    private static func looksLikeAddress(_ line: String) -> Bool {
+        let words = TextNormalizer.words(line)
+        guard words.count >= 3, let first = words.first else { return false }
+        return first.trimmingCharacters(in: CharacterSet(charactersIn: ",.")).allSatisfy { $0.isASCII && $0.isNumber }
+    }
+
+    /// Từ đã bỏ dấu và dấu câu dính liền ("ĐT:" thành "dt"), để khớp với cụm từ khóa.
+    private static func cleanWords(_ line: String) -> [String] {
+        TextNormalizer.words(TextNormalizer.keyword(line))
+            .map { $0.trimmingCharacters(in: CharacterSet(charactersIn: ".,:;!?()")) }
+            .filter { !$0.isEmpty }
+    }
+
+    private static func contains(_ phrases: [String], in line: String) -> Bool {
+        let words = cleanWords(line)
+        return phrases.contains { TextNormalizer.firstIndex(of: TextNormalizer.words($0), in: words) != nil }
+    }
+
+    private static func isNoise(_ line: String) -> Bool {
+        contains(nonMerchantPhrases, in: line) || looksLikeAddress(line)
+    }
+
+    /// Dòng đầu tiên có chữ và không phải tiêu đề, địa chỉ hay số điện thoại. Không có thì lấy dòng đầu có chữ.
     static func merchant(in lines: [String]) -> String {
-        lines.first { $0.filter(\.isLetter).count >= 2 } ?? ""
+        let withLetters = lines.filter { $0.filter(\.isLetter).count >= 2 }
+        return withLetters.first { !isNoise($0) } ?? withLetters.first ?? ""
+    }
+
+    // MARK: - Các món
+
+    /// Dòng có số tiền nhưng không phải món: tổng, thuế, giảm giá, thanh toán.
+    private static let nonItemPhrases = [
+        "tong", "thanh toan", "tam tinh", "subtotal", "total", "vat", "thue", "giam gia", "chiet khau", "khach dua",
+        "tien thua", "tien mat", "the tin dung", "change", "cash", "discount", "phi dich vu", "service", "so du",
+    ]
+
+    /// Các món: dòng có số tiền ở cuối và có tên. Không bao giờ là danh sách đầy đủ, chỉ là gợi ý để người dùng chọn.
+    static func items(in lines: [String]) -> [ReceiptItem] {
+        var items: [ReceiptItem] = []
+        for line in lines {
+            guard !contains(nonItemPhrases, in: line), let amount = amounts(in: line).last, let name = itemName(from: line) else { continue }
+            items.append(ReceiptItem(id: items.count, name: name, amount: amount))
+        }
+        return items
+    }
+
+    /// Bỏ số tiền ở cuối và số lượng ("x2", "2") khỏi tên món.
+    private static func itemName(from line: String) -> String? {
+        var name = line.replacingOccurrences(
+            of: #"[\s:]*\d[\d.,]*\s*(?:đ|d|vnd|vnđ|k)?\s*$"#, with: "", options: [.regularExpression, .caseInsensitive]
+        )
+        name = name.replacingOccurrences(of: #"\s*[x×]\s*\d+\s*$"#, with: "", options: [.regularExpression, .caseInsensitive])
+        name = name.replacingOccurrences(of: #"\s+\d{1,2}\s*$"#, with: "", options: .regularExpression)
+        name = name.trimmingCharacters(in: CharacterSet(charactersIn: " :-.,"))
+        return name.filter(\.isLetter).count >= 2 ? name : nil
     }
 
     // MARK: - Tổng tiền
@@ -32,6 +107,11 @@ enum ReceiptParser {
     private static let subtotalKeywords = ["subtotal", "sub total", "tam tinh"]
 
     static func total(in lines: [String]) -> Int? {
+        totalDetail(in: lines)?.value
+    }
+
+    /// Tổng tiền và việc nó có đứng cạnh một từ khóa "tổng" hay chỉ là số lớn nhất tìm được.
+    static func totalDetail(in lines: [String]) -> (value: Int, viaKeyword: Bool)? {
         let folded = lines.map(TextNormalizer.keyword)
         for keyword in totalKeywords {
             var found: [Int] = []
@@ -44,9 +124,9 @@ enum ReceiptParser {
                 }
                 found.append(contentsOf: amounts)
             }
-            if let largest = found.max() { return largest }
+            if let largest = found.max() { return (largest, true) }
         }
-        return lines.flatMap(amounts).max()
+        return lines.flatMap(amounts).max().map { ($0, false) }
     }
 
     private static func isOnlyAmount(_ line: String) -> Bool {

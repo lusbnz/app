@@ -109,3 +109,85 @@ struct ReceiptParserTests {
         #expect(parse("----------\n0903 123 456\nPhở Thìn").merchant == "Phở Thìn")
     }
 }
+
+struct ReceiptImprovementTests {
+    private let calendar: Calendar = {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "Asia/Ho_Chi_Minh")!
+        return calendar
+    }()
+
+    private func parse(_ text: String) -> ReceiptReading {
+        let now = calendar.date(from: DateComponents(year: 2026, month: 10, day: 8, hour: 12))!
+        return ReceiptParser.parse(lines: text.components(separatedBy: "\n"), now: now, calendar: calendar)
+    }
+
+    // MARK: Tên cửa hàng
+
+    @Test func merchantSkipsTitleAndAddressLines() {
+        #expect(parse("HÓA ĐƠN BÁN HÀNG\nQuán Cơm Ba Ghiền\n84 Đặng Văn Ngữ").merchant == "Quán Cơm Ba Ghiền")
+        #expect(parse("84 Đặng Văn Ngữ, Phú Nhuận\nPhở Thìn").merchant == "Phở Thìn")
+        #expect(parse("Địa chỉ: 12 Lê Lợi\nĐT: 0903 123 456\nCafe Cộng").merchant == "Cafe Cộng")
+        #expect(parse("PHIẾU THANH TOÁN\nHighlands Coffee").merchant == "Highlands Coffee")
+    }
+
+    @Test func merchantNamedWithQuanIsNotTreatedAsAddress() {
+        #expect(parse("Quán Phở 24\nTổng 45.000").merchant == "Quán Phở 24")
+    }
+
+    @Test func merchantFallsBackWhenEverythingLooksLikeNoise() {
+        #expect(parse("HÓA ĐƠN\nĐT: 0903123456").merchant == "HÓA ĐƠN")
+    }
+
+    // MARK: Các món
+
+    @Test func itemsOfTypicalBill() {
+        let reading = parse("""
+        QUÁN CƠM TẤM BA GHIỀN
+        84 Đặng Văn Ngữ, Phú Nhuận
+        Ngày: 07/10/2026 19:42
+        Cơm sườn bì chả   2   150.000
+        Trà đá x2    10.000
+        Tổng cộng:            160.000
+        Tiền khách đưa:       200.000
+        Tiền thừa:             40.000
+        """)
+        #expect(reading.items.map(\.name) == ["Cơm sườn bì chả", "Trà đá"])
+        #expect(reading.items.map(\.amount) == [150_000, 10_000])
+        #expect(reading.items.map(\.id) == [0, 1])
+    }
+
+    @Test func itemsExcludeTotalsTaxAndDiscount() {
+        let reading = parse("Phở bò 60.000\nGiảm giá 10.000\nVAT 10% 5.000\nTạm tính 60.000\nThanh toán 55.000")
+        #expect(reading.items.map(\.name) == ["Phở bò"])
+    }
+
+    @Test func linesWithoutAmountAreNotItems() {
+        #expect(parse("Cảm ơn quý khách\nHẹn gặp lại").items.isEmpty)
+    }
+
+    // MARK: Độ tin cậy
+
+    @Test func totalNextToKeywordIsConfident() {
+        #expect(parse("Phở 45.000\nTổng cộng 45.000").isTotalConfident)
+    }
+
+    @Test func totalWithoutKeywordIsNotConfident() {
+        let reading = parse("Phở 45.000\nTrà 10.000")
+        #expect(reading.total == 45_000)
+        #expect(!reading.isTotalConfident)
+    }
+
+    @Test func totalSmallerThanAnItemIsNotConfident() {
+        #expect(!parse("Phở 45.000\nTổng cộng 10.000").isTotalConfident)
+    }
+
+    @Test func discountedTotalBelowItemSumIsStillConfident() {
+        // Giảm giá làm tổng nhỏ hơn tổng các món, nhưng vẫn lớn hơn mọi món lẻ.
+        #expect(parse("Phở 45.000\nTrà 30.000\nGiảm giá 10.000\nTổng cộng 65.000").isTotalConfident)
+    }
+
+    @Test func missingTotalIsNotConfident() {
+        #expect(!parse("Cảm ơn quý khách").isTotalConfident)
+    }
+}
