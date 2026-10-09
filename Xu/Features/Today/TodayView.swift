@@ -8,6 +8,7 @@ struct TodayView: View {
     @Environment(AppSettings.self) private var settings
     @Environment(AppState.self) private var appState
     @Query private var expenses: [Expense]
+    @Query private var customCategories: [CustomCategory]
     @State private var selected: Expense?
 
     let now: Date
@@ -38,10 +39,31 @@ struct TodayView: View {
                 ForEach(todays) { expense in
                     Button { selected = expense } label: { ExpenseRow(expense: expense) }
                         .buttonStyle(.plain)
-                        .swipeActions {
-                            Button("Xóa", role: .destructive) {
+                        .swipeActions(edge: .leading) {
+                            Button("Ghi lại", systemImage: "plus.circle") { repeatExpense(expense) }
+                                .tint(Color.xuToggle)
+                            Button(
+                                expense.isOutsideBudget ? "Tính vào ngân sách" : "Ngoài ngân sách",
+                                systemImage: expense.isOutsideBudget ? "arrow.uturn.backward" : "tray.and.arrow.up"
+                            ) {
+                                withAnimation { ExpenseRecorder(context: modelContext).toggleOutsideBudget(expense) }
+                            }
+                            .tint(Color.gray)
+                        }
+                        .swipeActions(edge: .trailing) {
+                            Button("Xóa", systemImage: "trash", role: .destructive) {
                                 ExpenseRecorder(context: modelContext).delete(expense)
                             }
+                            Menu {
+                                ForEach(CategoryCatalog(custom: customCategories).all) { category in
+                                    Button(category.title) {
+                                        ExpenseRecorder(context: modelContext).setCategory(of: expense, to: category.key)
+                                    }
+                                }
+                            } label: {
+                                Label("Danh mục", systemImage: "tag")
+                            }
+                            .tint(Color.gray)
                         }
                 }
                 previousDays
@@ -65,6 +87,16 @@ struct TodayView: View {
         .sheet(isPresented: $appState.showsSettings) {
             SettingsView()
         }
+    }
+
+    /// Ghi lại một khoản y như cũ. Bản miễn phí vẫn bị giới hạn số lần ghi mỗi ngày.
+    private func repeatExpense(_ expense: Expense) {
+        guard SaveGate.canSave(now: Date(), calendar: calendar) else {
+            appState.showsPaywall = true
+            return
+        }
+        let batch = ExpenseRecorder(context: modelContext).repeatExpense(expense, now: Date())
+        appState.didSave(batch)
     }
 
     // MARK: - Phần đầu

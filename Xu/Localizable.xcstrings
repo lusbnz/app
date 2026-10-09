@@ -274,6 +274,9 @@
     "Đóng" : {
 
     },
+    "Dừng nói" : {
+
+    },
     "Dùng thử 7 ngày miễn phí" : {
 
     },
@@ -436,6 +439,9 @@
     "Máy này chưa hỗ trợ Hỏi Xu" : {
 
     },
+    "Máy này chưa nhận dạng được giọng nói tiếng Việt." : {
+
+    },
     "Mở app Phím tắt, tìm Xu. Có sẵn “Ghi chi tiêu”, “Ghi nhanh một khoản” và “Mở ô gõ” để bạn ghép vào phím tắt riêng." : {
 
     },
@@ -482,6 +488,9 @@
 
     },
     "Nơi ghi" : {
+
+    },
+    "Nói khoản chi" : {
 
     },
     "Nút Tác vụ" : {
@@ -678,6 +687,9 @@
 
     },
     "Xu chưa đọc được số tiền trong “%@”." : {
+
+    },
+    "Xu chưa được dùng micro hoặc nhận dạng giọng nói. Bạn bật lại trong Cài đặt của iPhone." : {
 
     },
     "Xu chưa trả lời chắc được câu này. Bạn thử hỏi cách khác nhé." : {

@@ -127,6 +127,32 @@ struct ExpenseRecorder {
         }
     }
 
+    // MARK: - Thao tác nhanh trên một khoản
+
+    /// Ghi lại một khoản y như cũ, tính vào lúc `now`. Không chép ảnh hóa đơn và vị trí.
+    @discardableResult
+    func repeatExpense(_ expense: Expense, now: Date) -> SavedBatch {
+        let draft = ExpenseDraft(
+            name: expense.name, amount: expense.amount, categoryKey: expense.categoryKey,
+            originalAmount: expense.originalAmount, splitCount: expense.splitCount,
+            isOutsideBudget: expense.isOutsideBudget
+        )
+        return record([.expense(draft)], in: RecordContext(rawText: expense.rawText, date: now))
+    }
+
+    /// Đổi danh mục và nhớ thành luật cho tên khoản này, giống khi sửa trong màn Chi tiết.
+    func setCategory(of expense: Expense, to categoryKey: String) {
+        guard expense.categoryKey != categoryKey else { return }
+        expense.categoryKey = categoryKey
+        teach(name: expense.name, categoryKey: categoryKey)
+        commit()
+    }
+
+    func toggleOutsideBudget(_ expense: Expense) {
+        expense.isOutsideBudget.toggle()
+        commit()
+    }
+
     // MARK: - Danh mục và luật
 
     /// Thêm danh mục tự thêm. `existing` là mọi tên đang có, gồm cả danh mục có sẵn.

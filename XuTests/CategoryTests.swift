@@ -121,3 +121,89 @@ private extension Result {
         if case .failure(let failure) = self { failure } else { nil }
     }
 }
+
+@MainActor
+struct QuickActionTests {
+    private func makeRecorder() -> (ExpenseRecorder, ModelContext, ModelContainer) {
+        let container = XuStore.inMemory()
+        return (ExpenseRecorder(context: container.mainContext), container.mainContext, container)
+    }
+
+    @Test func repeatCopiesFieldsButNotPhotoOrPlace() throws {
+        let quota = SaveGate.quota
+        defer { SaveGate.quota = quota }
+        let (recorder, context, container) = makeRecorder()
+        defer { withExtendedLifetime(container) {} }
+
+        let original = Expense(name: "nhậu", amount: 115_000, categoryKey: "food", date: Date(timeIntervalSince1970: 0))
+        original.originalAmount = 460_000
+        original.splitCount = 4
+        original.isOutsideBudget = true
+        original.photo = Data([1, 2, 3])
+        original.placeName = "Quán A"
+        original.latitude = 10
+        original.longitude = 106
+        context.insert(original)
+
+        let now = Date(timeIntervalSince1970: 86_400 * 365)
+        let batch = recorder.repeatExpense(original, now: now)
+
+        let all = try context.fetch(FetchDescriptor<Expense>())
+        #expect(all.count == 2)
+        let copy = try #require(all.first { $0.batchID == batch.batchID })
+        #expect(copy.name == "nhậu")
+        #expect(copy.amount == 115_000)
+        #expect(copy.categoryKey == "food")
+        #expect(copy.originalAmount == 460_000)
+        #expect(copy.splitCount == 4)
+        #expect(copy.isOutsideBudget)
+        #expect(copy.date == now)
+        #expect(copy.photo == nil)
+        #expect(copy.placeName == nil)
+        #expect(copy.latitude == nil)
+    }
+
+    @Test func repeatCanBeUndone() throws {
+        let quota = SaveGate.quota
+        defer { SaveGate.quota = quota }
+        let (recorder, context, container) = makeRecorder()
+        defer { withExtendedLifetime(container) {} }
+        let original = Expense(name: "phở", amount: 45_000, categoryKey: "food")
+        context.insert(original)
+        let batch = recorder.repeatExpense(original, now: Date())
+        recorder.undo(batch)
+        #expect(try context.fetch(FetchDescriptor<Expense>()).count == 1)
+    }
+
+    @Test func setCategoryUpdatesAndTeachesRule() throws {
+        let (recorder, context, container) = makeRecorder()
+        defer { withExtendedLifetime(container) {} }
+        let expense = Expense(name: "Cát mèo", amount: 80_000, categoryKey: "other")
+        context.insert(expense)
+        recorder.setCategory(of: expense, to: "shopping")
+        #expect(expense.categoryKey == "shopping")
+        let rules = try context.fetch(FetchDescriptor<CategoryRule>())
+        #expect(rules.map(\.keyword) == [TextNormalizer.keyword("Cát mèo")])
+        #expect(rules.first?.categoryKey == "shopping")
+    }
+
+    @Test func settingSameCategoryDoesNotCreateRule() throws {
+        let (recorder, context, container) = makeRecorder()
+        defer { withExtendedLifetime(container) {} }
+        let expense = Expense(name: "phở", amount: 45_000, categoryKey: "food")
+        context.insert(expense)
+        recorder.setCategory(of: expense, to: "food")
+        #expect(try context.fetch(FetchDescriptor<CategoryRule>()).isEmpty)
+    }
+
+    @Test func toggleOutsideBudgetFlipsBothWays() {
+        let (recorder, context, container) = makeRecorder()
+        defer { withExtendedLifetime(container) {} }
+        let expense = Expense(name: "tai nghe", amount: 1_200_000)
+        context.insert(expense)
+        recorder.toggleOutsideBudget(expense)
+        #expect(expense.isOutsideBudget)
+        recorder.toggleOutsideBudget(expense)
+        #expect(!expense.isOutsideBudget)
+    }
+}
