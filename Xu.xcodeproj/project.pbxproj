@@ -269,6 +269,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Xu;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Xu dùng micro để bạn nói khoản chi thay vì gõ.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Xu nghe giọng nói của bạn để ghi khoản chi.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -296,6 +298,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Xu;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Xu dùng micro để bạn nói khoản chi thay vì gõ.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Xu nghe giọng nói của bạn để ghi khoản chi.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
