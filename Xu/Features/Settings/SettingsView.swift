@@ -71,6 +71,13 @@ struct SettingsView: View {
                     location.refresh()
                 }
             }
+            .onChange(of: settings.remindsAtNine) { _, isOn in
+                // Chỉ xin quyền thông báo khi người dùng bật công tắc.
+                Task {
+                    if isOn { _ = await NotificationManager.shared.requestAuthorization() }
+                    NotificationManager.shared.refreshDailyReminder()
+                }
+            }
             .onChange(of: budgetFocused) { _, focused in
                 if !focused { commitBudget() }
             }

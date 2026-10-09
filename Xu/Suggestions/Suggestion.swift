@@ -57,12 +57,12 @@ struct Suggestion: Equatable, Sendable, Identifiable {
 }
 
 extension Sequence<SuggestionRecord> {
-    /// Cặp (tên đã chuẩn hóa, số tiền) xuất hiện nhiều nhất; hòa thì lấy cặp ghi gần đây hơn.
-    func mostFrequent(excluding excluded: Set<String> = []) -> (suggestion: Suggestion, count: Int)? {
+    /// Các cặp (tên đã chuẩn hóa, số tiền) xếp theo số lần xuất hiện; hòa thì cặp ghi gần đây hơn đứng trước.
+    func ranked(excluding excluded: Set<String> = []) -> [(suggestion: Suggestion, count: Int)] {
         var table: [String: (suggestion: Suggestion, count: Int, latest: Date)] = [:]
         for record in self {
             let suggestion = Suggestion(name: record.name, amount: record.amount, categoryKey: record.categoryKey)
-            guard !excluded.contains(suggestion.id) else { continue }
+            guard !suggestion.name.isEmpty, !excluded.contains(suggestion.id) else { continue }
             var entry = table[suggestion.id] ?? (suggestion, 0, .distantPast)
             entry.count += 1
             if record.date >= entry.latest {
@@ -72,8 +72,12 @@ extension Sequence<SuggestionRecord> {
             table[suggestion.id] = entry
         }
         return table.values
-            .max { ($0.count, $0.latest) < ($1.count, $1.latest) }
+            .sorted { ($0.count, $0.latest) > ($1.count, $1.latest) }
             .map { ($0.suggestion, $0.count) }
+    }
+
+    func mostFrequent(excluding excluded: Set<String> = []) -> (suggestion: Suggestion, count: Int)? {
+        ranked(excluding: excluded).first
     }
 
     /// Các cặp đã ghi trong ngày `day`.

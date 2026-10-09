@@ -40,6 +40,9 @@ struct SavedBatch: Equatable, Sendable {
 struct ExpenseRecorder {
     let context: ModelContext
 
+    /// App gắn vào đây để làm việc sau mỗi lần ghi xuống đĩa (xếp lại lịch nhắc). Ở widget thì để trống.
+    static var afterCommit: (@MainActor () -> Void)?
+
     @discardableResult
     func record(_ items: [RecordItem], in info: RecordContext = RecordContext()) -> SavedBatch {
         let batchID = UUID()
@@ -66,6 +69,7 @@ struct ExpenseRecorder {
                 context.insert(loan)
             }
         }
+        SaveGate.didSave(now: Date(), calendar: .current)
         commit()
         return SavedBatch(batchID: batchID, loanIDs: loanIDs, summary: Self.summary(of: items))
     }
@@ -101,6 +105,7 @@ struct ExpenseRecorder {
             let loans = (try? context.fetch(FetchDescriptor<Loan>(predicate: #Predicate { loanIDs.contains($0.id) }))) ?? []
             loans.forEach(context.delete)
         }
+        SaveGate.didUndo(now: Date(), calendar: .current)
         commit()
     }
 
@@ -146,6 +151,26 @@ struct ExpenseRecorder {
     func commit() {
         try? context.save()
         WidgetCenter.shared.reloadAllTimelines()
+        Self.afterCommit?()
+    }
+
+    /// Đã ghi khoản nào trong ngày `now` chưa (tính theo lúc ghi, không theo ngày phát sinh).
+    func hasLogged(on now: Date, calendar: Calendar) -> Bool {
+        let start = calendar.startOfDay(for: now)
+        let count = (try? context.fetchCount(FetchDescriptor<Expense>(predicate: #Predicate { $0.createdAt >= start }))) ?? 0
+        return count > 0
+    }
+
+    /// Ghi một khoản biết sẵn tên và số tiền (gợi ý, nút widget, thông báo).
+    @discardableResult
+    func recordQuick(name: String, amount: Int, monthlyBudget: Int, now: Date, calendar: Calendar) -> SavedBatch {
+        let allowance = status(monthlyBudget: monthlyBudget, now: now, calendar: calendar).allowanceToday
+        let draft = ExpenseDraft(
+            name: name, amount: amount,
+            categoryKey: CategoryClassifier.categoryKey(for: name, rules: rules()),
+            isOutsideBudget: ExpenseParser.isOutsideBudget(amount: amount, dailyAllowance: allowance)
+        )
+        return record([.expense(draft)], in: RecordContext(rawText: name, date: now))
     }
 
     static func summary(of items: [RecordItem]) -> String {

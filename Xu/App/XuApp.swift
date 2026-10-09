@@ -7,6 +7,8 @@ struct XuApp: App {
     @State private var appState = AppState.shared
 
     init() {
+        NotificationManager.shared.start()
+        ExpenseRecorder.afterCommit = { NotificationManager.shared.refreshDailyReminder() }
         #if DEBUG
         DebugLaunch.apply(settings: settings, appState: appState, container: XuStore.shared)
         #endif

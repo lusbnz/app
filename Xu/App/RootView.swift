@@ -23,7 +23,10 @@ struct RootView: View {
         }
         .sensoryFeedback(.success, trigger: appState.saveCount)
         .onChange(of: scenePhase) { _, phase in
-            if phase == .active { now = Date() }
+            if phase == .active {
+                now = Date()
+                NotificationManager.shared.refreshDailyReminder()
+            }
         }
     }
 }

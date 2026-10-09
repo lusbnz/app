@@ -40,5 +40,7 @@ struct HighlightedNumber: View {
         HighlightedNumber(text: "7,1tr", fraction: 0.79, size: 44)
     }
     .padding()
-    .xuScreen()
+    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    .foregroundStyle(Color.xuTextPrimary)
+    .background(Color.xuBackground)
 }
