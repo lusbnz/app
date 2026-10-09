@@ -5,7 +5,7 @@ struct ExpenseParserTests {
     private let parser = ExpenseParser()
 
     private func expenses(_ text: String, rules: [String: String] = [:], allowance: Int = 300_000) -> [ParsedExpense] {
-        parser.parse(text, rules: rules, dailyAllowance: allowance).compactMap {
+        parser.parse(text, rules: rules, dailyAllowance: allowance, now: TestClock.now, calendar: TestClock.calendar).compactMap {
             if case .expense(let expense) = $0 { expense } else { nil }
         }
     }
@@ -63,7 +63,7 @@ struct ExpenseParserTests {
 
     @Test(arguments: ["ứng cho Minh 200k", "cho Minh mượn 200k", "ung cho Minh 200k", "cho Minh vay 200k"])
     func loan(text: String) {
-        #expect(parser.parse(text, rules: [:], dailyAllowance: 300_000) == [.loan(person: "Minh", amount: 200_000)])
+        #expect(parser.parse(text, rules: [:], dailyAllowance: 300_000, now: TestClock.now, calendar: TestClock.calendar) == [.loan(person: "Minh", amount: 200_000)])
     }
 
     // MARK: Khoản lớn
@@ -86,7 +86,7 @@ struct ExpenseParserTests {
         "thang nay cf het bao nhieu", "tuần này tiêu gì?",
     ])
     func question(text: String) {
-        #expect(parser.parse(text, rules: [:], dailyAllowance: 300_000) == [.question(text)])
+        #expect(parser.parse(text, rules: [:], dailyAllowance: 300_000, now: TestClock.now, calendar: TestClock.calendar) == [.question(text)])
     }
 
     @Test func lookalikeIsNotQuestion() {
@@ -114,7 +114,7 @@ struct ExpenseParserTests {
     }
 
     @Test func mixedLines() {
-        let parsed = parser.parse("phở 45k, ứng cho Minh 200k", rules: [:], dailyAllowance: 300_000)
+        let parsed = parser.parse("phở 45k, ứng cho Minh 200k", rules: [:], dailyAllowance: 300_000, now: TestClock.now, calendar: TestClock.calendar)
         #expect(parsed.count == 2)
         #expect(parsed.last == .loan(person: "Minh", amount: 200_000))
     }

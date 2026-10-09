@@ -3,7 +3,7 @@ import Testing
 
 struct AmountParsingTests {
     private func amount(_ text: String) -> Int? {
-        guard case .expense(let expense)? = ExpenseParser().parse(text, rules: [:], dailyAllowance: 0).first else {
+        guard case .expense(let expense)? = ExpenseParser().parse(text, rules: [:], dailyAllowance: 0, now: TestClock.now, calendar: TestClock.calendar).first else {
             return nil
         }
         return expense.amount

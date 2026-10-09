@@ -11,6 +11,8 @@ struct ExpenseDraft: Equatable, Sendable {
     var isOutsideBudget: Bool = false
     /// Người dùng đã sửa danh mục, cần lưu thành luật.
     var teachesCategory: Bool = false
+    /// Ngày phát sinh người dùng đã nói ("hôm qua"); nil thì lấy ngày của lần ghi.
+    var date: Date?
 }
 
 enum RecordItem: Equatable, Sendable {
@@ -50,7 +52,7 @@ struct ExpenseRecorder {
         for item in items {
             switch item {
             case .expense(let draft):
-                let expense = Expense(name: draft.name, amount: draft.amount, categoryKey: draft.categoryKey, date: info.date)
+                let expense = Expense(name: draft.name, amount: draft.amount, categoryKey: draft.categoryKey, date: draft.date ?? info.date)
                 expense.createdAt = Date()
                 expense.rawText = info.rawText
                 expense.batchID = batchID
@@ -77,14 +79,14 @@ struct ExpenseRecorder {
     /// Tách một dòng chữ rồi lưu. Trả về nil khi không có khoản nào đủ số tiền.
     func record(text: String, monthlyBudget: Int, now: Date, calendar: Calendar) -> SavedBatch? {
         let allowance = status(monthlyBudget: monthlyBudget, now: now, calendar: calendar).allowanceToday
-        let items = ExpenseParser().parse(text, rules: rules(), dailyAllowance: allowance).compactMap { line -> RecordItem? in
+        let items = ExpenseParser().parse(text, rules: rules(), dailyAllowance: allowance, now: now, calendar: calendar).compactMap { line -> RecordItem? in
             switch line {
             case .expense(let parsed):
                 guard let amount = parsed.amount else { return nil }
                 return .expense(ExpenseDraft(
                     name: parsed.name, amount: amount, categoryKey: parsed.categoryKey,
                     originalAmount: parsed.originalAmount, splitCount: parsed.splitCount,
-                    isOutsideBudget: parsed.isOutsideBudget
+                    isOutsideBudget: parsed.isOutsideBudget, date: parsed.date
                 ))
             case .loan(let person, let amount):
                 return .loan(person: person, amount: amount)

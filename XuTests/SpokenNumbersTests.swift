@@ -39,7 +39,7 @@ struct SpokenNumbersTests {
     }
 
     @Test func parserReadsNormalizedSpeech() {
-        let parsed = ExpenseParser().parse(SpokenNumbers.normalize("phở bốn mươi lăm nghìn"), rules: [:], dailyAllowance: 0)
+        let parsed = ExpenseParser().parse(SpokenNumbers.normalize("phở bốn mươi lăm nghìn"), rules: [:], dailyAllowance: 0, now: TestClock.now, calendar: TestClock.calendar)
         guard case .expense(let expense)? = parsed.first else {
             Issue.record("không tách được khoản chi")
             return
@@ -49,7 +49,7 @@ struct SpokenNumbersTests {
     }
 
     @Test func spokenSplitWithSpokenAmount() {
-        let parsed = ExpenseParser().parse(SpokenNumbers.normalize("nhậu bốn trăm sáu mươi nghìn chia bốn"), rules: [:], dailyAllowance: 0)
+        let parsed = ExpenseParser().parse(SpokenNumbers.normalize("nhậu bốn trăm sáu mươi nghìn chia bốn"), rules: [:], dailyAllowance: 0, now: TestClock.now, calendar: TestClock.calendar)
         guard case .expense(let expense)? = parsed.first else {
             Issue.record("không tách được khoản chi")
             return

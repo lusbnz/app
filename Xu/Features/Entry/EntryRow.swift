@@ -10,6 +10,7 @@ struct EntryRow: Identifiable, Equatable {
     var categoryKey: String
     var originalAmount: Int?
     var splitCount: Int?
+    var date: Date?
     var isOutsideBudget: Bool
     var teachesCategory = false
 
@@ -21,7 +22,7 @@ struct EntryRow: Identifiable, Equatable {
         return .expense(ExpenseDraft(
             name: name, amount: amount, categoryKey: categoryKey,
             originalAmount: originalAmount, splitCount: splitCount,
-            isOutsideBudget: isOutsideBudget, teachesCategory: teachesCategory
+            isOutsideBudget: isOutsideBudget, teachesCategory: teachesCategory, date: date
         ))
     }
 }
@@ -50,7 +51,7 @@ enum EntryRows {
             case .expense(let parsed):
                 var row = EntryRow(
                     id: id, name: parsed.name, amount: parsed.amount, categoryKey: parsed.categoryKey,
-                    originalAmount: parsed.originalAmount, splitCount: parsed.splitCount,
+                    originalAmount: parsed.originalAmount, splitCount: parsed.splitCount, date: parsed.date,
                     isOutsideBudget: parsed.isOutsideBudget
                 )
                 if let edit = overrides[id], edit.name == parsed.name {
@@ -76,6 +77,7 @@ enum EntryRows {
 }
 
 struct EntryRowView: View {
+    @Environment(\.calendar) private var calendar
     @Query private var customCategories: [CustomCategory]
     let row: EntryRow
 
@@ -88,6 +90,9 @@ struct EntryRowView: View {
                         Text("không tính vào chi tiêu")
                     } else {
                         Text(CategoryCatalog(custom: customCategories).info(for: row.categoryKey).title)
+                        if let date = row.date {
+                            Text("· \(VietnameseDate.relativeDay(date, now: Date(), calendar: calendar))")
+                        }
                         if let originalAmount = row.originalAmount, let splitCount = row.splitCount {
                             Text("· \(MoneyFormatter.short(originalAmount)) chia \(splitCount)")
                         }
@@ -119,7 +124,8 @@ struct EntryRowView: View {
 
 #Preview {
     let lines = ExpenseParser().parse(
-        "cơm tấm 55, tai nghe 1tr2, nhậu 460k chia 4, ứng cho Minh 200k, bánh", rules: [:], dailyAllowance: 300_000
+        "cơm tấm 55, tai nghe 1tr2, nhậu 460k chia 4 hôm qua, ứng cho Minh 200k, bánh", rules: [:], dailyAllowance: 300_000,
+        now: Date(), calendar: .current
     )
     VStack(spacing: 0) {
         ForEach(EntryRows.resolve(lines, overrides: [:], dailyAllowance: 300_000)) { EntryRowView(row: $0) }

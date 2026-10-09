@@ -37,7 +37,7 @@ struct EntryView: View {
 
     var body: some View {
         let status = status
-        let lines = parser.parse(text, rules: rules.lookup, dailyAllowance: status.allowanceToday)
+        let lines = parser.parse(text, rules: rules.lookup, dailyAllowance: status.allowanceToday, now: now, calendar: calendar)
         let rows = EntryRows.resolve(lines, overrides: overrides, dailyAllowance: status.allowanceToday)
         let question: String? = if case .question(let question)? = lines.first { question } else { nil }
         let isEmpty = text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty

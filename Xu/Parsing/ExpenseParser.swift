@@ -13,10 +13,12 @@ struct ParsedExpense: Equatable, Sendable {
     var originalAmount: Int?
     var splitCount: Int?
     var isOutsideBudget: Bool
+    /// Ngày người dùng nói ("hôm qua", "thứ 6"); nil là ghi theo lúc này.
+    var date: Date? = nil
 }
 
 protocol LineParsing: Sendable {
-    func parse(_ text: String, rules: [String: String], dailyAllowance: Int) -> [ParsedLine]
+    func parse(_ text: String, rules: [String: String], dailyAllowance: Int, now: Date, calendar: Calendar) -> [ParsedLine]
 }
 
 /// Bộ tách bằng luật, chạy trên máy.
@@ -24,7 +26,7 @@ struct ExpenseParser: LineParsing {
     /// Khoản lớn hơn bấy nhiêu lần hạn mức ngày thì nằm ngoài ngân sách.
     static let outsideBudgetFactor = 3
 
-    func parse(_ text: String, rules: [String: String], dailyAllowance: Int) -> [ParsedLine] {
+    func parse(_ text: String, rules: [String: String], dailyAllowance: Int, now: Date, calendar: Calendar) -> [ParsedLine] {
         var lines: [ParsedLine] = []
         for line in text.split(whereSeparator: \.isNewline) {
             let line = line.trimmingCharacters(in: .whitespaces)
@@ -35,7 +37,7 @@ struct ExpenseParser: LineParsing {
             }
             for segment in Self.segments(of: line) {
                 for tokens in Self.splitOnAnd(Self.tokens(of: segment)) {
-                    if let parsed = Self.parseItem(tokens, rules: rules, dailyAllowance: dailyAllowance) {
+                    if let parsed = Self.parseItem(tokens, rules: rules, dailyAllowance: dailyAllowance, now: now, calendar: calendar) {
                         lines.append(parsed)
                     }
                 }
@@ -112,8 +114,11 @@ struct ExpenseParser: LineParsing {
 
     // MARK: - Một khoản
 
-    private static func parseItem(_ tokens: [String], rules: [String: String], dailyAllowance: Int) -> ParsedLine? {
-        var (tokens, splitCount) = extractSplit(from: detachSlash(tokens))
+    private static func parseItem(
+        _ tokens: [String], rules: [String: String], dailyAllowance: Int, now: Date, calendar: Calendar
+    ) -> ParsedLine? {
+        let hint = DateHint.extract(from: tokens, now: now, calendar: calendar)
+        var (tokens, splitCount) = extractSplit(from: detachSlash(hint.tokens))
         guard !tokens.isEmpty else { return nil }
 
         let match = AmountParser.find(in: tokens)
@@ -138,7 +143,8 @@ struct ExpenseParser: LineParsing {
             categoryKey: CategoryClassifier.categoryKey(for: name, rules: rules),
             originalAmount: originalAmount,
             splitCount: splitCount,
-            isOutsideBudget: amount.map { isOutsideBudget(amount: $0, dailyAllowance: dailyAllowance) } ?? false
+            isOutsideBudget: amount.map { isOutsideBudget(amount: $0, dailyAllowance: dailyAllowance) } ?? false,
+            date: hint.date
         ))
     }
 
