@@ -56,11 +56,15 @@ struct TodayView: View {
         .xuScreen()
         .toolbar(.hidden, for: .navigationBar)
         .safeAreaInset(edge: .bottom, spacing: 0) { bottomBar }
-//MONTH
+        .navigationDestination(isPresented: $appState.showsMonth) {
+            MonthView(now: now)
+        }
         .sheet(item: $selected) { expense in
             ExpenseDetailView(expense: expense)
         }
-//SETTINGS
+        .sheet(isPresented: $appState.showsSettings) {
+            SettingsView()
+        }
     }
 
     // MARK: - Phần đầu

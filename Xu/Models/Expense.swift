@@ -43,3 +43,9 @@ extension Expense {
         BudgetEntry(amount: amount, date: date, isOutsideBudget: isOutsideBudget)
     }
 }
+
+extension Expense {
+    var record: SpendingRecord {
+        SpendingRecord(name: name, amount: amount, categoryKey: categoryKey, date: date, isOutsideBudget: isOutsideBudget)
+    }
+}

@@ -28,13 +28,19 @@ enum DebugLaunch {
             if existing == 0 { seed(context) }
         }
         try? context.save()
-        switch value(after: "-open") {
-        case "entry": appState.openEntry(text: value(after: "-text") ?? "")
-        case "month": appState.showsMonth = true
-        case "settings": appState.showsSettings = true
-        case "paywall": appState.showsPaywall = true
-        case "receipt": appState.showsReceipt = true
-        default: break
+        let screen = value(after: "-open")
+        let text = value(after: "-text") ?? ""
+        // Chờ giao diện gốc dựng xong rồi mới điều hướng, như khi người dùng chạm.
+        Task {
+            try? await Task.sleep(for: .seconds(1))
+            switch screen {
+            case "entry": appState.openEntry(text: text)
+            case "month": appState.showsMonth = true
+            case "settings": appState.showsSettings = true
+            case "paywall": appState.showsPaywall = true
+            case "receipt": appState.showsReceipt = true
+            default: break
+            }
         }
     }
 

@@ -1,0 +1,83 @@
+import SwiftUI
+
+/// Tùy chỉnh: ngân sách tháng, nhắc và gợi ý, hướng dẫn Siri, Xu Pro.
+struct SettingsView: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(AppSettings.self) private var settings
+    @Environment(AppState.self) private var appState
+    @State private var budgetText = ""
+    @FocusState private var budgetFocused: Bool
+
+    var body: some View {
+        @Bindable var settings = settings
+        NavigationStack {
+            Form {
+                Section("Ngân sách tháng") {
+                    TextField("9tr", text: $budgetText)
+                        .monospacedDigit()
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                        .submitLabel(.done)
+                        .focused($budgetFocused)
+                        .onSubmit(commitBudget)
+                        .accessibilityLabel("Ngân sách tháng")
+                        .accessibilityValue(MoneyFormatter.spoken(settings.monthlyBudget))
+                }
+                .listRowBackground(Color.xuSurface)
+                Section {
+                    Toggle("Nhắc ghi lúc 21:00 nếu hôm đó chưa ghi gì", isOn: $settings.remindsAtNine)
+                    Toggle("Gợi ý theo vị trí và giờ", isOn: $settings.suggestionsEnabled)
+                    Toggle("Nhắc khi rời quán quen", isOn: $settings.leaveReminderEnabled)
+                } header: {
+                    Text("Nhắc và gợi ý")
+                } footer: {
+                    Text("Vị trí và ảnh hóa đơn được xử lý trên máy, không gửi đi đâu.")
+                }
+                .listRowBackground(Color.xuSurface)
+                Section {
+                    NavigationLink("Siri, Phím tắt và Nút Tác vụ") {
+                        ShortcutsGuideView()
+                    }
+                    Button {
+                        appState.showsPaywall = true
+                    } label: {
+                        HStack {
+                            Text("Xu Pro").foregroundStyle(Color.xuTextPrimary)
+                            Spacer()
+                            ButterLabel(text: "PRO")
+                        }
+                    }
+                }
+                .listRowBackground(Color.xuSurface)
+            }
+            .scrollContentBackground(.hidden)
+            .xuScreen()
+            .navigationTitle("Tùy chỉnh")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Xong") {
+                        commitBudget()
+                        dismiss()
+                    }
+                }
+            }
+            .onAppear { budgetText = MoneyFormatter.full(settings.monthlyBudget) }
+            .onChange(of: budgetFocused) { _, focused in
+                if !focused { commitBudget() }
+            }
+        }
+        .fontDesign(.rounded)
+    }
+
+    private func commitBudget() {
+        if let budget = BudgetInput.parse(budgetText) {
+            settings.monthlyBudget = budget
+        }
+        budgetText = MoneyFormatter.full(settings.monthlyBudget)
+    }
+}
+
+#Preview {
+    SettingsView().xuPreview()
+}
