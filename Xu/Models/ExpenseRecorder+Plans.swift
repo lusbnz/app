@@ -138,3 +138,37 @@ extension ExpenseRecorder {
         return String(localized: SpendingCategory(key: key).title)
     }
 }
+
+// MARK: - Dữ liệu mẫu
+
+extension ExpenseRecorder {
+    /// Thay mọi khoản mẫu cũ bằng bộ mới. Không đi qua `SaveGate` nên không tốn lượt ghi miễn phí.
+    /// Trả về số khoản đã thêm.
+    @discardableResult
+    func insertSampleData(days: Int, now: Date, calendar: Calendar) -> Int {
+        removeSampleData()
+        let rules = rules()
+        let items = SampleData.expenses(days: days, now: now, calendar: calendar)
+        for item in items {
+            let expense = Expense(
+                name: item.name, amount: item.amount,
+                categoryKey: CategoryClassifier.categoryKey(for: item.name, rules: rules), date: item.date
+            )
+            expense.rawText = SampleData.marker
+            expense.isOutsideBudget = item.isOutsideBudget
+            context.insert(expense)
+        }
+        commit()
+        return items.count
+    }
+
+    /// Xóa các khoản mẫu, giữ nguyên dữ liệu thật. Trả về số khoản đã xóa.
+    @discardableResult
+    func removeSampleData() -> Int {
+        let marker = SampleData.marker
+        let found = (try? context.fetch(FetchDescriptor<Expense>(predicate: #Predicate { $0.rawText == marker }))) ?? []
+        found.forEach(context.delete)
+        if !found.isEmpty { commit() }
+        return found.count
+    }
+}

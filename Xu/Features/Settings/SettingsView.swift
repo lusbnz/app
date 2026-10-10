@@ -7,6 +7,9 @@ struct SettingsView: View {
     @Environment(AppState.self) private var appState
     @Environment(LocationProvider.self) private var location
     @Environment(AppLock.self) private var lock
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.calendar) private var calendar
+    @State private var sampleMessage: String?
     @State private var budgetText = ""
     @State private var showsPaywall = false
     @State private var explainsAlwaysLocation = false
@@ -98,6 +101,9 @@ struct SettingsView: View {
                     ExportDataRow()
                 }
                 .listRowBackground(Color.xuSurface)
+                #if DEBUG
+                sampleDataSection
+                #endif
                 Section("Trợ giúp và Nhẩm Pro") {
                     NavigationLink("Siri, Phím tắt và Nút Tác vụ") {
                         ShortcutsGuideView()
@@ -161,6 +167,27 @@ struct SettingsView: View {
         }
         .fontDesign(.rounded)
     }
+
+    #if DEBUG
+    /// Tạm thời, chỉ có ở bản Debug: tạo hoặc xóa dữ liệu mẫu để xem màn hình khi có nhiều ngày.
+    private var sampleDataSection: some View {
+        Section {
+            Button("Tạo dữ liệu mẫu (90 ngày)".description) {
+                let count = ExpenseRecorder(context: modelContext).insertSampleData(days: 90, now: Date(), calendar: calendar)
+                sampleMessage = "Đã tạo \(count) khoản mẫu."
+            }
+            Button("Xóa dữ liệu mẫu".description, role: .destructive) {
+                let count = ExpenseRecorder(context: modelContext).removeSampleData()
+                sampleMessage = "Đã xóa \(count) khoản mẫu."
+            }
+        } header: {
+            Text(verbatim: "Thử nghiệm (tạm thời)")
+        } footer: {
+            Text(verbatim: sampleMessage ?? "Chỉ có ở bản Debug. Khoản mẫu có đánh dấu riêng, xóa không đụng dữ liệu thật. Màn Hôm nay chỉ hiện 35 ngày gần nhất.")
+        }
+        .listRowBackground(Color.xuSurface)
+    }
+    #endif
 
     private func setLeaveReminder(_ isOn: Bool) {
         settings.leaveReminderEnabled = isOn

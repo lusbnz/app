@@ -3,7 +3,7 @@ import Foundation
 import SwiftData
 
 /// Tham số khởi chạy chỉ có ở bản Debug, để xem nhanh các màn hình trên máy ảo:
-/// `-reset` xóa sạch, `-demo` nạp dữ liệu mẫu, `-open entry|month|settings|paywall|receipt|search`, `-text "phở 45k"`.
+/// `-reset` xóa sạch, `-demo` nạp dữ liệu mẫu, `-sample` thêm 90 ngày dữ liệu mẫu, `-open entry|month|settings|paywall|receipt|search`, `-text "phở 45k"`.
 /// `-open receipt` đưa sẵn một hóa đơn mẫu vào bộ đọc. `-pro` mở Nhẩm Pro, `-ask "câu hỏi"` hỏi Nhẩm, `-budget 3tr` đặt ngân sách.
 @MainActor
 enum DebugLaunch {
@@ -33,6 +33,9 @@ enum DebugLaunch {
             settings.suggestionsEnabled = true
             let existing = (try? context.fetchCount(FetchDescriptor<Expense>())) ?? 0
             if existing == 0 { seed(context) }
+        }
+        if arguments.contains("-sample") {
+            ExpenseRecorder(context: context).insertSampleData(days: 90, now: Date(), calendar: .current)
         }
         if let budget = value(after: "-budget").flatMap(BudgetInput.parse) {
             settings.monthlyBudget = budget

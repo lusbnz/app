@@ -15,6 +15,11 @@ struct TodayView: View {
     @State private var reapply: ReapplyOffer?
     @State private var isScrolling = false
     @State private var hapticDay: Date?
+    /// 0 là số lớn còn nguyên, 1 là đã cuộn khuất hẳn và thanh nhỏ hiện ra.
+    @State private var collapse: CGFloat = 0
+    /// Vị trí dọc của tiêu đề từng ngày trước, để biết ngày nào đang nằm dưới thanh nhỏ.
+    @State private var headerTops: [Date: CGFloat] = [:]
+    @State private var topInset: CGFloat = 0
 
     let now: Date
 
@@ -64,6 +69,26 @@ struct TodayView: View {
         .scrollContentBackground(.hidden)
         .animation(.default, value: todays.map(\.id))
         .onScrollPhaseChange { _, phase in isScrolling = phase.isScrolling }
+        .onScrollGeometryChange(for: CGFloat.self) { geometry in
+            // Từ 80 đến 160 điểm cuộn thì thanh nhỏ hiện dần; làm tròn để không cập nhật từng điểm ảnh.
+            let offset = geometry.contentOffset.y + geometry.contentInsets.top
+            return (min(max((offset - 80) / 80, 0), 1) * 20).rounded() / 20
+        } action: { _, newValue in
+            collapse = newValue
+        }
+        .onGeometryChange(for: CGFloat.self) { $0.safeAreaInsets.top } action: { topInset = $0 }
+        .overlay(alignment: .top) {
+            CompactTodayBar(
+                dayTitle: currentDayTitle,
+                amountText: MoneyFormatter.short(status.remainingToday),
+                fraction: status.todayFraction,
+                accessibilityText: accessibilitySummary(status)
+            )
+            .opacity(collapse)
+            .offset(y: (1 - collapse) * -10)
+            .allowsHitTesting(false)
+            .accessibilityHidden(collapse < 0.5)
+        }
         .sensoryFeedback(.selection, trigger: hapticDay)
         .xuScreen()
         .toolbar(.hidden, for: .navigationBar)
@@ -225,40 +250,62 @@ struct TodayView: View {
 
     @ViewBuilder
     private var pastDays: some View {
-        ForEach(pastGroups, id: \.day) { group in
+        ForEach(Array(pastGroups.enumerated()), id: \.element.day) { index, group in
             let total = group.expenses.filter { !$0.isOutsideBudget }.reduce(0) { $0 + $1.amount }
-            dayHeader(group.day, total: total)
-            ForEach(group.expenses) { expenseRow($0) }
+            dayHeader(group.day, total: total, depth: index)
+            ForEach(group.expenses) { expenseRow($0).dayDepth(index) }
         }
     }
 
     /// Tiêu đề và tổng của hôm nay, cùng kiểu với các ngày trước. Không tính khoản ngoài ngân sách.
     private var todayHeader: some View {
         let total = todays.filter { !$0.isOutsideBudget }.reduce(0) { $0 + $1.amount }
-        return groupTitle(VietnameseDate.relativeDay(now, now: now, calendar: calendar), total: total)
-            .padding(.top, 8)
+        return groupTitle(
+            VietnameseDate.relativeDay(now, now: now, calendar: calendar), total: total,
+            load: DayLoad.make(spent: total, allowance: status.allowanceToday)
+        )
+        .padding(.top, 8)
     }
 
-    private func groupTitle(_ title: String, total: Int) -> some View {
-        HStack {
-            Text(title)
-            Spacer()
-            Text(MoneyFormatter.short(total)).money(total)
+    private func groupTitle(_ title: String, total: Int, load: DayLoad? = nil) -> some View {
+        VStack(spacing: 6) {
+            HStack {
+                Text(title)
+                Spacer()
+                Text(MoneyFormatter.short(total)).money(total)
+            }
+            .font(.footnote.weight(.medium))
+            .foregroundStyle(Color.xuTextSecondary)
+            if let load { DayLoadBar(load: load) }
         }
-        .font(.footnote.weight(.medium))
-        .foregroundStyle(Color.xuTextSecondary)
         .padding(.bottom, 4)
         .accessibilityElement(children: .combine)
+        .accessibilityValue(load?.isOver == true ? Text("vượt hạn mức ngày") : Text(verbatim: ""))
         .accessibilityAddTraits(.isHeader)
     }
 
-    private func dayHeader(_ day: Date, total: Int) -> some View {
-        groupTitle(VietnameseDate.relativeDay(day, now: now, calendar: calendar), total: total)
-            .padding(.top, 24)
+    private func dayHeader(_ day: Date, total: Int, depth: Int) -> some View {
+        let allowance = DayLoad.pastDayAllowance(monthlyBudget: settings.monthlyBudget, day: day, calendar: calendar)
+        return groupTitle(
+            VietnameseDate.relativeDay(day, now: now, calendar: calendar), total: total,
+            load: DayLoad.make(spent: total, allowance: allowance)
+        )
+        .padding(.top, 24)
+        .dayDepth(depth)
+        .onGeometryChange(for: CGFloat.self) { $0.frame(in: .global).minY } action: { headerTops[day] = $0 }
         // Rung nhẹ mỗi khi một ngày mới trượt vào màn hình, chỉ khi người dùng đang cuộn.
         .onScrollVisibilityChange(threshold: 0.9) { visible in
             if visible, isScrolling { hapticDay = day }
         }
+    }
+
+    /// Ngày đang nằm dưới thanh nhỏ: tiêu đề cuối cùng đã cuộn qua mép trên, không thì hôm nay.
+    private var currentDayTitle: String {
+        let edge = topInset + 56
+        if let passed = headerTops.filter({ $0.value <= edge }).max(by: { $0.value < $1.value }) {
+            return VietnameseDate.relativeDay(passed.key, now: now, calendar: calendar)
+        }
+        return VietnameseDate.relativeDay(now, now: now, calendar: calendar)
     }
 
     // MARK: - Đáy màn hình

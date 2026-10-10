@@ -3384,6 +3384,22 @@
           }
         }
       }
+    },
+    "vượt hạn mức ngày" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vượt hạn mức ngày"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "over the daily limit"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
