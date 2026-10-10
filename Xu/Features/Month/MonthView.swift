@@ -97,7 +97,7 @@ struct MonthView: View {
                     let category = catalog.info(for: status.key)
                     VStack(alignment: .leading, spacing: 6) {
                         HStack {
-                            Text(category.title)
+                            CategoryLabel(category: category)
                             Spacer()
                             Text("\(MoneyFormatter.short(status.spent)) / \(MoneyFormatter.short(status.limit))")
                                 .fontWeight(.medium)
@@ -141,7 +141,7 @@ struct MonthView: View {
                     let category = CategoryCatalog(custom: customCategories).info(for: group.key)
                     VStack(alignment: .leading, spacing: 6) {
                         HStack {
-                            Text(category.title)
+                            CategoryLabel(category: category)
                             Spacer()
                             Text(MoneyFormatter.short(group.total))
                                 .fontWeight(.medium)

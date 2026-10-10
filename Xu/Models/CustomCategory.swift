@@ -6,10 +6,12 @@ import SwiftData
     var key: String = ""                  // "custom-<uuid>", không đổi khi đổi tên
     var name: String = ""
     var createdAt: Date = Date()
+    var iconName: String = ""            // tên SF Symbol trong `CategoryIcon.palette`; rỗng thì dùng biểu tượng mặc định
 
-    init(name: String, id: UUID = UUID(), createdAt: Date = Date()) {
+    init(name: String, id: UUID = UUID(), createdAt: Date = Date(), iconName: String = "") {
         self.key = CategoryNaming.makeKey(id: id)
         self.name = name
+        self.iconName = iconName
         self.createdAt = createdAt
     }
 }

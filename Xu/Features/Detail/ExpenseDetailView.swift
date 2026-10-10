@@ -145,7 +145,7 @@ struct ExpenseDetailView: View {
 
     private var actions: some View {
         let hasPhoto = expense.photo != nil
-        return HStack {
+        let photoButtons = Group {
             if CameraPicker.isAvailable {
                 Button(hasPhoto ? "Chụp lại" : "Chụp ảnh") { showsCamera = true }
                     .buttonStyle(SecondaryButtonStyle())
@@ -154,9 +154,20 @@ struct ExpenseDetailView: View {
                 Text(CameraPicker.isAvailable ? "Chọn từ Ảnh" : (hasPhoto ? "Đổi ảnh" : "Thêm ảnh"))
             }
             .buttonStyle(SecondaryButtonStyle())
-            Spacer()
-            Button("Xóa khoản này") { confirmsDelete = true }
-                .buttonStyle(SecondaryButtonStyle())
+        }
+        let deleteButton = Button("Xóa khoản này") { confirmsDelete = true }
+            .buttonStyle(SecondaryButtonStyle())
+        // Màn hẹp hoặc chữ lớn thì xuống hàng thay vì bị rớt chữ.
+        return ViewThatFits(in: .horizontal) {
+            HStack {
+                photoButtons
+                Spacer()
+                deleteButton
+            }
+            VStack(alignment: .leading, spacing: 8) {
+                HStack { photoButtons }
+                deleteButton
+            }
         }
         .padding(.top, 8)
     }

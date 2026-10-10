@@ -20,7 +20,7 @@ struct CategoriesView: View {
             Section {
                 ForEach(customCategories) { category in
                     Button { categoryForm = CategoryForm(editing: category) } label: {
-                        Text(category.name).foregroundStyle(Color.xuTextPrimary)
+                        CategoryLabel(category: catalog.info(for: category.key)).foregroundStyle(Color.xuTextPrimary)
                     }
                     .swipeActions {
                         Button("Xóa", role: .destructive) { pendingDelete = category }
@@ -40,7 +40,7 @@ struct CategoriesView: View {
                         HStack {
                             Text(rule.keyword).foregroundStyle(Color.xuTextPrimary)
                             Spacer()
-                            Text(catalog.info(for: rule.categoryKey).title)
+                            CategoryLabel(category: catalog.info(for: rule.categoryKey))
                                 .foregroundStyle(Color.xuTextSecondary)
                         }
                     }
@@ -94,6 +94,9 @@ private struct CategoryFormView: View {
     let form: CategoryForm
     let existingNames: [String]
     @State private var name = ""
+    @State private var iconName = CategoryIcon.fallback
+    /// Người dùng đã tự chọn biểu tượng thì thôi không gợi ý theo tên nữa.
+    @State private var pickedIcon = false
     @State private var failure: CategoryNaming.Failure?
 
     var body: some View {
@@ -103,8 +106,15 @@ private struct CategoryFormView: View {
                     TextField("Thú cưng", text: $name)
                         .submitLabel(.done)
                         .onSubmit(save)
+                        .onChange(of: name) { _, newName in
+                            if !pickedIcon { iconName = CategoryIcon.suggest(for: newName) }
+                        }
                 } footer: {
                     if let failure { Text(Self.message(failure)).foregroundStyle(Color.red) }
+                }
+                .listRowBackground(Color.xuSurface)
+                Section("Biểu tượng") {
+                    iconGrid
                 }
                 .listRowBackground(Color.xuSurface)
             }
@@ -116,18 +126,45 @@ private struct CategoryFormView: View {
                 ToolbarItem(placement: .cancellationAction) { Button("Hủy") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) { Button("Lưu", action: save) }
             }
-            .onAppear { name = form.editing?.name ?? "" }
+            .onAppear {
+                guard let category = form.editing else { return }
+                name = category.name
+                iconName = CategoryIcon.resolved(category.iconName)
+                pickedIcon = true
+            }
         }
-        .presentationDetents([.medium])
+        .presentationDetents([.medium, .large])
+    }
+
+    private var iconGrid: some View {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 7), spacing: 8) {
+            ForEach(CategoryIcon.palette, id: \.self) { symbol in
+                let isSelected = symbol == iconName
+                Button {
+                    iconName = symbol
+                    pickedIcon = true
+                } label: {
+                    Image(systemName: symbol)
+                        .font(.body)
+                        .foregroundStyle(isSelected ? Color.xuOnButton : Color.xuTextPrimary)
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                        .background(isSelected ? Color.xuButton : Color.clear, in: .rect(cornerRadius: 12))
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(Text(verbatim: symbol))
+                .accessibilityAddTraits(isSelected ? .isSelected : [])
+            }
+        }
+        .padding(.vertical, 4)
     }
 
     private func save() {
         let recorder = ExpenseRecorder(context: modelContext)
         let result: Result<Void, CategoryNaming.Failure>
         if let category = form.editing {
-            result = recorder.renameCategory(category, to: name, existing: existingNames)
+            result = recorder.renameCategory(category, to: name, existing: existingNames, iconName: iconName)
         } else {
-            result = recorder.addCategory(name: name, existing: existingNames).map { _ in }
+            result = recorder.addCategory(name: name, existing: existingNames, iconName: iconName).map { _ in }
         }
         switch result {
         case .success: dismiss()

@@ -174,10 +174,10 @@ struct ExpenseRecorder {
 
     /// Thêm danh mục tự thêm. `existing` là mọi tên đang có, gồm cả danh mục có sẵn.
     @discardableResult
-    func addCategory(name: String, existing: [String]) -> Result<CustomCategory, CategoryNaming.Failure> {
+    func addCategory(name: String, existing: [String], iconName: String = "") -> Result<CustomCategory, CategoryNaming.Failure> {
         switch CategoryNaming.validate(name, existing: existing) {
         case .success(let cleaned):
-            let category = CustomCategory(name: cleaned)
+            let category = CustomCategory(name: cleaned, iconName: iconName)
             context.insert(category)
             commit()
             return .success(category)
@@ -186,11 +186,12 @@ struct ExpenseRecorder {
         }
     }
 
-    func renameCategory(_ category: CustomCategory, to name: String, existing: [String]) -> Result<Void, CategoryNaming.Failure> {
+    func renameCategory(_ category: CustomCategory, to name: String, existing: [String], iconName: String? = nil) -> Result<Void, CategoryNaming.Failure> {
         let others = existing.filter { TextNormalizer.keyword($0) != TextNormalizer.keyword(category.name) }
         switch CategoryNaming.validate(name, existing: others) {
         case .success(let cleaned):
             category.name = cleaned
+            if let iconName { category.iconName = iconName }
             commit()
             return .success(())
         case .failure(let failure):

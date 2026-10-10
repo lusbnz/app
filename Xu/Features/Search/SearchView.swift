@@ -70,7 +70,7 @@ struct SearchView: View {
                     Button {
                         if isOn { filter.categoryKeys.remove(category.key) } else { filter.categoryKeys.insert(category.key) }
                     } label: {
-                        Text(category.title)
+                        CategoryLabel(category: category, spacing: 5)
                             .font(.subheadline.weight(.medium))
                             .foregroundStyle(isOn ? Color.xuOnButton : Color.xuTextPrimary)
                             .padding(.horizontal, 14)
@@ -123,7 +123,7 @@ struct SearchView: View {
                 ForEach(groups, id: \.day) { group in
                     dayHeader(group.day)
                     ForEach(group.expenses) { expense in
-                        Button { selected = expense } label: { ExpenseRow(expense: expense, categoryTitle: catalog.info(for: expense.categoryKey).title) }
+                        Button { selected = expense } label: { ExpenseRow(expense: expense, category: catalog.info(for: expense.categoryKey)) }
                             .buttonStyle(.plain)
                     }
                 }

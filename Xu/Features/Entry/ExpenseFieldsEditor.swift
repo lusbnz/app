@@ -78,7 +78,7 @@ struct CategoryChips: View {
                 ForEach(CategoryCatalog(custom: customCategories).all) { category in
                     let isSelected = category.key == selection
                     Button { selection = category.key } label: {
-                        Text(category.title)
+                        CategoryLabel(category: category, spacing: 5)
                             .font(.subheadline)
                             .foregroundStyle(isSelected ? Color.xuOnButton : Color.xuTextPrimary)
                             .padding(.horizontal, 14)

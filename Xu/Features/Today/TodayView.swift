@@ -178,7 +178,7 @@ struct TodayView: View {
 
     /// Một dòng khoản chi, kèm các nút vuốt nhanh. Dùng cho hôm nay và các ngày trước.
     private func expenseRow(_ expense: Expense) -> some View {
-        Button { selected = expense } label: { ExpenseRow(expense: expense, categoryTitle: CategoryCatalog(custom: customCategories).info(for: expense.categoryKey).title) }
+        Button { selected = expense } label: { ExpenseRow(expense: expense, category: CategoryCatalog(custom: customCategories).info(for: expense.categoryKey)) }
             .buttonStyle(.plain)
             .swipeActions(edge: .leading) {
                 Button("Ghi lại", systemImage: "plus.circle") { repeatExpense(expense) }
