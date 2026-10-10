@@ -11,6 +11,7 @@ struct MonthView: View {
     @Query private var customCategories: [CustomCategory]
     @Query private var budgets: [CategoryBudget]
     @State private var selected: Expense?
+    @State private var comparePeriod = ComparisonPeriod.month
 
     let now: Date
 
@@ -40,6 +41,7 @@ struct MonthView: View {
                 header(status)
                 limits(expenses)
                 categories(snapshot)
+                comparison()
                 outside(expenses)
                 AskSection(snapshot: snapshot)
             }
@@ -160,6 +162,53 @@ struct MonthView: View {
                 }
             }
         }
+    }
+
+    // MARK: - So với kỳ trước
+
+    @ViewBuilder
+    private func comparison() -> some View {
+        let result = PeriodComparison.make(records: allExpenses.map(\.record), period: comparePeriod, now: now, calendar: calendar)
+        if result.hasData {
+            let catalog = CategoryCatalog(custom: customCategories)
+            VStack(alignment: .leading, spacing: 14) {
+                Text("So với kỳ trước")
+                    .font(.subheadline.weight(.semibold))
+                Picker("Kỳ so sánh", selection: $comparePeriod) {
+                    Text("Tháng trước").tag(ComparisonPeriod.month)
+                    Text("Tuần trước").tag(ComparisonPeriod.week)
+                }
+                .pickerStyle(.segmented)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(changeText(result.delta, percent: result.previousTotal > 0 ? PeriodComparison.percent(result.delta, of: result.previousTotal) : nil))
+                        .font(.title3.weight(.semibold))
+                        .foregroundStyle(result.delta > 0 ? Color.red : Color.xuTextPrimary)
+                    Text(comparePeriod == .month
+                         ? "\(MoneyFormatter.short(result.currentTotal)) so với \(MoneyFormatter.short(result.previousTotal)) cùng ngày tháng trước"
+                         : "\(MoneyFormatter.short(result.currentTotal)) so với \(MoneyFormatter.short(result.previousTotal)) cùng ngày tuần trước")
+                        .font(.footnote)
+                        .foregroundStyle(Color.xuTextSecondary)
+                }
+                ForEach(result.changes.prefix(6)) { change in
+                    HStack {
+                        CategoryLabel(category: catalog.info(for: change.key))
+                        Spacer()
+                        Text(changeText(change.delta, percent: change.percent))
+                            .font(.subheadline)
+                            .foregroundStyle(change.delta > 0 ? Color.red : Color.xuTextSecondary)
+                            .monospacedDigit()
+                    }
+                    .accessibilityElement(children: .combine)
+                }
+            }
+        }
+    }
+
+    private func changeText(_ delta: Int, percent: Int?) -> String {
+        guard delta != 0 else { return String(localized: "bằng kỳ trước") }
+        let amount = MoneyFormatter.short(abs(delta))
+        let suffix = percent.map { " (\(abs($0))%)" } ?? ""
+        return delta > 0 ? String(localized: "tăng \(amount)\(suffix)") : String(localized: "giảm \(amount)\(suffix)")
     }
 
     // MARK: - Không tính vào ngân sách
