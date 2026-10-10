@@ -38,7 +38,7 @@ enum PreviewData {
     static func settings(budget: Int) -> AppSettings {
         let defaults = UserDefaults(suiteName: "preview") ?? .standard
         defaults.removePersistentDomain(forName: "preview")
-        let settings = AppSettings(defaults: defaults)
+        let settings = AppSettings(defaults: defaults, standardDefaults: defaults)
         settings.monthlyBudget = budget
         return settings
     }

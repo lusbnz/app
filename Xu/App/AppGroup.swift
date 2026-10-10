@@ -19,4 +19,7 @@ enum SettingsKey {
     static let leaveReminderEnabled = "leaveReminderEnabled"
     static let lastQuestion = "lastQuestion"
     static let lastAnswer = "lastAnswer"
+    static let appearance = "appearance"
+    /// Nằm trong `UserDefaults.standard` (không phải App Group) vì hệ thống đọc `AppleLanguages` ở đó.
+    static let appLanguage = "appLanguage"
 }

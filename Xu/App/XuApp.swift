@@ -30,6 +30,7 @@ struct XuApp: App {
                 .environment(EntitlementStore.shared)
                 .fontDesign(.rounded)
                 .tint(Color.xuToggle)
+                .preferredColorScheme(settings.appearance.colorScheme)
         }
         .modelContainer(XuStore.shared)
     }

@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Tùy chỉnh: ngân sách tháng, nhắc và gợi ý, khoản định kỳ, hạn mức danh mục, hướng dẫn Siri, xuất CSV, Xu Pro.
+/// Tùy chỉnh, chia nhóm: ngân sách, ghi chép, nhắc và gợi ý, hiển thị (giao diện, ngôn ngữ), dữ liệu, trợ giúp và Xu Pro.
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(AppSettings.self) private var settings
@@ -15,7 +15,7 @@ struct SettingsView: View {
         @Bindable var settings = settings
         NavigationStack {
             Form {
-                Section("Ngân sách tháng") {
+                Section("Ngân sách") {
                     TextField("9tr", text: $budgetText)
                         .monospacedDigit()
                         .autocorrectionDisabled()
@@ -25,6 +25,18 @@ struct SettingsView: View {
                         .onSubmit(commitBudget)
                         .accessibilityLabel("Ngân sách tháng")
                         .accessibilityValue(MoneyFormatter.spoken(settings.monthlyBudget))
+                    NavigationLink("Hạn mức danh mục") {
+                        CategoryLimitsView()
+                    }
+                }
+                .listRowBackground(Color.xuSurface)
+                Section("Ghi chép") {
+                    NavigationLink("Khoản định kỳ") {
+                        RecurringView()
+                    }
+                    NavigationLink("Danh mục và luật") {
+                        CategoriesView()
+                    }
                 }
                 .listRowBackground(Color.xuSurface)
                 Section {
@@ -43,19 +55,28 @@ struct SettingsView: View {
                 }
                 .listRowBackground(Color.xuSurface)
                 Section {
-                    NavigationLink("Khoản định kỳ") {
-                        RecurringView()
+                    Picker("Giao diện", selection: $settings.appearance) {
+                        ForEach(AppAppearance.allCases) { Text($0.title).tag($0) }
                     }
-                    NavigationLink("Hạn mức danh mục") {
-                        CategoryLimitsView()
+                    Picker("Ngôn ngữ", selection: $settings.language) {
+                        ForEach(AppLanguage.allCases) { Text($0.title).tag($0) }
                     }
-                    NavigationLink("Danh mục và luật") {
-                        CategoriesView()
+                } header: {
+                    Text("Hiển thị")
+                } footer: {
+                    if settings.needsRelaunchForLanguage {
+                        Text("Đóng hẳn rồi mở lại app để đổi ngôn ngữ.")
                     }
+                }
+                .listRowBackground(Color.xuSurface)
+                Section("Dữ liệu") {
+                    ExportDataRow()
+                }
+                .listRowBackground(Color.xuSurface)
+                Section("Trợ giúp và Xu Pro") {
                     NavigationLink("Siri, Phím tắt và Nút Tác vụ") {
                         ShortcutsGuideView()
                     }
-                    ExportDataRow()
                     Button {
                         showsPaywall = true
                     } label: {
