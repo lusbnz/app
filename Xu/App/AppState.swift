@@ -5,6 +5,8 @@ import UIKit
 struct EntryRequest: Identifiable, Equatable {
     let id = UUID()
     var text = ""
+    /// Mở ô gõ và bắt đầu nghe ngay (nút micro ở màn Hôm nay).
+    var startsListening = false
 }
 
 /// Điều hướng gốc và trạng thái Hoàn tác, dùng chung cho các màn hình và intent.
@@ -36,11 +38,11 @@ final class AppState {
         showsMonth = true
     }
 
-    func openEntry(text: String = "") {
+    func openEntry(text: String = "", startsListening: Bool = false) {
         showsSettings = false
         showsSearch = false
         showsPaywall = false
         showsReceipt = false
-        entry = EntryRequest(text: text)
+        entry = EntryRequest(text: text, startsListening: startsListening)
     }
 }

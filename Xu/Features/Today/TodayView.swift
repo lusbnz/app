@@ -282,6 +282,16 @@ struct TodayView: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel("Ghi khoản chi")
+                if VoiceInput.hasUsageDescriptions {
+                    Button { appState.openEntry(startsListening: true) } label: {
+                        Image(systemName: "mic")
+                            .font(.title3)
+                            .frame(width: 50, height: 50)
+                            .background(Color.xuSurface, in: .circle)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Nói khoản chi")
+                }
                 Button {
                     appState.receiptImage = nil
                     appState.showsReceipt = true

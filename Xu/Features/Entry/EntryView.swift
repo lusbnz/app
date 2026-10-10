@@ -19,12 +19,14 @@ struct EntryView: View {
     @State private var voice = VoiceInput()
     @State private var voiceBase = ""
     @FocusState private var isFocused: Bool
+    private let startsListening: Bool
 
     let now: Date
     private let parser = ExpenseParser()
 
     init(request: EntryRequest, now: Date) {
         self.now = now
+        startsListening = request.startsListening
         _text = State(initialValue: request.text)
         let since = Calendar.current.date(byAdding: .day, value: -35, to: now) ?? now
         _expenses = Query(filter: #Predicate<Expense> { $0.date >= since }, sort: \Expense.createdAt, order: .reverse)
@@ -113,7 +115,11 @@ struct EntryView: View {
         }
         .onDisappear { voice.cancel() }
         .onAppear {
-            isFocused = true
+            if startsListening, voice.isSupported {
+                startListening()
+            } else {
+                isFocused = true
+            }
             if settings.suggestionsEnabled { location.refresh() }
         }
         .confirmationDialog(
@@ -135,16 +141,16 @@ struct EntryView: View {
 
     // MARK: - Giọng nói
 
+    private func startListening() {
+        isFocused = false
+        voiceBase = text.isEmpty || text.hasSuffix(" ") ? text : text + " "
+        Task { await voice.start() }
+    }
+
     private var microphoneButton: some View {
         let isListening = voice.state == .listening
         return Button {
-            if isListening {
-                voice.stop()
-            } else {
-                isFocused = false
-                voiceBase = text.isEmpty || text.hasSuffix(" ") ? text : text + " "
-                Task { await voice.start() }
-            }
+            if isListening { voice.stop() } else { startListening() }
         } label: {
             // Cao bằng một dòng của ô gõ (cùng padding dọc 14), nên nút nằm giữa dòng đầu
             // cả khi ô gõ xuống nhiều dòng.

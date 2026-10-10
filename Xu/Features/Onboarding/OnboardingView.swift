@@ -17,17 +17,21 @@ struct OnboardingView: View {
     private var budget: Int? { BudgetInput.parse(text) }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            switch step {
-            case .typing: typingStep
-            case .reminders: remindersStep
-            case .budget: budgetStep
-            }
+        TabView(selection: $step) {
+            page(typingStep).tag(Step.typing)
+            page(remindersStep).tag(Step.reminders)
+            page(budgetStep).tag(Step.budget)
         }
-        .padding(24)
+        .tabViewStyle(.page(indexDisplayMode: .never))
         .xuScreen()
         .animation(.snappy, value: step)
         .onChange(of: step) { _, newStep in isFocused = newStep == .budget }
+    }
+
+    /// Mỗi bước là một trang; vuốt ngang để chuyển bước.
+    private func page(_ content: some View) -> some View {
+        VStack(alignment: .leading, spacing: 16) { content }
+            .padding(24)
     }
 
     // MARK: - Bước 1: cách gõ
@@ -64,7 +68,7 @@ struct OnboardingView: View {
                 .font(.subheadline)
                 .foregroundStyle(Color.xuTextSecondary)
             Spacer()
-            navigation(next: "Tiếp")
+            navigation()
         }
     }
 
@@ -95,7 +99,7 @@ struct OnboardingView: View {
                     .foregroundStyle(Color.xuTextSecondary)
             }
             Spacer()
-            navigation(next: "Tiếp")
+            navigation()
         }
         .onChange(of: settings.remindsAtNine) { _, isOn in
             // Chỉ xin quyền khi người dùng bật công tắc.
@@ -151,8 +155,8 @@ struct OnboardingView: View {
 
     // MARK: - Chung
 
-    /// Nút "Tiếp" và dấu chấm tiến độ; có thể nhảy thẳng tới bước ngân sách.
-    private func navigation(next: LocalizedStringKey) -> some View {
+    /// Dấu chấm tiến độ và lời nhắc vuốt; có thể nhảy thẳng tới bước ngân sách.
+    private func navigation() -> some View {
         VStack(spacing: 4) {
             HStack(spacing: 6) {
                 ForEach(Step.allCases, id: \.rawValue) { item in
@@ -163,8 +167,12 @@ struct OnboardingView: View {
             }
             .accessibilityHidden(true)
             .padding(.bottom, 8)
-            Button(next) { advance() }
-                .buttonStyle(PrimaryButtonStyle())
+            Label("Vuốt để tiếp tục", systemImage: "hand.draw")
+                .font(.subheadline)
+                .foregroundStyle(Color.xuTextSecondary)
+                .frame(maxWidth: .infinity, minHeight: 44)
+                .accessibilityAddTraits(.isStaticText)
+                .accessibilityAction(named: "Tiếp") { advance() }
             Button("Bỏ qua") { step = .budget }
                 .font(.subheadline)
                 .foregroundStyle(Color.xuTextSecondary)
