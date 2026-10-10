@@ -25,6 +25,7 @@ Xu/
   Formatting/     định dạng tiền kiểu "194k", "7,1tr"
   Suggestions/    gợi ý theo giờ và vị trí
   Search/         điều kiện tìm và lọc khoản chi (ExpenseFilter)
+  Export/         xuất CSV (CSVExporter)
   Recurring/      lịch khoản định kỳ (RecurringPlanner)
   Receipt/        đọc hóa đơn bằng Vision
   Ask/            Hỏi Xu
@@ -37,7 +38,7 @@ Xu/
 XuTests/
 ```
 
-- `Parsing`, `Budget`, `Formatting`, `Suggestions`, `Search`, `Recurring` là logic thuần: chỉ `import Foundation`, không phụ thuộc SwiftUI hay SwiftData, phải có unit test đầy đủ.
+- `Parsing`, `Budget`, `Formatting`, `Suggestions`, `Search`, `Recurring`, `Export` là logic thuần: chỉ `import Foundation`, không phụ thuộc SwiftUI hay SwiftData, phải có unit test đầy đủ.
 - View đọc dữ liệu bằng `@Query`, ghi qua `modelContext`. Mỗi View có `#Preview` với dữ liệu mẫu trong bộ nhớ.
 - Mô hình SwiftData tương thích CloudKit: mọi thuộc tính có mặc định hoặc optional, không `@Attribute(.unique)`, quan hệ optional.
 - Khóa của luật danh mục (`CategoryRule.keyword`, tham số `rules` của bộ tách) luôn chuẩn hóa bằng `TextNormalizer.keyword`.
@@ -62,6 +63,7 @@ XuTests/
 - **Hỏi Xu:** `AskSection` ở đáy màn Tháng, trả lời bằng FoundationModels (`SpendingAnswering`) dựa trên `SpendingSnapshot` và `SpendingFacts` tính sẵn; số liệu do code tính, mô hình chỉ diễn đạt. Ẩn hoặc báo khi máy không hỗ trợ (`AskEngine.isAvailable`). Miễn phí.
 - **App Intents:** `LogExpenseIntent` ("Ghi chi tiêu", không mở app) và `OpenEntryIntent`, đều qua `SaveGate.canSave`. `ShortcutsGuideView` trong Cài đặt hướng dẫn gắn vào Siri và Phím tắt. Widget đã bỏ, không làm lại khi chưa được yêu cầu.
 - **Cài đặt và Pro:** `SettingsView` gồm ngân sách tháng, nhắc, danh mục (`CategoriesView`, kèm chọn biểu tượng), hạn mức danh mục (`CategoryLimitsView`), khoản định kỳ, phím tắt. `PaywallView` và `EntitlementStore` dùng StoreKit 2 (`Xu.storekit` để thử).
+- **Xuất CSV:** `ExportDataRow` trong Tùy chỉnh chia sẻ mọi khoản chi (không giới hạn 35 ngày, miễn phí) qua `ShareLink`; tệp chỉ được tạo khi chia sẻ. Định dạng do `CSVExporter` (logic thuần, test `CSVExporterTests`) quyết định: cũ đến mới, CRLF, BOM UTF-8 cho Excel, số tiền là số đồng nguyên, ô chữ bắt đầu bằng `= + - @` thêm dấu nháy đơn để không thành công thức.
 - **Biểu tượng app:** `Xu/Assets.xcassets/AppIcon.appiconset` có bản sáng và bản tối, 1024×1024, không kênh alpha. Chữ "xu" tím than trên vệt highlight vàng bơ, cùng bảng màu `XuTextPrimary`, `XuHighlight`, `XuButton`.
 
 ## Kiểm tra

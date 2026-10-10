@@ -109,6 +109,9 @@
     "%lld" : {
 
     },
+    "%lld khoản" : {
+
+    },
     "%lld khoản · %@" : {
       "localizations" : {
         "vi" : {
@@ -959,6 +962,9 @@
 
     },
     "Xu Pro" : {
+
+    },
+    "Xuất dữ liệu ra CSV" : {
 
     }
   },

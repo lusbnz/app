@@ -71,11 +71,13 @@ struct ExpenseFieldsEditor: View {
 struct CategoryChips: View {
     @Query private var customCategories: [CustomCategory]
     @Binding var selection: String
+    @State private var categoryForm: CategoryForm?
 
     var body: some View {
+        let catalog = CategoryCatalog(custom: customCategories)
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
-                ForEach(CategoryCatalog(custom: customCategories).all) { category in
+                ForEach(catalog.all) { category in
                     let isSelected = category.key == selection
                     Button { selection = category.key } label: {
                         CategoryLabel(category: category, spacing: 5)
@@ -88,9 +90,21 @@ struct CategoryChips: View {
                     .buttonStyle(.plain)
                     .accessibilityAddTraits(isSelected ? .isSelected : [])
                 }
+                Button { categoryForm = CategoryForm() } label: {
+                    Label("Danh mục mới", systemImage: "plus")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.xuTextSecondary)
+                        .padding(.horizontal, 14)
+                        .frame(minHeight: 36)
+                        .overlay(Capsule().strokeBorder(Color.xuDivider))
+                }
+                .buttonStyle(.plain)
             }
         }
         .scrollClipDisabled()
+        .sheet(item: $categoryForm) { form in
+            CategoryFormView(form: form, existingNames: catalog.all.map(\.title)) { selection = $0.key }
+        }
     }
 }
 

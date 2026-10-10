@@ -88,11 +88,13 @@ struct RuleForm: Identifiable {
     var editing: CategoryRule?
 }
 
-private struct CategoryFormView: View {
+struct CategoryFormView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     let form: CategoryForm
     let existingNames: [String]
+    /// Gọi khi vừa thêm xong một danh mục mới (không gọi khi đổi tên).
+    var onAdded: ((CustomCategory) -> Void)?
     @State private var name = ""
     @State private var iconName = CategoryIcon.fallback
     /// Người dùng đã tự chọn biểu tượng thì thôi không gợi ý theo tên nữa.
@@ -164,7 +166,7 @@ private struct CategoryFormView: View {
         if let category = form.editing {
             result = recorder.renameCategory(category, to: name, existing: existingNames, iconName: iconName)
         } else {
-            result = recorder.addCategory(name: name, existing: existingNames, iconName: iconName).map { _ in }
+            result = recorder.addCategory(name: name, existing: existingNames, iconName: iconName).map { onAdded?($0) }
         }
         switch result {
         case .success: dismiss()

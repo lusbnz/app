@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Tùy chỉnh: ngân sách tháng, nhắc và gợi ý, khoản định kỳ, hạn mức danh mục, hướng dẫn Siri, Xu Pro.
+/// Tùy chỉnh: ngân sách tháng, nhắc và gợi ý, khoản định kỳ, hạn mức danh mục, hướng dẫn Siri, xuất CSV, Xu Pro.
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(AppSettings.self) private var settings
@@ -55,6 +55,7 @@ struct SettingsView: View {
                     NavigationLink("Siri, Phím tắt và Nút Tác vụ") {
                         ShortcutsGuideView()
                     }
+                    ExportDataRow()
                     Button {
                         showsPaywall = true
                     } label: {
