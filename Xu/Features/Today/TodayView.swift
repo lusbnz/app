@@ -10,6 +10,7 @@ struct TodayView: View {
     @Query private var expenses: [Expense]
     @Query private var customCategories: [CustomCategory]
     @Query private var recurring: [RecurringExpense]
+    @Query private var budgets: [CategoryBudget]
     @State private var selected: Expense?
     @State private var reapply: ReapplyOffer?
     @State private var isScrolling = false
@@ -26,7 +27,8 @@ struct TodayView: View {
 
     private var status: BudgetStatus {
         BudgetCalculator.status(
-            monthlyBudget: settings.monthlyBudget, entries: expenses.map(\.budgetEntry), now: now, calendar: calendar
+            monthlyBudget: settings.monthlyBudget, entries: expenses.map(\.budgetEntry),
+            categoryLimits: settings.dailyLimits(budgets), now: now, calendar: calendar
         )
     }
 

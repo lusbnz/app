@@ -5,6 +5,8 @@ struct BudgetEntry: Equatable, Sendable {
     var amount: Int
     var date: Date
     var isOutsideBudget: Bool = false
+    /// Chỉ cần khi tính hạn mức danh mục vào hạn mức ngày.
+    var categoryKey: String = ""
 }
 
 struct BudgetStatus: Equatable, Sendable {
@@ -16,8 +18,11 @@ struct BudgetStatus: Equatable, Sendable {
     var allowanceToday: Int
     /// nil vào ngày cuối tháng.
     var allowanceTomorrow: Int?
+    /// Phần chi hôm nay tính vào hạn mức ngày. nil nghĩa là bằng `spentToday`; khác khi hạn mức
+    /// danh mục giữ riêng một phần tiền (chi trong hạn mức của danh mục không trừ vào hạn mức chung).
+    var countedToday: Int? = nil
 
-    var remainingToday: Int { allowanceToday - spentToday }
+    var remainingToday: Int { allowanceToday - (countedToday ?? spentToday) }
     var spentThisMonth: Int { spentBeforeToday + spentToday }
     var remainingThisMonth: Int { monthlyBudget - spentThisMonth }
 
@@ -67,6 +72,39 @@ enum BudgetCalculator {
             allowanceToday: allowanceToday,
             allowanceTomorrow: allowanceTomorrow
         )
+    }
+
+    /// Như `status`, nhưng hạn mức của từng danh mục được giữ riêng: hạn mức ngày chỉ tính trên phần ngân sách
+    /// còn lại sau khi trừ các hạn mức ấy, và khoản chi trong hạn mức của danh mục không làm hạn mức ngày
+    /// tụt. Chi vượt hạn mức danh mục thì trừ vào hạn mức chung. Tổng đã tiêu và còn lại của tháng vẫn là số thật.
+    static func status(
+        monthlyBudget: Int, entries: [BudgetEntry], categoryLimits: [String: Int], now: Date, calendar: Calendar
+    ) -> BudgetStatus {
+        var plain = status(monthlyBudget: monthlyBudget, entries: entries, now: now, calendar: calendar)
+        let limits = categoryLimits.filter { $0.value > 0 }
+        guard !limits.isEmpty else { return plain }
+
+        let month = calendar.dateInterval(of: .month, for: now) ?? DateInterval(start: now, duration: 0)
+        var running: [String: Int] = [:]
+        var free: [BudgetEntry] = []
+        for entry in entries.sorted(by: { $0.date < $1.date }) {
+            guard !entry.isOutsideBudget, month.contains(entry.date), let limit = limits[entry.categoryKey] else {
+                free.append(entry)
+                continue
+            }
+            let before = running[entry.categoryKey, default: 0]
+            let after = before + entry.amount
+            running[entry.categoryKey] = after
+            var counted = entry
+            counted.amount = max(0, after - limit) - max(0, before - limit)
+            free.append(counted)
+        }
+        let reserved = limits.values.reduce(0, +)
+        let adjusted = status(monthlyBudget: max(0, monthlyBudget - reserved), entries: free, now: now, calendar: calendar)
+        plain.allowanceToday = adjusted.allowanceToday
+        plain.allowanceTomorrow = adjusted.allowanceTomorrow
+        plain.countedToday = adjusted.spentToday
+        return plain
     }
 
     /// Nhịp tiêu trung bình từ đầu tháng và số dư dự kiến cuối tháng.

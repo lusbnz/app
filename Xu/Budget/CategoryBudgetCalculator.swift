@@ -1,6 +1,7 @@
 import Foundation
 
-/// Mức dùng hạn mức của một danh mục. Chỉ để cảnh báo, không đổi hạn mức ngày.
+/// Mức dùng hạn mức của một danh mục. Luôn dùng để cảnh báo; hạn mức ngày chỉ đổi khi người dùng bật
+/// "Hạn mức danh mục tính vào hạn mức ngày" (xem `BudgetCalculator.status(...categoryLimits...)`).
 enum LimitLevel: Int, Comparable, Sendable {
     case ok, near, over
 

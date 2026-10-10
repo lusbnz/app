@@ -59,7 +59,7 @@ extension Expense {
     }
 
     var budgetEntry: BudgetEntry {
-        BudgetEntry(amount: amount, date: date, isOutsideBudget: isOutsideBudget)
+        BudgetEntry(amount: amount, date: date, isOutsideBudget: isOutsideBudget, categoryKey: categoryKey)
     }
 }
 

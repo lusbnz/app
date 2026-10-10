@@ -12,6 +12,7 @@ struct ReceiptView: View {
     @Environment(LocationProvider.self) private var location
     @Query private var expenses: [Expense]
     @Query private var rules: [CategoryRule]
+    @Query private var budgets: [CategoryBudget]
     @Query private var customCategories: [CustomCategory]
     @State private var image: UIImage?
     @State private var fields = ExpenseFields()
@@ -108,10 +109,11 @@ struct ReceiptView: View {
     private var impact: some View {
         var entries = expenses.map(\.budgetEntry)
         if let amount = fields.amount {
-            entries.append(BudgetEntry(amount: amount, date: fields.date, isOutsideBudget: fields.isOutsideBudget))
+            entries.append(BudgetEntry(amount: amount, date: fields.date, isOutsideBudget: fields.isOutsideBudget, categoryKey: fields.categoryKey))
         }
         let status = BudgetCalculator.status(
-            monthlyBudget: settings.monthlyBudget, entries: entries, now: now, calendar: calendar
+            monthlyBudget: settings.monthlyBudget, entries: entries,
+            categoryLimits: settings.dailyLimits(budgets), now: now, calendar: calendar
         )
         return VStack(alignment: .leading, spacing: 2) {
             HighlightedNumber(text: MoneyFormatter.short(status.remainingToday), fraction: status.todayFraction, size: 44)

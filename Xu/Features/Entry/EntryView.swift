@@ -11,6 +11,7 @@ struct EntryView: View {
     @Environment(LocationProvider.self) private var location
     @Query private var expenses: [Expense]
     @Query private var rules: [CategoryRule]
+    @Query private var budgets: [CategoryBudget]
     @State private var text: String
     @State private var overrides: [Int: EntryOverride] = [:]
     @State private var editing: EntryRow?
@@ -184,9 +185,24 @@ struct EntryView: View {
 
     /// Con số phía trên: còn lại hôm nay, hoặc còn lại sau khi ghi các khoản đang gõ.
     private func remaining(_ status: BudgetStatus, rows: [EntryRow]) -> some View {
-        let pending = rows.filter { !$0.isLoan && !$0.isOutsideBudget }.reduce(0) { $0 + ($1.amount ?? 0) }
-        let after = status.remainingToday - pending
-        let fraction = status.allowanceToday > 0 ? Double(max(after, 0)) / Double(status.allowanceToday) : 0
+        let pendingRows = rows.filter { !$0.isLoan && !$0.isOutsideBudget }
+        let pending = pendingRows.reduce(0) { $0 + ($1.amount ?? 0) }
+        var after = status.remainingToday - pending
+        var allowance = status.allowanceToday
+        let limits = settings.dailyLimits(budgets)
+        if !limits.isEmpty {
+            // Hạn mức danh mục giữ riêng một phần tiền, nên phải tính lại với các khoản đang gõ.
+            let typed = pendingRows.compactMap { row in
+                row.amount.map { BudgetEntry(amount: $0, date: row.date ?? now, categoryKey: row.categoryKey) }
+            }
+            let shaped = BudgetCalculator.status(
+                monthlyBudget: settings.monthlyBudget, entries: expenses.map(\.budgetEntry) + typed,
+                categoryLimits: limits, now: now, calendar: calendar
+            )
+            after = shaped.remainingToday
+            allowance = shaped.allowanceToday
+        }
+        let fraction = allowance > 0 ? Double(max(after, 0)) / Double(allowance) : 0
         return VStack(alignment: .leading, spacing: 2) {
             HighlightedNumber(text: MoneyFormatter.short(after), fraction: fraction, size: 44)
             Text(pending > 0 ? "còn lại sau khi ghi" : "còn được tiêu hôm nay")

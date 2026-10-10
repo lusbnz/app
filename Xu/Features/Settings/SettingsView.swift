@@ -15,7 +15,7 @@ struct SettingsView: View {
         @Bindable var settings = settings
         NavigationStack {
             Form {
-                Section("Ngân sách") {
+                Section {
                     TextField("9tr", text: $budgetText)
                         .monospacedDigit()
                         .autocorrectionDisabled()
@@ -28,6 +28,11 @@ struct SettingsView: View {
                     NavigationLink("Hạn mức danh mục") {
                         CategoryLimitsView()
                     }
+                    Toggle("Hạn mức danh mục tính vào hạn mức ngày", isOn: $settings.limitsShapeDaily)
+                } header: {
+                    Text("Ngân sách")
+                } footer: {
+                    Text("Khi bật, tiền trong hạn mức của từng danh mục được giữ riêng: hạn mức ngày chỉ tính trên phần ngân sách còn lại, và khoản chi trong hạn mức danh mục không làm nó tụt. Chi vượt hạn mức danh mục thì trừ vào hạn mức ngày.")
                 }
                 .listRowBackground(Color.xuSurface)
                 Section("Ghi chép") {

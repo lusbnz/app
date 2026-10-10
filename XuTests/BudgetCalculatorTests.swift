@@ -102,3 +102,75 @@ struct BudgetCalculatorTests {
         #expect(totals.map(\.total) == [268_000, 0, 90_000])
     }
 }
+
+struct CategoryReserveTests {
+    private let calendar = TestClock.calendar
+    private let now = TestClock.date(2026, 10, 8)      // còn 24 ngày kể cả hôm nay
+
+    private func entry(_ amount: Int, _ category: String, day: Int, hour: Int = 12) -> BudgetEntry {
+        BudgetEntry(amount: amount, date: TestClock.date(2026, 10, day, hour), categoryKey: category)
+    }
+
+    private func status(_ entries: [BudgetEntry], limits: [String: Int]) -> BudgetStatus {
+        BudgetCalculator.status(monthlyBudget: 9_000_000, entries: entries, categoryLimits: limits, now: now, calendar: calendar)
+    }
+
+    @Test func noLimitsBehavesLikePlainStatus() {
+        let entries = [entry(1_800_000, "food", day: 3)]
+        let plain = BudgetCalculator.status(monthlyBudget: 9_000_000, entries: entries, now: now, calendar: calendar)
+        #expect(status(entries, limits: [:]) == plain)
+        #expect(status(entries, limits: ["food": 0]) == plain)
+    }
+
+    @Test func limitReservesMoneyFromDailyAllowance() {
+        let result = status([entry(1_800_000, "food", day: 3)], limits: ["food": 2_000_000])
+        // 7tr tự do chia 24 ngày; 1,8tr đã chi nằm trong hạn mức ăn uống nên không trừ.
+        #expect(result.allowanceToday == 291_000)
+        #expect(result.spentThisMonth == 1_800_000)          // số thật của tháng không đổi
+        #expect(result.remainingThisMonth == 7_200_000)
+    }
+
+    @Test func spendingInsideLimitDoesNotLowerTodayRemaining() {
+        let result = status(
+            [entry(1_800_000, "food", day: 3), entry(106_000, "food", day: 8, hour: 9)],
+            limits: ["food": 2_000_000]
+        )
+        #expect(result.spentToday == 106_000)
+        #expect(result.remainingToday == result.allowanceToday)
+    }
+
+    @Test func spendingInOtherCategoryStillCounts() {
+        let result = status(
+            [entry(100_000, "transport", day: 8, hour: 9)], limits: ["food": 2_000_000]
+        )
+        #expect(result.remainingToday == result.allowanceToday - 100_000)
+    }
+
+    @Test func overspendOfLimitDrawsFromGeneralAllowance() {
+        // Trước hôm nay ăn uống chi 1,9tr; hôm nay thêm 300k thì 200k vượt hạn mức 2tr.
+        let result = status(
+            [entry(1_900_000, "food", day: 3), entry(300_000, "food", day: 8, hour: 9)],
+            limits: ["food": 2_000_000]
+        )
+        #expect(result.countedToday == 200_000)
+        #expect(result.remainingToday == result.allowanceToday - 200_000)
+    }
+
+    @Test func earlierOverspendLowersAllowance() {
+        let result = status([entry(2_100_000, "food", day: 3)], limits: ["food": 2_000_000])
+        // 100k vượt hạn mức trừ vào phần tự do: (7tr − 100k) / 24.
+        #expect(result.allowanceToday == 287_000)
+    }
+
+    @Test func limitsLargerThanBudgetNeverGoNegative() {
+        let result = status([], limits: ["food": 6_000_000, "transport": 6_000_000])
+        #expect(result.allowanceToday == 0)
+    }
+
+    @Test func outsideBudgetEntriesAreIgnored() {
+        var big = entry(5_000_000, "food", day: 5)
+        big.isOutsideBudget = true
+        let result = status([big], limits: ["food": 2_000_000])
+        #expect(result.allowanceToday == 291_000)
+    }
+}
