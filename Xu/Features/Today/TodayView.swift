@@ -80,7 +80,9 @@ struct TodayView: View {
             ScrollingBarHost(
                 tracker: scroll, now: now, calendar: calendar,
                 amountText: MoneyFormatter.short(status.remainingToday), fraction: status.todayFraction,
-                accessibilityText: accessibilitySummary(status)
+                accessibilityText: accessibilitySummary(status),
+                openSearch: { appState.showsSearch = true },
+                openSettings: { appState.showsSettings = true }
             )
         }
         .sensoryFeedback(.selection, trigger: hapticDay)

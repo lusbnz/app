@@ -60,19 +60,45 @@ struct CompactTodayBar: View {
     let amountText: String
     let fraction: Double
     let accessibilityText: String
+    let openSearch: () -> Void
+    let openSettings: () -> Void
 
     var body: some View {
-        HStack(alignment: .firstTextBaseline) {
-            Text(dayTitle)
-                .font(.subheadline.weight(.medium))
-                .foregroundStyle(Color.xuTextSecondary)
-                .contentTransition(.opacity)
-                .animation(.default, value: dayTitle)
-            Spacer()
-            HighlightedNumber(text: amountText, fraction: fraction, size: 26)
+        HStack(spacing: 0) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(dayTitle)
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(Color.xuTextSecondary)
+                    .lineLimit(1)
+                    .contentTransition(.opacity)
+                    .animation(.default, value: dayTitle)
+                Spacer(minLength: 8)
+                HighlightedNumber(text: amountText, fraction: fraction, size: 26)
+            }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(accessibilityText)
+            // Cuộn xa rồi vẫn tìm và mở Tùy chỉnh được, không phải cuộn ngược lên đầu.
+            Button(action: openSearch) {
+                Image(systemName: "magnifyingglass")
+                    .font(.title3)
+                    .frame(width: 44, height: 44)
+                    .contentShape(.rect)
+            }
+            .buttonStyle(.plain)
+            .padding(.leading, 8)
+            .accessibilityLabel("Tìm khoản chi")
+            Button(action: openSettings) {
+                Image(systemName: "ellipsis")
+                    .font(.title3)
+                    .frame(width: 44, height: 44, alignment: .trailing)
+                    .contentShape(.rect)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Tùy chỉnh")
         }
-        .padding(.horizontal, 24)
-        .padding(.vertical, 8)
+        .padding(.leading, 24)
+        .padding(.trailing, 24)
+        .padding(.vertical, 2)
         .background {
             Rectangle()
                 .fill(Color.xuBackground.opacity(0.9))
@@ -80,8 +106,6 @@ struct CompactTodayBar: View {
                 .overlay(alignment: .bottom) { Divider().overlay(Color.xuDivider) }
                 .ignoresSafeArea(edges: .top)
         }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(accessibilityText)
     }
 }
 
@@ -130,6 +154,8 @@ struct ScrollingBarHost: View {
     let amountText: String
     let fraction: Double
     let accessibilityText: String
+    let openSearch: () -> Void
+    let openSettings: () -> Void
 
     var body: some View {
         let collapse = tracker.collapse
@@ -137,11 +163,14 @@ struct ScrollingBarHost: View {
             dayTitle: VietnameseDate.relativeDay(tracker.currentDay ?? now, now: now, calendar: calendar),
             amountText: amountText,
             fraction: fraction,
-            accessibilityText: accessibilityText
+            accessibilityText: accessibilityText,
+            openSearch: openSearch,
+            openSettings: openSettings
         )
         .opacity(collapse)
         .offset(y: (1 - collapse) * -10)
-        .allowsHitTesting(false)
+        // Chỉ nhận chạm khi đã hiện rõ, để lúc còn ẩn không chặn các dòng ở sát mép trên.
+        .allowsHitTesting(collapse >= 0.5)
         .accessibilityHidden(collapse < 0.5)
     }
 }
