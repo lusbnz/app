@@ -32,3 +32,27 @@ extension RecurringFrequency {
         }
     }
 }
+
+extension DetectedSubscription {
+    /// "ngày 5 hàng tháng", "mỗi Thứ Hai", "ngày 15/3 hàng năm": cùng cách nói với `RecurringExpense.scheduleText`.
+    func scheduleText(calendar: Calendar) -> String {
+        let names = calendar.weekdaySymbols
+        switch cadence {
+        case .weekly:
+            let weekdayName = names.indices.contains(weekday - 1) ? names[weekday - 1] : ""
+            return String(localized: "mỗi \(weekdayName)")
+        case .monthly:
+            return String(localized: "ngày \(dayOfMonth) hàng tháng")
+        case .yearly:
+            return String(localized: "ngày \(dayOfMonth)/\(monthOfYear) hàng năm")
+        }
+    }
+
+    var frequency: RecurringFrequency {
+        switch cadence {
+        case .weekly: .weekly
+        case .monthly: .monthly
+        case .yearly: .yearly
+        }
+    }
+}

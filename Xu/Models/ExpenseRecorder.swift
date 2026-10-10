@@ -100,9 +100,13 @@ struct ExpenseRecorder {
         SaveGate.didSave(now: Date(), calendar: .current)
         commit()
         if needsPlaceLookup { Self.afterLocatedRecord?(batchID) }
+        let warnings = [
+            limitWarning(for: items, defaultDate: info.date, now: Date(), calendar: .current),
+            subscriptionWarning(for: items, batchID: batchID, defaultDate: info.date, now: Date(), calendar: .current),
+        ].compactMap { $0 }
         return SavedBatch(
             batchID: batchID, loanIDs: loanIDs, summary: Self.summary(of: items),
-            warning: limitWarning(for: items, defaultDate: info.date, now: Date(), calendar: .current)
+            warning: warnings.isEmpty ? nil : warnings.joined(separator: "\n")
         )
     }
 

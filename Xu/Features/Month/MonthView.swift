@@ -20,6 +20,8 @@ struct MonthView: View {
     @State private var mapFocus: String?
     @State private var showsGoals = false
     @State private var openedGoal: SavingsGoal?
+    @State private var showsYearReport = false
+    @Environment(EntitlementStore.self) private var store
 
     let now: Date
 
@@ -51,6 +53,7 @@ struct MonthView: View {
                 comparison()
                 savings(status)
                 outside(expenses)
+                yearReportRow
                 AskSection(snapshot: snapshot)
             }
             .padding(.horizontal, 24)
@@ -72,6 +75,9 @@ struct MonthView: View {
         .navigationDestination(item: $openedGoal) { goal in
             SavingsGoalDetailView(goal: goal)
         }
+        .navigationDestination(isPresented: $showsYearReport) {
+            YearReportView(now: now)
+        }
         #if DEBUG
         .task {
             // Cờ chạy thử `-open map|goals|goal`: mở thẳng một màn con.
@@ -82,10 +88,35 @@ struct MonthView: View {
             case "map": showsMap = true
             case "goals": showsGoals = true
             case "goal": openedGoal = goals.first
+            case "year": showsYearReport = true
             default: break
             }
         }
         #endif
+    }
+
+    // MARK: - Báo cáo năm
+
+    /// Pennyline Pro. Chưa Pro thì vẫn thấy dòng này, chạm là mở bảng mua.
+    private var yearReportRow: some View {
+        Button {
+            if store.isPro { showsYearReport = true } else { appState.showsPaywall = true }
+        } label: {
+            HStack {
+                Text("Báo cáo năm \(String(calendar.component(.year, from: now)))")
+                    .foregroundStyle(Color.xuTextPrimary)
+                if !store.isPro { ButterLabel(text: "PRO") }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(Color.xuTextSecondary)
+            }
+            .padding(.horizontal, 18)
+            .frame(minHeight: 52)
+            .background(Color.xuSurface, in: .rect(cornerRadius: 18))
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
     }
 
     // MARK: - Phần đầu

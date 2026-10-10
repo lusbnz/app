@@ -5620,6 +5620,310 @@
           }
         }
       }
+    },
+    "%@ tăng từ %@ lên %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ went up from %@ to %@"
+          }
+        }
+      }
+    },
+    "%lld khoản, trung bình %@ mỗi tháng." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld expense, averaging %@ a month."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld expenses, averaging %@ a month."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Báo cáo năm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Year report"
+          }
+        }
+      }
+    },
+    "Báo cáo năm %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Year report %@"
+          }
+        }
+      }
+    },
+    "Bạn đã ghi vào %lld ngày trong năm." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You logged on %lld day this year."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You logged on %lld days this year."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Có thể là khoản đăng ký" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Possible subscriptions"
+          }
+        }
+      }
+    },
+    "Giảm %lld%% so với cùng kỳ năm trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Down %lld%% from the same period last year."
+          }
+        }
+      }
+    },
+    "Giảm %lld%% so với năm trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Down %lld%% from the year before."
+          }
+        }
+      }
+    },
+    "Gần bằng cùng kỳ năm trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About the same as this period last year."
+          }
+        }
+      }
+    },
+    "Gần bằng năm trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About the same as the year before."
+          }
+        }
+      }
+    },
+    "Khoản lớn nhất: %@, %@ (ngày %lld/%lld)." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Largest expense: %@, %@ (on %lld/%lld)."
+          }
+        }
+      }
+    },
+    "Năm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Year"
+          }
+        }
+      }
+    },
+    "Năm %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Year %@"
+          }
+        }
+      }
+    },
+    "Năm này chưa có khoản chi nào." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No expenses in this year yet."
+          }
+        }
+      }
+    },
+    "Pennyline thấy các khoản này lặp đều trong lịch sử bạn ghi, tổng khoảng %@ mỗi tháng. Chạm để thêm vào khoản định kỳ và được nhắc trước một ngày." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pennyline sees these repeating regularly in your history, about %@ a month in total. Tap one to add it to recurring expenses and get a reminder the day before."
+          }
+        }
+      }
+    },
+    "Tháng %lld tiêu nhiều nhất: %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Month %lld was the highest: %@."
+          }
+        }
+      }
+    },
+    "Tháng %lld: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Month %lld: %@"
+          }
+        }
+      }
+    },
+    "Tháng tiêu ít nhất: tháng %lld, %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lowest month: month %lld, %@."
+          }
+        }
+      }
+    },
+    "Thêm vào khoản định kỳ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add to recurring expenses"
+          }
+        }
+      }
+    },
+    "Trong đó %@ ngoài ngân sách." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Of which %@ is outside the budget."
+          }
+        }
+      }
+    },
+    "Tăng %lld%% so với cùng kỳ năm trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Up %lld%% from the same period last year."
+          }
+        }
+      }
+    },
+    "Tăng %lld%% so với năm trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Up %lld%% from the year before."
+          }
+        }
+      }
+    },
+    "Tạo bằng Pennyline. Số liệu gồm mọi khoản chi đã ghi, kể cả khoản ngoài ngân sách." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Made with Pennyline. Figures include every logged expense, including those outside the budget."
+          }
+        }
+      }
+    },
+    "Tốn nhiều nhất" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biggest spending"
+          }
+        }
+      }
+    },
+    "Từng tháng" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "By month"
+          }
+        }
+      }
+    },
+    "Xuất PDF" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export PDF"
+          }
+        }
+      }
+    },
+    "tăng %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "up %@"
+          }
+        }
+      }
+    },
+    "Đáng nhớ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Highlights"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

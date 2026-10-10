@@ -16,7 +16,7 @@ final class AppState {
 
     var entry: EntryRequest?
     #if DEBUG
-    /// Chỉ để chạy thử: màn con của màn Tháng cần mở ngay (`-open map|goals|goal`).
+    /// Chỉ để chạy thử: màn con của màn Tháng cần mở ngay (`-open map|goals|goal|year`).
     var debugMonthDestination: String?
     /// Chỉ để chạy thử (`-open week`): mở ngay màn Chi tiết tuần này.
     var debugOpensWeek = false

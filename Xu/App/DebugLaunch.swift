@@ -3,7 +3,7 @@ import Foundation
 import SwiftData
 
 /// Tham số khởi chạy chỉ có ở bản Debug, để xem nhanh các màn hình trên máy ảo:
-/// `-reset` xóa sạch, `-demo` nạp dữ liệu mẫu, `-sample` thêm 90 ngày dữ liệu mẫu, `-week` tính ngân sách theo tuần, `-scrub N` nhảy tới ngày thứ N của dải ngày, `-pro` mở Pro, `-theme mint|peach|sky|coffee|graphite` (cần `-pro`), `-open entry|month|week|map|goals|goal|recurring|backup|csv|restore|settings|paywall|receipt|search`, `-recurring N` (cùng `-open recurring`: sửa khoản định kỳ thứ N), `-text "phở 45k"`, `-entryask "câu hỏi"`.
+/// `-reset` xóa sạch, `-demo` nạp dữ liệu mẫu, `-sample` thêm 90 ngày dữ liệu mẫu, `-week` tính ngân sách theo tuần, `-scrub N` nhảy tới ngày thứ N của dải ngày, `-pro` mở Pro, `-theme mint|peach|sky|coffee|graphite` (cần `-pro`), `-open entry|month|week|map|goals|goal|year|recurring|backup|csv|restore|settings|paywall|receipt|search`, `-recurring N` (cùng `-open recurring`: sửa khoản định kỳ thứ N), `-text "phở 45k"`, `-entryask "câu hỏi"`.
 /// `-open receipt` đưa sẵn một hóa đơn mẫu vào bộ đọc. `-pro` mở Pennyline Pro, `-ask "câu hỏi"` hỏi Pennyline, `-budget 3tr` đặt ngân sách.
 @MainActor
 enum DebugLaunch {
@@ -73,12 +73,13 @@ enum DebugLaunch {
             case "entry": appState.openEntry(text: text)
             case "month": appState.showsMonth = true
             case "week": appState.debugOpensWeek = true
-            case "map", "goals", "goal":
+            case "map", "goals", "goal", "year":
                 appState.debugMonthDestination = screen
                 appState.showsMonth = true
             case "settings": appState.showsSettings = true
             case "recurring":
                 seedRecurring(context)
+                seedSubscriptions(context)
                 appState.debugSettingsDestination = "recurring"
                 appState.showsSettings = true
             case "backup":
@@ -136,6 +137,29 @@ enum DebugLaunch {
         try? context.delete(model: Expense.self)
         try? context.save()
         return url
+    }
+
+    /// Lịch sử có hai khoản lặp đều (Netflix vừa tăng giá, Spotify), để xem phần gợi ý khoản đăng ký.
+    private static func seedSubscriptions(_ context: ModelContext) {
+        let calendar = Calendar.current
+        let now = Date()
+        func charge(_ name: String, _ amount: Int, day: Int, monthsAgo: Int) {
+            var parts = calendar.dateComponents([.year, .month], from: now)
+            parts.day = day
+            parts.hour = 9
+            guard var date = calendar.date(from: parts) else { return }
+            // Ngày này của tháng hiện tại chưa tới thì lùi cả chuỗi một tháng.
+            if date > now { date = calendar.date(byAdding: .month, value: -1, to: date) ?? date }
+            guard let shifted = calendar.date(byAdding: .month, value: -monthsAgo, to: date) else { return }
+            let expense = Expense(name: name, amount: amount, categoryKey: "fun", date: shifted)
+            expense.rawText = SampleData.marker
+            context.insert(expense)
+        }
+        for monthsAgo in 0...3 {
+            charge("Netflix", monthsAgo == 0 ? 290_000 : 260_000, day: 5, monthsAgo: monthsAgo)
+            charge("Spotify", 59_000, day: 2, monthsAgo: monthsAgo)
+        }
+        try? context.save()
     }
 
     /// Mỗi tần suất một khoản mẫu, để xem danh sách và màn sửa; chỉ thêm khi chưa có khoản nào.

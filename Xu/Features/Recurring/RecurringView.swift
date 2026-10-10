@@ -7,7 +7,12 @@ struct RecurringView: View {
     @Environment(\.calendar) private var calendar
     @Query(sort: \RecurringExpense.createdAt) private var items: [RecurringExpense]
     @Query private var customCategories: [CustomCategory]
+    /// Cho phần gợi ý khoản đăng ký. Không đặt `filter` ở đây mà lọc trong bộ nhớ: màn này nằm trong ngăn xếp điều hướng,
+    /// nơi `@Query` có `filter` làm SwiftUI truy vấn và dựng lại liên tục (xem `MonthView`).
+    @Query(sort: \Expense.date) private var allExpenses: [Expense]
+    @Environment(EntitlementStore.self) private var store
     @State private var form: RecurringForm?
+    @State private var showsPaywall = false
 
     var body: some View {
         let catalog = CategoryCatalog(custom: customCategories)
@@ -37,6 +42,7 @@ struct RecurringView: View {
                 Text("Đến hạn, Pennyline nhắc lúc 9:00 và hiện khoản đó ở màn Hôm nay. Mặc định bạn chạm Ghi thì mới ghi; khoản nào bật “Tự ghi” thì Pennyline ghi khi bạn mở app.")
             }
             .listRowBackground(Color.xuSurface)
+            suggestions(catalog: catalog)
         }
         .scrollContentBackground(.hidden)
         .xuScreen()
@@ -45,6 +51,7 @@ struct RecurringView: View {
         .sheet(item: $form) { form in
             RecurringEditor(form: form)
         }
+        .sheet(isPresented: $showsPaywall) { PaywallView() }
         #if DEBUG
         .task {
             // Cờ chạy thử `-recurring N`: mở luôn màn sửa của khoản thứ N.
@@ -58,6 +65,71 @@ struct RecurringView: View {
 }
 
 extension RecurringView {
+    /// Khoản đăng ký đoán từ lịch sử (Pennyline Pro) mà chưa có trong danh sách. Chưa Pro thì vẫn thấy tên để biết có gì, chạm là mở bảng mua.
+    @ViewBuilder
+    fileprivate func suggestions(catalog: CategoryCatalog) -> some View {
+        let tracked = items.map(\.name)
+        let now = Date()
+        // Hơn một năm gần đây, đủ để thấy khoản đăng ký theo năm.
+        let since = calendar.date(byAdding: .day, value: -400, to: now) ?? now
+        let recent = allExpenses.filter { $0.date >= since }
+        let found = SubscriptionDetector.detect(records: recent.map(\.record), now: now, calendar: calendar)
+            .filter { !SubscriptionDetector.isTracked($0, by: tracked) }
+        if !found.isEmpty {
+            Section {
+                ForEach(found) { subscription in
+                    Button { add(subscription) } label: {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(subscription.name).foregroundStyle(Color.xuTextPrimary)
+                                Text(suggestionDetail(subscription))
+                                    .font(.caption)
+                                    .foregroundStyle(subscription.priceChange.map { $0 > 0 } ?? false ? Color.red : Color.xuTextSecondary)
+                            }
+                            Spacer()
+                            Text(MoneyFormatter.short(subscription.amount)).foregroundStyle(Color.xuTextSecondary)
+                            Image(systemName: "plus.circle")
+                                .foregroundStyle(Color.xuToggle)
+                                .accessibilityLabel("Thêm vào khoản định kỳ")
+                        }
+                    }
+                }
+            } header: {
+                HStack {
+                    Text("Có thể là khoản đăng ký")
+                    if !store.isPro { ButterLabel(text: "PRO") }
+                }
+            } footer: {
+                Text("Pennyline thấy các khoản này lặp đều trong lịch sử bạn ghi, tổng khoảng \(MoneyFormatter.short(found.reduce(0) { $0 + $1.monthlyCost })) mỗi tháng. Chạm để thêm vào khoản định kỳ và được nhắc trước một ngày.")
+            }
+            .listRowBackground(Color.xuSurface)
+        }
+    }
+
+    /// "ngày 5 hàng tháng · 4 lần", thêm "· tăng 30k" khi lần gần nhất đắt hơn lần trước.
+    private func suggestionDetail(_ subscription: DetectedSubscription) -> String {
+        var text = "\(subscription.scheduleText(calendar: calendar)) · \(String(localized: "\(subscription.occurrences) lần"))"
+        if let change = subscription.priceChange, change > 0 {
+            text += " · " + String(localized: "tăng \(MoneyFormatter.short(change))")
+        }
+        return text
+    }
+
+    private func add(_ subscription: DetectedSubscription) {
+        guard store.isPro else {
+            showsPaywall = true
+            return
+        }
+        ExpenseRecorder(context: modelContext).addRecurring(
+            name: subscription.name, amount: subscription.amount, categoryKey: subscription.categoryKey,
+            dayOfMonth: subscription.dayOfMonth, isOutsideBudget: subscription.isOutsideBudget, now: Date(),
+            frequency: subscription.frequency, weekday: subscription.weekday, monthOfYear: subscription.monthOfYear,
+            autoRecord: false, remindDayBefore: true
+        )
+        // Chỉ xin quyền thông báo khi người dùng thật sự đặt một khoản cần nhắc.
+        Task { _ = await NotificationManager.shared.requestAuthorization() }
+    }
+
     /// "ngày 5 hàng tháng · hóa đơn · ngoài ngân sách · tự ghi"
     fileprivate func subtitle(of item: RecurringExpense, catalog: CategoryCatalog) -> String {
         var parts = [item.scheduleText(calendar: calendar), catalog.info(for: item.categoryKey).title]

@@ -19,7 +19,15 @@ struct SettingsView: View {
     @State private var explainsPlaceLookup = false
     @FocusState private var budgetFocused: Bool
     #if DEBUG
-    @State private var debugDestination: String?
+    /// Màn con mở thẳng bằng cờ chạy thử. Dùng một `navigationDestination(item:)` duy nhất: hai cái `isPresented` trên
+    /// cùng một màn thì chỉ cái gắn sau chạy.
+    private enum DebugDestination: String, Hashable, Identifiable {
+        case recurring, backup
+
+        var id: String { rawValue }
+    }
+
+    @State private var debugDestination: DebugDestination?
     #endif
 
     var body: some View {
@@ -213,15 +221,15 @@ struct SettingsView: View {
             .onChange(of: settings.weeklySummary) { _, isOn in refreshSummaries(askingPermission: isOn) }
             .onChange(of: settings.monthlySummary) { _, isOn in refreshSummaries(askingPermission: isOn) }
             #if DEBUG
-            .navigationDestination(isPresented: Binding { debugDestination == "recurring" } set: { if !$0 { debugDestination = nil } }) {
-                RecurringView()
-            }
-            .navigationDestination(isPresented: Binding { debugDestination == "backup" } set: { if !$0 { debugDestination = nil } }) {
-                BackupView()
+            .navigationDestination(item: $debugDestination) { destination in
+                switch destination {
+                case .recurring: RecurringView()
+                case .backup: BackupView()
+                }
             }
             .task {
                 // Cờ chạy thử `-open recurring|backup|csv|restore`: vào thẳng một màn con.
-                guard let destination = appState.debugSettingsDestination else { return }
+                guard let destination = appState.debugSettingsDestination.flatMap(DebugDestination.init(rawValue:)) else { return }
                 appState.debugSettingsDestination = nil
                 try? await Task.sleep(for: .milliseconds(500))
                 debugDestination = destination

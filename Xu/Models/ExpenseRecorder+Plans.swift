@@ -133,6 +133,24 @@ extension ExpenseRecorder {
         return worst?.message
     }
 
+    /// Pennyline Pro: cảnh báo khi lần ghi vừa rồi làm một khoản đăng ký tăng giá ("Netflix tăng từ 260k lên 290k").
+    /// Gọi sau khi đã lưu; `batchID` là lô vừa ghi, để không tính nó vào lịch sử. `isPro` là tham số để test không phải đổi cờ dùng chung.
+    func subscriptionWarning(
+        for items: [RecordItem], batchID: UUID, defaultDate: Date, now: Date, calendar: Calendar, isPro: Bool = SaveGate.isPro
+    ) -> String? {
+        guard isPro else { return nil }
+        let since = calendar.date(byAdding: .day, value: -400, to: now) ?? now
+        let history = expenses(since: since).filter { $0.batchID != batchID }.map(\.record)
+        for case .expense(let draft) in items {
+            guard let rise = SubscriptionDetector.priceIncrease(
+                name: draft.name, amount: draft.amount, date: draft.date ?? defaultDate, history: history, calendar: calendar
+            ) else { continue }
+            let name = rise.name.prefix(1).uppercased() + rise.name.dropFirst()
+            return String(localized: "\(name) tăng từ \(MoneyFormatter.short(rise.from)) lên \(MoneyFormatter.short(rise.to))")
+        }
+        return nil
+    }
+
     /// Tên danh mục để nói trong cảnh báo (không dùng `CategoryCatalog` vì nó thuộc tầng giao diện).
     func categoryTitle(for key: String) -> String {
         if CategoryNaming.isCustom(key) {
