@@ -20,6 +20,17 @@ final class AppState {
     var debugMonthDestination: String?
     /// Chỉ để chạy thử (`-open week`): mở ngay màn Chi tiết tuần này.
     var debugOpensWeek = false
+    /// Chỉ để chạy thử (`-scrub N`): nhảy tới ngày thứ N của dải ngày, như khi kéo nút ở mép phải.
+    var debugScrubIndex: Int?
+    /// Chỉ để chạy thử (`-open recurring|backup|csv|restore`): mở Tùy chỉnh rồi vào thẳng một màn con.
+    /// `-recurring N` mở luôn khoản định kỳ thứ N (từ 0).
+    var debugSettingsDestination: String?
+    var debugRecurringIndex: Int?
+    /// Nội dung CSV mẫu cho `-open csv`, và tệp sao lưu vừa tạo cho `-open restore`.
+    var debugCSVText: String?
+    var debugRestoreURL: URL?
+    /// Chỉ để chạy thử (`-entryask "câu hỏi"`): mở ô gõ rồi hỏi ngay câu này, như khi chạm một câu hỏi mẫu.
+    var debugEntryQuestion: String?
     #endif
     var showsMonth = false
     var showsSettings = false

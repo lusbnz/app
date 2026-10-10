@@ -18,6 +18,9 @@ struct SettingsView: View {
     @State private var lockUnavailable = false
     @State private var explainsPlaceLookup = false
     @FocusState private var budgetFocused: Bool
+    #if DEBUG
+    @State private var debugDestination: String?
+    #endif
 
     var body: some View {
         @Bindable var settings = settings
@@ -101,7 +104,7 @@ struct SettingsView: View {
                     Picker("Giao diện", selection: $settings.appearance) {
                         ForEach(AppAppearance.allCases) { Text($0.title).tag($0) }
                     }
-                    ThemePickerRow()
+                    ThemePickerRow(needsPro: { showsPaywall = true })
                     Picker("Ngôn ngữ", selection: $settings.language) {
                         ForEach(AppLanguage.allCases) { Text($0.title).tag($0) }
                     }
@@ -129,6 +132,9 @@ struct SettingsView: View {
                 }
                 .listRowBackground(Color.xuSurface)
                 Section("Dữ liệu") {
+                    NavigationLink("Sao lưu và nhập dữ liệu") {
+                        BackupView()
+                    }
                     ExportDataRow()
                 }
                 .listRowBackground(Color.xuSurface)
@@ -206,6 +212,21 @@ struct SettingsView: View {
             }
             .onChange(of: settings.weeklySummary) { _, isOn in refreshSummaries(askingPermission: isOn) }
             .onChange(of: settings.monthlySummary) { _, isOn in refreshSummaries(askingPermission: isOn) }
+            #if DEBUG
+            .navigationDestination(isPresented: Binding { debugDestination == "recurring" } set: { if !$0 { debugDestination = nil } }) {
+                RecurringView()
+            }
+            .navigationDestination(isPresented: Binding { debugDestination == "backup" } set: { if !$0 { debugDestination = nil } }) {
+                BackupView()
+            }
+            .task {
+                // Cờ chạy thử `-open recurring|backup|csv|restore`: vào thẳng một màn con.
+                guard let destination = appState.debugSettingsDestination else { return }
+                appState.debugSettingsDestination = nil
+                try? await Task.sleep(for: .milliseconds(500))
+                debugDestination = destination
+            }
+            #endif
         }
         .fontDesign(.rounded)
     }

@@ -25,6 +25,8 @@ final class AppSettings {
     var limitsShapeDaily: Bool { didSet { defaults.set(limitsShapeDaily, forKey: SettingsKey.limitsShapeDaily) } }
     /// Tự tra tên quán ở chỗ ghi bằng dịch vụ của Apple (gửi vị trí cho Apple). Mặc định tắt.
     var placeLookupEnabled: Bool { didSet { defaults.set(placeLookupEnabled, forKey: SettingsKey.placeLookup) } }
+    /// Sao lưu tự động mỗi ngày (Pennyline Pro). Mặc định tắt.
+    var autoBackupEnabled: Bool { didSet { defaults.set(autoBackupEnabled, forKey: SettingsKey.autoBackup) } }
     var appearance: AppAppearance { didSet { defaults.set(appearance.rawValue, forKey: SettingsKey.appearance) } }
     var language: AppLanguage { didSet { AppLanguage.apply(language, to: standardDefaults) } }
     /// Ngôn ngữ lúc app khởi động; khác `language` nghĩa là cần mở lại app.
@@ -61,6 +63,7 @@ final class AppSettings {
         self.standardDefaults = standardDefaults
         placeLookupEnabled = defaults.bool(forKey: SettingsKey.placeLookup)
         limitsShapeDaily = defaults.bool(forKey: SettingsKey.limitsShapeDaily)
+        autoBackupEnabled = defaults.bool(forKey: SettingsKey.autoBackup)
         appearance = AppAppearance(rawValue: defaults.string(forKey: SettingsKey.appearance) ?? "") ?? .system
         let language = AppLanguage(rawValue: standardDefaults.string(forKey: SettingsKey.appLanguage) ?? "") ?? .system
         self.language = language

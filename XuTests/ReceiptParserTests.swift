@@ -191,3 +191,67 @@ struct ReceiptImprovementTests {
         #expect(!parse("Cảm ơn quý khách").isTotalConfident)
     }
 }
+
+struct ReceiptNonReceiptTests {
+    private let calendar: Calendar = {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "Asia/Ho_Chi_Minh")!
+        return calendar
+    }()
+
+    private func parse(_ text: String) -> ReceiptReading {
+        let now = calendar.date(from: DateComponents(year: 2026, month: 10, day: 8, hour: 12))!
+        return ReceiptParser.parse(lines: text.components(separatedBy: "\n"), now: now, calendar: calendar)
+    }
+
+    /// Ảnh chụp màn hình có chữ: số nằm giữa câu, câu dài, không có từ khóa tổng.
+    private let screenshot = """
+    Claude Code
+    Ku/Assets.xcassets/AppIcon.appiconset có bản sáng và bản tối, 1024x1024, bong bóng tin nhắn có chữ P (chữ đầu của Pennyline, phông Arial Rounded Bold) 1,100 dòng
+    trong đó không có Nơi ghi nên không đồng nhất, đã sửa 2.000 điểm trên màn hình
+    Bash sed -n 1,100p Xu/Features/Detail/ExpenseDetailView.swift
+    """
+
+    @Test func proseWithNumbersInTheMiddleHasNoItems() {
+        #expect(parse(screenshot).items.isEmpty)
+    }
+
+    @Test func longLinesAreNeverItemNames() {
+        let line = "Cơm sườn bì chả đặc biệt thêm trứng ốp la và canh chua cá lóc nấu theo kiểu miền tây 150.000"
+        #expect(ReceiptParser.items(in: [line]).isEmpty)
+        #expect(ReceiptParser.items(in: ["Cơm sườn bì chả   2   150.000"]).map(\.name) == ["Cơm sườn bì chả"])
+    }
+
+    @Test func aPriceMustEndTheLine() {
+        #expect(ReceiptParser.trailingAmount(in: "Phở bò 45.000") == 45_000)
+        #expect(ReceiptParser.trailingAmount(in: "Phở bò 45.000đ") == 45_000)
+        #expect(ReceiptParser.trailingAmount(in: "Trà đá 2 x 5k") == 5_000)
+        #expect(ReceiptParser.trailingAmount(in: "Phở bò 45.000 cảm ơn") == nil)
+        #expect(ReceiptParser.trailingAmount(in: "Mã HD2026100712") == nil)
+        #expect(ReceiptParser.trailingAmount(in: "Số lượng 12") == nil)
+        #expect(ReceiptParser.trailingAmount(in: "Hotline 19001234") == nil)
+    }
+
+    @Test func aScreenshotIsNotAReceipt() {
+        let reading = parse(screenshot)
+        #expect(!reading.isLikelyReceipt)
+        #expect(!reading.isTotalConfident)
+    }
+
+    @Test func realReceiptsAreLikely() {
+        #expect(parse("""
+        QUÁN CƠM TẤM BA GHIỀN
+        Cơm sườn bì chả   2   150.000
+        Trà đá            2    10.000
+        Tổng cộng:            160.000
+        """).isLikelyReceipt)
+        // Không có từ khóa tổng nhưng có hai dòng món có giá.
+        #expect(parse("Tạp hóa Cô Ba\nMì gói 12.000\nNước mắm 48.000\n60.000").isLikelyReceipt)
+        // Có từ khóa tổng dù không tách được món.
+        #expect(parse("Cafe Cộng\nTổng 45.000").isLikelyReceipt)
+    }
+
+    @Test func aSingleStrayAmountIsNotEnough() {
+        #expect(!parse("Cảm ơn quý khách\nHotline 19001234\n85.000").isLikelyReceipt)
+    }
+}

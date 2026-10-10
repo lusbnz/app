@@ -24,6 +24,7 @@ struct ReceiptView: View {
     @State private var selectedItems: Set<Int> = []
     @State private var receiptTotal: Int?
     @State private var totalIsConfident = true
+    @State private var looksLikeReceipt = true
     @State private var pickedPhoto: PhotosPickerItem?
 
     let now: Date
@@ -43,7 +44,8 @@ struct ReceiptView: View {
                     if let image {
                         reading(image)
                         if !isReading {
-                            if !totalIsConfident, fields.amount != nil { uncertainTotalNotice }
+                            if !looksLikeReceipt { notReceiptNotice }
+                            if !totalIsConfident, fields.amount != nil, looksLikeReceipt { uncertainTotalNotice }
                             if items.count >= 2 { itemsPicker }
                         }
                     } else {
@@ -177,6 +179,17 @@ struct ReceiptView: View {
         .accessibilityHint("Chạm để sửa")
     }
 
+    /// Ảnh không giống hóa đơn (ví dụ chụp màn hình có chữ): không điền sẵn gì để khỏi ghi nhầm.
+    private var notReceiptNotice: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 8) {
+            ButterLabel(text: "không thấy hóa đơn")
+            Text("Ảnh này không giống hóa đơn nên Pennyline chưa điền gì. Bạn chạm vào khung trên để nhập tên và số tiền.")
+                .font(.footnote)
+                .foregroundStyle(Color.xuTextSecondary)
+        }
+        .accessibilityElement(children: .combine)
+    }
+
     private var uncertainTotalNotice: some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
             ButterLabel(text: "kiểm tra lại")
@@ -204,7 +217,7 @@ struct ReceiptView: View {
                     HStack(spacing: 10) {
                         Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                             .foregroundStyle(isSelected ? Color.xuToggle : Color.xuTextSecondary)
-                        Text(item.name).multilineTextAlignment(.leading)
+                        Text(item.name).multilineTextAlignment(.leading).lineLimit(2)
                         Spacer(minLength: 8)
                         Text(MoneyFormatter.short(item.amount)).money(item.amount)
                     }
@@ -276,6 +289,17 @@ struct ReceiptView: View {
         let lines = (try? await ReceiptReader.lines(in: image)) ?? []
         let reading = ReceiptParser.parse(lines: lines, now: Date(), calendar: calendar)
         let allowance = dailyAllowance
+        looksLikeReceipt = reading.isLikelyReceipt
+        guard reading.isLikelyReceipt else {
+            // Không giống hóa đơn: để trống, người dùng tự nhập hoặc chụp lại.
+            items = []
+            selectedItems = []
+            receiptTotal = nil
+            totalIsConfident = true
+            hasReceiptDate = false
+            fields = ExpenseFields()
+            return
+        }
         items = reading.items
         selectedItems = Set(reading.items.map(\.id))
         receiptTotal = reading.total

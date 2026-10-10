@@ -39,7 +39,7 @@ struct ExpenseDetailView: View {
                         .accessibilityHint("Xem toàn màn hình")
                     }
                     if isEditing {
-                        ExpenseFieldsEditor(fields: $fields)
+                        ExpenseFieldsEditor(fields: $fields, onPickPlace: { showsPlacePicker = true })
                     } else {
                         summary
                         rows
@@ -69,7 +69,7 @@ struct ExpenseDetailView: View {
         }
         .fontDesign(.rounded)
         .sheet(isPresented: $showsPlacePicker) {
-            PlacePickerView(expense: expense)
+            PlacePickerView(expense: expense, name: $fields.placeName, appliesToSiblings: $fields.appliesPlaceToSiblings)
         }
         .fullScreenCover(isPresented: $showsPhoto) {
             if let image { PhotoViewer(image: image) }
@@ -124,13 +124,9 @@ struct ExpenseDetailView: View {
         VStack(spacing: 0) {
             row("Danh mục", value: CategoryCatalog(custom: customCategories).info(for: expense.categoryKey).title)
             row("Thời gian", value: VietnameseDate.dayAndTime(expense.date, now: Date(), calendar: calendar))
-            Button { showsPlacePicker = true } label: {
-                row("Nơi ghi", value: expense.placeName ?? (expense.latitude == nil
-                    ? String(localized: "không lưu")
-                    : String(localized: "đã lưu vị trí")))
-            }
-            .buttonStyle(.plain)
-            .accessibilityHint("Chạm để đặt hoặc đổi tên nơi")
+            row("Nơi ghi", value: expense.placeName ?? (expense.latitude == nil
+                ? String(localized: "không lưu")
+                : String(localized: "đã lưu vị trí")))
             Toggle("Ngoài ngân sách", isOn: Binding {
                 expense.isOutsideBudget
             } set: {
@@ -188,7 +184,8 @@ struct ExpenseDetailView: View {
     private func startEditing() {
         fields = ExpenseFields(
             name: expense.name, amountText: ExpenseFields.amountText(for: expense.amount),
-            categoryKey: expense.categoryKey, isOutsideBudget: expense.isOutsideBudget, date: expense.date
+            categoryKey: expense.categoryKey, isOutsideBudget: expense.isOutsideBudget, date: expense.date,
+            placeName: expense.placeName ?? ""
         )
         isEditing = true
     }
@@ -209,6 +206,11 @@ struct ExpenseDetailView: View {
         }
         expense.isOutsideBudget = fields.isOutsideBudget
         expense.date = fields.date
+        // Tên nơi sửa cùng lúc với các trường khác, và có thể đổi theo cho các khoản khác ở cùng chỗ.
+        let newPlace = PlaceNaming.clean(fields.placeName)
+        if newPlace != PlaceNaming.clean(expense.placeName) {
+            recorder.setPlace(of: expense, to: newPlace, applyingToSiblings: fields.appliesPlaceToSiblings)
+        }
         recorder.commit()
         if changedCategory {
             reapply = recorder.reapplyOffer(keyword: expense.name, categoryKey: fields.categoryKey)

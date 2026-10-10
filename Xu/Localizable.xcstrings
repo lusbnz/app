@@ -73,6 +73,16 @@
         }
       }
     },
+    "%@ · %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %@"
+          }
+        }
+      }
+    },
     "%@ · %@ %@ bạn hay ghi" : {
       "localizations" : {
         "en" : {
@@ -90,6 +100,7 @@
       }
     },
     "%@ · %@%@%@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -185,6 +196,16 @@
         }
       }
     },
+    "%@ tháng này mấy lần?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How many times did I get %@ this month?"
+          }
+        }
+      }
+    },
     "%@ vượt hạn mức %@" : {
       "localizations" : {
         "en" : {
@@ -255,6 +276,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@. Tap Log to record it, or Skip this period."
+          }
+        }
+      }
+    },
+    "%@. Đến hạn vào ngày mai." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@. Due tomorrow."
           }
         }
       }
@@ -415,6 +446,28 @@
         }
       }
     },
+    "%lld mục máy đã có, giữ nguyên." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item already on this device, kept as is."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld items already on this device, kept as is."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld tháng %lld" : {
       "localizations" : {
         "en" : {
@@ -551,6 +604,16 @@
         }
       }
     },
+    "Ảnh này không giống hóa đơn nên Pennyline chưa điền gì. Bạn chạm vào khung trên để nhập tên và số tiền." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This photo doesn't look like a receipt, so Pennyline filled in nothing. Tap the card above to enter the name and amount."
+          }
+        }
+      }
+    },
     "Áp cho %lld khoản khác ở cùng chỗ" : {
       "localizations" : {
         "en" : {
@@ -573,7 +636,16 @@
         }
       }
     },
-    "Bạc hà" : {},
+    "Bạc hà" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mint"
+          }
+        }
+      }
+    },
     "Bạn đang dùng Pennyline Pro. Cảm ơn bạn." : {
       "localizations" : {
         "en" : {
@@ -630,6 +702,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "The free version lets you log 5 times a day. Open Pennyline to get Pennyline Pro."
+          }
+        }
+      }
+    },
+    "Bản sao lưu ngày %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup from %@."
           }
         }
       }
@@ -774,7 +856,16 @@
         }
       }
     },
-    "Cà phê" : {},
+    "Cà phê" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coffee"
+          }
+        }
+      }
+    },
     "Các khoản có tên “%@” sẽ chuyển sang %@." : {
       "localizations" : {
         "en" : {
@@ -787,6 +878,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Các khoản có tên “%1$@” sẽ chuyển sang %2$@."
+          }
+        }
+      }
+    },
+    "Các khoản ngoài ngân sách là bao nhiêu?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How much was outside my budget?"
           }
         }
       }
@@ -811,6 +912,16 @@
         }
       }
     },
+    "Các tháng" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Months"
+          }
+        }
+      }
+    },
     "Cần để dành %@ mỗi tháng" : {
       "localizations" : {
         "en" : {
@@ -822,6 +933,7 @@
       }
     },
     "Chạm để đặt hoặc đổi tên nơi" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -887,6 +999,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "From now on only"
+          }
+        }
+      }
+    },
+    "Chia sẻ bản sao lưu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share backup"
           }
         }
       }
@@ -987,6 +1109,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No goals yet. Set one to save up little by little, such as a trip or a bike."
+          }
+        }
+      }
+    },
+    "chưa đặt" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "not set"
           }
         }
       }
@@ -1231,6 +1363,16 @@
         }
       }
     },
+    "Cứ hai tuần một lần, tính từ thứ đã chọn đầu tiên kể từ ngày tạo khoản. Pennyline nhắc lúc 9:00 và bạn chạm Ghi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every two weeks, counting from the first chosen weekday on or after the day you create it. Pennyline reminds you at 9:00 and you tap Log."
+          }
+        }
+      }
+    },
     "Cũng nói được bằng micro, và chụp hóa đơn để chọn món của bạn." : {
       "localizations" : {
         "en" : {
@@ -1251,12 +1393,32 @@
         }
       }
     },
+    "Đã có bản sao lưu? Khôi phục" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Have a backup? Restore it"
+          }
+        }
+      }
+    },
     "Đã có danh mục tên này." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "A category with this name already exists."
+          }
+        }
+      }
+    },
+    "Đã có trên máy, bỏ qua" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Already on this device, skipped"
           }
         }
       }
@@ -1373,6 +1535,38 @@
         }
       }
     },
+    "Đã hoàn tác, %lld khoản đã được gỡ." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Undone, %lld expense removed."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Undone, %lld expenses removed."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Đã khôi phục" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restored"
+          }
+        }
+      }
+    },
     "đã lưu vị trí" : {
       "localizations" : {
         "en" : {
@@ -1383,12 +1577,56 @@
         }
       }
     },
+    "Đã nhập %lld khoản." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Imported %lld expense."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Imported %lld expenses."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Đã quá hạn, còn thiếu %@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Past the deadline, %@ to go"
+          }
+        }
+      }
+    },
+    "Đã thêm %lld mục vào máy." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Added %lld item to this device."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Added %lld items to this device."
+                }
+              }
+            }
           }
         }
       }
@@ -1551,6 +1789,16 @@
         }
       }
     },
+    "Danh mục nào tiêu nhiều nhất?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Which category did I spend the most on?"
+          }
+        }
+      }
+    },
     "Danh mục và luật" : {
       "localizations" : {
         "en" : {
@@ -1587,6 +1835,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Set a goal"
+          }
+        }
+      }
+    },
+    "Đây không phải tệp sao lưu của Pennyline." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This isn't a Pennyline backup file."
           }
         }
       }
@@ -1671,6 +1929,16 @@
         }
       }
     },
+    "Đọc được tệp Pennyline đã xuất và sao kê ngân hàng có cột ngày và số tiền. Khoản đã có trên máy (cùng giờ, tên và số tiền) được bỏ qua, và nhập xong vẫn hoàn tác được." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reads files exported from Pennyline and bank statements that have a date column and an amount column. Expenses already on this device (same time, name and amount) are skipped, and an import can still be undone."
+          }
+        }
+      }
+    },
     "Đổi ảnh" : {
       "localizations" : {
         "en" : {
@@ -1681,7 +1949,16 @@
         }
       }
     },
-    "Đổi cả biểu tượng app" : {},
+    "Đổi cả biểu tượng app" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change the app icon too"
+          }
+        }
+      }
+    },
     "Đổi tên" : {
       "localizations" : {
         "en" : {
@@ -1702,6 +1979,26 @@
         }
       }
     },
+    "Dòng %lld: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Row %lld: %@"
+          }
+        }
+      }
+    },
+    "Dòng bị bỏ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skipped rows"
+          }
+        }
+      }
+    },
     "Đồng cho một đơn vị" : {
       "localizations" : {
         "en" : {
@@ -1718,6 +2015,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fully close and reopen the app to change the language."
+          }
+        }
+      }
+    },
+    "Dòng không đọc được" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unreadable rows"
+          }
+        }
+      }
+    },
+    "Dòng tiêu đề cần có cột “Ngày” và cột “Số tiền” (hoặc “Ghi nợ”). Cột “Tên”, “Danh mục”, “Nơi” có thì càng đầy đủ." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The header row needs a date column (“Date” or “Ngày”) and an amount column (“Amount”, “Số tiền” or “Ghi nợ”). Name, category and place columns make the import more complete."
           }
         }
       }
@@ -2198,6 +2515,16 @@
         }
       }
     },
+    "Hai tuần một lần" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every two weeks"
+          }
+        }
+      }
+    },
     "Hạn" : {
       "localizations" : {
         "en" : {
@@ -2254,6 +2581,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yearly"
+          }
+        }
+      }
+    },
+    "Hàng quý" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quarterly"
           }
         }
       }
@@ -2339,6 +2676,7 @@
       }
     },
     "Hỏi cũng được: tháng này cf hết bao nhiêu?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2454,7 +2792,16 @@
         }
       }
     },
-    "Hồng đào" : {},
+    "Hồng đào" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peach"
+          }
+        }
+      }
+    },
     "Hủy" : {
       "localizations" : {
         "en" : {
@@ -2602,12 +2949,42 @@
         }
       }
     },
+    "Khôi phục" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore"
+          }
+        }
+      }
+    },
+    "Khôi phục bản sao lưu?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore this backup?"
+          }
+        }
+      }
+    },
     "Khôi phục giao dịch" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Restore purchases"
+          }
+        }
+      }
+    },
+    "Khôi phục từ tệp…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore from file…"
           }
         }
       }
@@ -2632,12 +3009,32 @@
         }
       }
     },
+    "Không có gì mới" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing new"
+          }
+        }
+      }
+    },
     "Không có khoản nào khớp." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No matching expenses."
+          }
+        }
+      }
+    },
+    "Không có khoản nào mới để nhập từ tệp này." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There's nothing new to import from this file."
           }
         }
       }
@@ -2652,12 +3049,32 @@
         }
       }
     },
+    "Không đọc được tệp" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't read the file"
+          }
+        }
+      }
+    },
     "Không ghi" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Don't log"
+          }
+        }
+      }
+    },
+    "Không khôi phục được" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't restore"
           }
         }
       }
@@ -2688,6 +3105,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Not saving a place for this expense. Undo"
+          }
+        }
+      }
+    },
+    "Không thấy cột ngày." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No date column found."
+          }
+        }
+      }
+    },
+    "Không thấy cột số tiền." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No amount column found."
+          }
+        }
+      }
+    },
+    "không thấy hóa đơn" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no receipt found"
           }
         }
       }
@@ -2732,6 +3179,16 @@
         }
       }
     },
+    "Không xóa hay ghi đè gì trên máy." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing on this device is deleted or overwritten."
+          }
+        }
+      }
+    },
     "kiểm tra lại" : {
       "localizations" : {
         "en" : {
@@ -2758,6 +3215,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Part of this deposit has been withdrawn. Delete the withdrawal first."
+          }
+        }
+      }
+    },
+    "Lần tới" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next"
           }
         }
       }
@@ -2822,13 +3289,42 @@
         }
       }
     },
-    "Màu chủ đề" : {},
+    "Màu chủ đề" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Theme color"
+          }
+        }
+      }
+    },
+    "Màu chủ đề và biểu tượng app đổi được" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Theme colors and app icons"
+          }
+        }
+      }
+    },
     "Máy chưa đặt mật mã hoặc Face ID. Bạn đặt trong Cài đặt của iPhone rồi bật lại." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "This device has no passcode or Face ID set up. Set one up in iPhone Settings, then turn this on again."
+          }
+        }
+      }
+    },
+    "Máy đã có đủ mọi thứ trong bản sao lưu này." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This device already has everything in this backup."
           }
         }
       }
@@ -2903,22 +3399,22 @@
         }
       }
     },
-    "Mở Pennyline ngay ở ô gõ để ghi khoản chi." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open Pennyline right at the entry field to log an expense."
-          }
-        }
-      }
-    },
     "Mở ô gõ" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open entry"
+          }
+        }
+      }
+    },
+    "Mở Pennyline ngay ở ô gõ để ghi khoản chi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Pennyline right at the entry field to log an expense."
           }
         }
       }
@@ -2933,6 +3429,16 @@
         }
       }
     },
+    "mỗi hai tuần vào %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "every two weeks on %@"
+          }
+        }
+      }
+    },
     "Mọi lúc" : {
       "localizations" : {
         "en" : {
@@ -2943,12 +3449,32 @@
         }
       }
     },
+    "Mỗi ngày mở Pennyline, một bản được lưu trên máy (giữ %lld bản mới nhất, không kèm ảnh cho nhẹ). Chạm một bản để khôi phục, hoặc gửi nó đi để cất nơi khác." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Each day you open Pennyline, a backup is saved on this device (the newest %lld are kept, without photos to keep them small). Tap one to restore it, or send it away to keep it elsewhere."
+          }
+        }
+      }
+    },
     "Mỗi tháng bạn muốn tiêu bao nhiêu?" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "How much do you want to spend each month?"
+          }
+        }
+      }
+    },
+    "Một tệp .json đọc được, chứa khoản chi kèm ảnh, danh mục, luật, hạn mức, khoản định kỳ, mục tiêu tiết kiệm, ngân sách và tỷ giá. Cất vào iCloud Drive hoặc gửi cho chính bạn. Khôi phục chỉ thêm cái máy chưa có, không xóa hay ghi đè gì." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A readable .json file with your expenses (with photos), categories, rules, limits, recurring expenses, savings goals, budget and exchange rates. Keep it in iCloud Drive or send it to yourself. Restoring only adds what this device lacks and never deletes or overwrites anything."
           }
         }
       }
@@ -3023,12 +3549,38 @@
         }
       }
     },
+    "Ngân sách và tỷ giá máy chưa đặt sẽ lấy từ bản này." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Budget and exchange rates not yet set on this device will be taken from this backup."
+          }
+        }
+      }
+    },
     "Ngày" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Day"
+          }
+        }
+      }
+    },
+    "ngày %lld các tháng %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "day %lld of months %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ngày %1$lld các tháng %2$@"
           }
         }
       }
@@ -3055,6 +3607,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ngày %1$lld/%2$lld hàng năm"
+          }
+        }
+      }
+    },
+    "ngày không đọc được" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "unreadable date"
+          }
+        }
+      }
+    },
+    "Ngày mai: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tomorrow: %@"
+          }
+        }
+      }
+    },
+    "Ngày nào tiêu nhiều nhất?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Which day did I spend the most?"
+          }
+        }
+      }
+    },
+    "ngày ở tương lai" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "date in the future"
           }
         }
       }
@@ -3139,12 +3731,140 @@
         }
       }
     },
+    "Nhắc trước một ngày" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remind me a day before"
+          }
+        }
+      }
+    },
     "Nhắc và gợi ý" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reminders and suggestions"
+          }
+        }
+      }
+    },
+    "Nhập %lld khoản" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Import %lld expense"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Import %lld expenses"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Nhập từ CSV" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import from CSV"
+          }
+        }
+      }
+    },
+    "Nhập từ tệp CSV…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import from CSV file…"
+          }
+        }
+      }
+    },
+    "nhậu 460k chia 4" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nhậu 460k chia 4"
+          }
+        }
+      }
+    },
+    "nhiều khoản trong một dòng" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "several expenses in one line"
+          }
+        }
+      }
+    },
+    "Nhiều nhất: %@ %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Most: %1$@ %2$@."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhiều nhất: %1$@ %2$@."
+          }
+        }
+      }
+    },
+    "Nói “Ghi chi tiêu trong Pennyline”, Siri sẽ hỏi bạn tiêu gì. Trả lời như khi gõ: “phở 45k”." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Say “Log expense in Pennyline” and Siri will ask what you spent on. Answer the way you'd type it: “phở 45k”."
+          }
+        }
+      }
+    },
+    "Nơi ghi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logged at"
+          }
+        }
+      }
+    },
+    "Nói khoản chi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speak an expense"
+          }
+        }
+      }
+    },
+    "Nút Tác vụ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Action Button"
           }
         }
       }
@@ -3229,88 +3949,22 @@
         }
       }
     },
+    "Pennyline nhắc lúc 9:00 và bạn chạm Ghi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pennyline reminds you at 9:00 and you tap Log."
+          }
+        }
+      }
+    },
     "Pennyline Pro" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pennyline Pro"
-          }
-        }
-      }
-    },
-    "nhậu 460k chia 4" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "nhậu 460k chia 4"
-          }
-        }
-      }
-    },
-    "nhiều khoản trong một dòng" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "several expenses in one line"
-          }
-        }
-      }
-    },
-    "Nhiều nhất: %@ %@." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Most: %1$@ %2$@."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nhiều nhất: %1$@ %2$@."
-          }
-        }
-      }
-    },
-    "Nói “Ghi chi tiêu trong Pennyline”, Siri sẽ hỏi bạn tiêu gì. Trả lời như khi gõ: “phở 45k”." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Say “Log expense in Pennyline” and Siri will ask what you spent on. Answer the way you'd type it: “phở 45k”."
-          }
-        }
-      }
-    },
-    "Nơi ghi" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Logged at"
-          }
-        }
-      }
-    },
-    "Nói khoản chi" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Speak an expense"
-          }
-        }
-      }
-    },
-    "Nút Tác vụ" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Action Button"
           }
         }
       }
@@ -3496,6 +4150,120 @@
         }
       }
     },
+    "Sao lưu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup"
+          }
+        }
+      }
+    },
+    "Sao lưu tự động" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatic backup"
+          }
+        }
+      }
+    },
+    "Sao lưu tự động là của Pennyline Pro. Sao lưu và khôi phục bằng tệp ở trên luôn miễn phí." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatic backup is part of Pennyline Pro. Backing up and restoring with a file, above, is always free."
+          }
+        }
+      }
+    },
+    "Sao lưu tự động mỗi ngày" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back up automatically every day"
+          }
+        }
+      }
+    },
+    "Sao lưu và nhập dữ liệu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup and import"
+          }
+        }
+      }
+    },
+    "Sẽ nhập" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Will import"
+          }
+        }
+      }
+    },
+    "Sẽ thêm %lld khoản chi và %lld mục khác (khoản ứng, danh mục, luật, hạn mức, khoản định kỳ, mục tiêu tiết kiệm)." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Will add: expenses %lld, other items %lld (loans, categories, rules, limits, recurring expenses, savings goals)."
+          }
+        }
+      }
+    },
+    "Sẽ thêm %lld khoản chi." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Will add %lld expense."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Will add %lld expenses."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Sẽ thêm %lld mục (khoản ứng, danh mục, luật, hạn mức, khoản định kỳ, mục tiêu tiết kiệm)." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Will add %lld item (loans, categories, rules, limits, recurring expenses, savings goals)."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Will add %lld items (loans, categories, rules, limits, recurring expenses, savings goals)."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Siri" : {
       "localizations" : {
         "en" : {
@@ -3532,6 +4300,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Amount needed"
+          }
+        }
+      }
+    },
+    "số tiền không đọc được" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "unreadable amount"
           }
         }
       }
@@ -3662,6 +4440,16 @@
         }
       }
     },
+    "Tạo bản sao lưu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create a backup"
+          }
+        }
+      }
+    },
     "Tất cả" : {
       "localizations" : {
         "en" : {
@@ -3712,7 +4500,66 @@
         }
       }
     },
-    "Than chì" : {},
+    "Tệp không mở được hoặc quá lớn." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The file can't be opened or is too large."
+          }
+        }
+      }
+    },
+    "Tệp này tạo bởi bản Pennyline mới hơn. Bạn cập nhật Pennyline rồi thử lại." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This file was made by a newer version of Pennyline. Update Pennyline and try again."
+          }
+        }
+      }
+    },
+    "Tệp sao lưu bị hỏng hoặc thiếu phần bắt buộc." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The backup file is damaged or missing required parts."
+          }
+        }
+      }
+    },
+    "Tệp trống, không mở được hoặc quá lớn." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The file is empty, can't be opened or is too large."
+          }
+        }
+      }
+    },
+    "Tệp trống." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The file is empty."
+          }
+        }
+      }
+    },
+    "Than chì" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Graphite"
+          }
+        }
+      }
+    },
     "Tháng" : {
       "localizations" : {
         "en" : {
@@ -3753,6 +4600,16 @@
         }
       }
     },
+    "Tháng này %@ hết bao nhiêu?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How much did I spend on %@ this month?"
+          }
+        }
+      }
+    },
     "Tháng này bạn đã tiêu %@." : {
       "localizations" : {
         "en" : {
@@ -3785,6 +4642,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tháng này còn %1$@, đã tiêu %2$@ trên %3$@. %4$@"
+          }
+        }
+      }
+    },
+    "Tháng này còn lại bao nhiêu?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How much is left this month?"
           }
         }
       }
@@ -3959,6 +4826,16 @@
         }
       }
     },
+    "Tiền vào, bỏ qua" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Money in, skipped"
+          }
+        }
+      }
+    },
     "Tiếng Việt" : {
       "localizations" : {
         "en" : {
@@ -3999,7 +4876,16 @@
         }
       }
     },
-    "Tím nhạt" : {},
+    "Tím nhạt" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lavender"
+          }
+        }
+      }
+    },
     "Tìm quán gần đây" : {
       "localizations" : {
         "en" : {
@@ -4070,6 +4956,16 @@
         }
       }
     },
+    "Tổng" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total"
+          }
+        }
+      }
+    },
     "Tổng kết %@" : {
       "localizations" : {
         "en" : {
@@ -4130,7 +5026,16 @@
         }
       }
     },
-    "Trời xanh" : {},
+    "Trời xanh" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sky"
+          }
+        }
+      }
+    },
     "trưa" : {
       "localizations" : {
         "en" : {
@@ -4147,6 +5052,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "From"
+          }
+        }
+      }
+    },
+    "tự ghi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "auto-log"
           }
         }
       }
@@ -4335,6 +5250,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ứng cho Minh 200k"
+          }
+        }
+      }
+    },
+    "Và %lld dòng nữa." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "And %lld more row."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "And %lld more rows."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Và %lld khoản nữa." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "And %lld more expense."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "And %lld more expenses."
+                }
+              }
+            }
           }
         }
       }
@@ -4548,6 +5507,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "View full screen"
+          }
+        }
+      }
+    },
+    "Xem trước" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preview"
           }
         }
       }

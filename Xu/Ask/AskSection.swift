@@ -9,6 +9,8 @@ struct AskSection: View {
     @State private var isAsking = false
 
     let snapshot: SpendingSnapshot
+    /// Tên hiện cho khóa danh mục, để câu hỏi mẫu nói đúng tên người dùng đang thấy.
+    var categoryTitle: (String) -> String = { String(localized: SpendingCategory(key: $0).title) }
     /// Thay được cách trả lời khi xem trước hoặc test.
     var answerer: (any SpendingAnswering)?
     var isAvailable = AskEngine.isAvailable
@@ -30,6 +32,7 @@ struct AskSection: View {
                 }
             }
             if isAvailable {
+                samples
                 HStack {
                     TextField("Hỏi Pennyline câu khác", text: $text)
                         .submitLabel(.send)
@@ -53,25 +56,26 @@ struct AskSection: View {
         }
     }
 
+    /// Câu hỏi mẫu chọn theo số liệu tháng này; chạm là hỏi ngay.
+    @ViewBuilder
+    private var samples: some View {
+        let questions = AskSuggestions.make(
+            snapshot: snapshot, categoryTitle: { snapshot.categoryNames[$0] ?? categoryTitle($0) }
+        )
+        AskSampleChips(questions: questions, isDisabled: isAsking) { ask($0) }
+    }
+
     private func ask(_ question: String) {
         let question = question.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !question.isEmpty, !isAsking else { return }
-        guard isAvailable, let answerer = answerer ?? AskEngine.makeAnswerer(calendar: calendar) else {
-            settings.lastQuestion = question
-            settings.lastAnswer = ""
-            return
-        }
-        text = ""
         settings.lastQuestion = question
         settings.lastAnswer = ""
+        guard isAvailable else { return }
+        text = ""
         isAsking = true
         Task {
             defer { isAsking = false }
-            do {
-                settings.lastAnswer = try await answerer.answer(question, context: snapshot)
-            } catch {
-                settings.lastAnswer = String(localized: "Pennyline chưa trả lời chắc được câu này. Bạn thử hỏi cách khác nhé.")
-            }
+            settings.lastAnswer = await AskRunner.answer(question, snapshot: snapshot, calendar: calendar, answerer: answerer) ?? ""
         }
     }
 }

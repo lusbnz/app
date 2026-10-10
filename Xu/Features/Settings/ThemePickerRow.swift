@@ -2,11 +2,13 @@ import SwiftUI
 
 /// Chọn màu chủ đề (và biểu tượng app đi kèm). Chủ đề mặc định miễn phí, các chủ đề khác là của Pennyline Pro.
 struct ThemePickerRow: View {
-    @Environment(AppState.self) private var appState
     @Environment(EntitlementStore.self) private var store
     @State private var themes = ThemeStore.shared
     /// Đổi biểu tượng app theo chủ đề; chỉ hiện khi dự án đã bật bộ biểu tượng thay thế.
     @AppStorage("themeSyncsIcon", store: AppGroup.defaults) private var syncsIcon = true
+
+    /// Màu chủ đề khác mặc định cần Pro; nơi gọi tự hiện bảng mua, vì bảng mua của màn gốc không hiện được khi Tùy chỉnh đang mở.
+    let needsPro: () -> Void
 
     private var supportsIcons: Bool { UIApplication.shared.supportsAlternateIcons }
 
@@ -59,7 +61,7 @@ struct ThemePickerRow: View {
 
     private func choose(_ theme: AppTheme) {
         guard store.isPro || theme.isDefault else {
-            appState.showsPaywall = true
+            needsPro()
             return
         }
         withAnimation(.easeInOut(duration: 0.25)) { themes.theme = theme }
@@ -70,5 +72,5 @@ struct ThemePickerRow: View {
 }
 
 #Preview {
-    Form { ThemePickerRow() }.xuPreview()
+    Form { ThemePickerRow(needsPro: {}) }.xuPreview()
 }

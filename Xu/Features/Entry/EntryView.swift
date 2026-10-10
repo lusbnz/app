@@ -1,7 +1,14 @@
 import SwiftData
 import SwiftUI
 
-/// Ô gõ: gõ một dòng, xem trước từng khoản đã tách, rồi Ghi.
+/// Câu hỏi vừa hỏi ở ô gõ và câu trả lời (nil khi còn đang chờ).
+struct AskedQuestion: Equatable {
+    var question: String
+    var answer: String?
+}
+
+/// Ô gõ: gõ một dòng, xem trước từng khoản đã tách, rồi Ghi. Gõ một câu hỏi, hoặc chạm câu hỏi mẫu, thì Hỏi Pennyline
+/// trả lời ngay trong ô gõ.
 struct EntryView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
@@ -12,6 +19,7 @@ struct EntryView: View {
     @Query private var expenses: [Expense]
     @Query private var rules: [CategoryRule]
     @Query private var budgets: [CategoryBudget]
+    @Query private var customCategories: [CustomCategory]
     @State private var text: String
     @State private var overrides: [Int: EntryOverride] = [:]
     @State private var editing: EntryRow?
@@ -20,14 +28,21 @@ struct EntryView: View {
     @State private var voice = VoiceInput()
     @State private var voiceBase = ""
     @State private var placeState = EntryPlaceState.none
+    @State private var asked: AskedQuestion?
+    @State private var isAsking = false
     @FocusState private var isFocused: Bool
     private let startsListening: Bool
+    private let askAvailable: Bool
+    private let answerer: (any SpendingAnswering)?
 
     let now: Date
     private let parser = ExpenseParser(rates: ExchangeRates.load())
 
-    init(request: EntryRequest, now: Date) {
+    /// `askAvailable` và `answerer` để xem trước và test thay cách trả lời; mặc định dùng mô hình trên máy nếu có.
+    init(request: EntryRequest, now: Date, askAvailable: Bool = AskEngine.isAvailable, answerer: (any SpendingAnswering)? = nil) {
         self.now = now
+        self.askAvailable = askAvailable
+        self.answerer = answerer
         startsListening = request.startsListening
         _text = State(initialValue: request.text)
         let since = Calendar.current.date(byAdding: .day, value: -35, to: now) ?? now
@@ -72,12 +87,12 @@ struct EntryView: View {
                         restore: { placeState = .none; Task { await resolvePlace() } }
                     )
                     if isEmpty {
-                        Text("Hỏi cũng được: tháng này cf hết bao nhiêu?")
-                            .font(.footnote)
-                            .foregroundStyle(Color.xuTextSecondary)
+                        if askAvailable { askBlock }
                         if settings.suggestionsEnabled {
                             suggestions
                         }
+                    } else if let question {
+                        questionRow(question)
                     } else {
                         VStack(spacing: 0) {
                             ForEach(rows) { row in
@@ -99,10 +114,8 @@ struct EntryView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     if let question {
-                        Button("Hỏi") {
-                            dismiss()
-                            appState.ask(question)
-                        }
+                        Button("Hỏi") { ask(question) }
+                            .disabled(!askAvailable || isAsking)
                     } else {
                         Button("Ghi") { save(rows) }
                             .disabled(rows.isEmpty || rows.contains { $0.amount == nil })
@@ -120,6 +133,15 @@ struct EntryView: View {
         }
         .onDisappear { voice.cancel() }
         .task(id: coordinateKey) { await resolvePlace() }
+        #if DEBUG
+        .task {
+            // Cờ chạy thử `-entryask "câu hỏi"`.
+            guard let question = appState.debugEntryQuestion else { return }
+            appState.debugEntryQuestion = nil
+            try? await Task.sleep(for: .milliseconds(700))
+            ask(question)
+        }
+        #endif
         .onAppear {
             if startsListening, voice.isSupported {
                 startListening()
@@ -142,6 +164,94 @@ struct EntryView: View {
         }
         .sheet(item: $editing) { row in
             EntryRowEditor(row: row) { overrides[row.id] = $0 }
+        }
+    }
+
+    // MARK: - Hỏi Pennyline
+
+    private func makeSnapshot() -> SpendingSnapshot {
+        SpendingSnapshot.make(
+            expenses: expenses, budget: settings.budgetSetting, customCategories: customCategories, now: now, calendar: calendar
+        )
+    }
+
+    /// Câu trả lời gần nhất (nếu có) và các câu hỏi mẫu theo số liệu tháng này, để chạm là hỏi.
+    private var askBlock: some View {
+        let snapshot = makeSnapshot()
+        let questions = AskSuggestions.make(
+            snapshot: snapshot, categoryTitle: { snapshot.categoryNames[$0] ?? String(localized: SpendingCategory(key: $0).title) }
+        )
+        return VStack(alignment: .leading, spacing: 10) {
+            if let asked {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(verbatim: asked.question)
+                        .foregroundStyle(Color.xuTextSecondary)
+                    if isAsking {
+                        ProgressView()
+                    } else if let answer = asked.answer, !answer.isEmpty {
+                        Text(verbatim: answer)
+                            .font(.title3.weight(.medium))
+                    }
+                }
+                .padding(16)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color.xuSurface, in: .rect(cornerRadius: 22))
+                .accessibilityElement(children: .combine)
+            }
+            Text("Hỏi Pennyline")
+                .font(.caption)
+                .foregroundStyle(Color.xuTextSecondary)
+                .padding(.top, asked == nil ? 0 : 4)
+            AskSampleChips(questions: questions, isDisabled: isAsking) { ask($0) }
+        }
+    }
+
+    /// Dòng hiện khi chữ đang gõ là một câu hỏi: chạm để hỏi, như nút Hỏi ở góc trên.
+    @ViewBuilder
+    private func questionRow(_ question: String) -> some View {
+        if askAvailable {
+            Button { ask(question) } label: {
+                HStack(spacing: 10) {
+                    Image(systemName: "sparkles")
+                        .accessibilityHidden(true)
+                    Text(verbatim: question)
+                        .multilineTextAlignment(.leading)
+                    Spacer(minLength: 8)
+                    Text("Hỏi")
+                        .font(.subheadline.weight(.semibold))
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+                .frame(maxWidth: .infinity, minHeight: 52, alignment: .leading)
+                .background(Color.xuSurface, in: .rect(cornerRadius: 18))
+                .contentShape(.rect)
+            }
+            .buttonStyle(.plain)
+            .disabled(isAsking)
+            .accessibilityHint("Hỏi Pennyline")
+        } else {
+            Text("Máy này chưa hỗ trợ Hỏi Pennyline")
+                .font(.footnote)
+                .foregroundStyle(Color.xuTextSecondary)
+        }
+    }
+
+    /// Hỏi ngay trong ô gõ: xóa chữ đang gõ, hiện câu trả lời phía trên các câu hỏi mẫu, và nhớ cả hai để màn Tháng hiện lại.
+    private func ask(_ question: String) {
+        let question = question.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard askAvailable, !question.isEmpty, !isAsking else { return }
+        text = ""
+        overrides = [:]
+        asked = AskedQuestion(question: question, answer: nil)
+        settings.lastQuestion = question
+        settings.lastAnswer = ""
+        isAsking = true
+        let snapshot = makeSnapshot()
+        Task {
+            let answer = await AskRunner.answer(question, snapshot: snapshot, calendar: calendar, answerer: answerer) ?? ""
+            asked = AskedQuestion(question: question, answer: answer)
+            settings.lastAnswer = answer
+            isAsking = false
         }
     }
 
@@ -402,6 +512,16 @@ struct EntryRowEditor: View {
 
 #Preview("Đang gõ") {
     EntryView(request: EntryRequest(text: "cơm tấm 55, đổ xăng 80k, tai nghe 1tr2"), now: Date()).xuPreview()
+}
+
+private struct PreviewAnswerer: SpendingAnswering {
+    func answer(_ question: String, context: SpendingSnapshot) async throws -> String {
+        "232k cho 8 lần, trung bình 29k mỗi lần."
+    }
+}
+
+#Preview("Hỏi Pennyline") {
+    EntryView(request: EntryRequest(), now: Date(), askAvailable: true, answerer: PreviewAnswerer()).xuPreview()
 }
 
 /// Lần ghi đang chờ người dùng xác nhận vì giống khoản vừa ghi.

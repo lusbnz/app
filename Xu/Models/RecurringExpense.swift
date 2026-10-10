@@ -1,7 +1,7 @@
 import Foundation
 import SwiftData
 
-/// Khoản chi lặp lại mỗi tuần, tháng hoặc năm. Đến hạn thì Pennyline nhắc và hỏi; chỉ tự ghi khi `autoRecord` bật.
+/// Khoản chi lặp lại mỗi tuần, hai tuần, tháng, quý hoặc năm. Đến hạn thì Pennyline nhắc và hỏi; chỉ tự ghi khi `autoRecord` bật.
 @Model final class RecurringExpense {
     var id: UUID = UUID()
     var name: String = ""
@@ -17,11 +17,14 @@ import SwiftData
     var weekday: Int = 2
     var monthOfYear: Int = 1
     var autoRecord: Bool = false
+    var remindDayBefore: Bool = false
 
     init(
         name: String, amount: Int, categoryKey: String, dayOfMonth: Int, isOutsideBudget: Bool = false, createdAt: Date = Date(),
-        frequency: RecurringFrequency = .monthly, weekday: Int = 2, monthOfYear: Int = 1, autoRecord: Bool = false
+        frequency: RecurringFrequency = .monthly, weekday: Int = 2, monthOfYear: Int = 1, autoRecord: Bool = false,
+        remindDayBefore: Bool = false
     ) {
+        self.remindDayBefore = remindDayBefore
         frequencyRaw = frequency.rawValue
         self.weekday = weekday
         self.monthOfYear = monthOfYear
@@ -43,7 +46,8 @@ import SwiftData
         RecurringItem(
             id: id, name: name, amount: amount, categoryKey: categoryKey, dayOfMonth: dayOfMonth,
             isOutsideBudget: isOutsideBudget, createdAt: createdAt, handledMonth: handledMonth,
-            frequency: frequency, weekday: weekday, monthOfYear: monthOfYear, autoRecord: autoRecord
+            frequency: frequency, weekday: weekday, monthOfYear: monthOfYear, autoRecord: autoRecord,
+            remindDayBefore: remindDayBefore
         )
     }
 }

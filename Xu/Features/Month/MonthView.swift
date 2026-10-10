@@ -31,12 +31,9 @@ struct MonthView: View {
     }
 
     private func makeSnapshot(_ expenses: [Expense]) -> SpendingSnapshot {
-        var snapshot = SpendingSnapshot.make(
-            records: expenses.map(\.record), monthlyBudget: settings.budgetSetting.monthlyEquivalent(now: now, calendar: calendar),
-            now: now, calendar: calendar
+        SpendingSnapshot.make(
+            expenses: expenses, budget: settings.budgetSetting, customCategories: customCategories, now: now, calendar: calendar
         )
-        snapshot.categoryNames = CategoryCatalog(custom: customCategories).titles
-        return snapshot
     }
 
     var body: some View {

@@ -8,6 +8,9 @@ struct ExpenseFields: Equatable {
     var categoryKey = SpendingCategory.other.rawValue
     var isOutsideBudget = false
     var date = Date()
+    /// Chỉ màn Chi tiết dùng: tên nơi ghi đang sửa, và có đổi theo cho các khoản khác ở cùng chỗ không.
+    var placeName = ""
+    var appliesPlaceToSiblings = true
 
     var amount: Int? { AmountParser.amount(from: amountText) }
 
@@ -20,6 +23,8 @@ struct ExpenseFieldsEditor: View {
     @Binding var fields: ExpenseFields
     var showsName = true
     var showsDate = true
+    /// Có thì hiện dòng "Nơi ghi" và gọi hàm này khi chạm (màn Chi tiết mở bảng chọn nơi).
+    var onPickPlace: (() -> Void)?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -47,6 +52,16 @@ struct ExpenseFieldsEditor: View {
                 row("Thời gian") {
                     DatePicker("Thời gian", selection: $fields.date, in: ...Date())
                         .labelsHidden()
+                }
+            }
+            if let onPickPlace {
+                row("Nơi ghi") {
+                    Button(action: onPickPlace) {
+                        Text(fields.placeName.isEmpty ? String(localized: "chưa đặt") : fields.placeName)
+                            .foregroundStyle(Color.xuTextSecondary)
+                            .lineLimit(1)
+                    }
+                    .buttonStyle(.plain)
                 }
             }
             Toggle("Ngoài ngân sách", isOn: $fields.isOutsideBudget)

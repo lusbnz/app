@@ -8,12 +8,14 @@ extension ExpenseRecorder {
     @discardableResult
     func addRecurring(
         name: String, amount: Int, categoryKey: String, dayOfMonth: Int, isOutsideBudget: Bool, now: Date,
-        frequency: RecurringFrequency = .monthly, weekday: Int = 2, monthOfYear: Int = 1, autoRecord: Bool = false
+        frequency: RecurringFrequency = .monthly, weekday: Int = 2, monthOfYear: Int = 1, autoRecord: Bool = false,
+        remindDayBefore: Bool = false
     ) -> RecurringExpense {
         let item = RecurringExpense(
             name: name, amount: amount, categoryKey: categoryKey, dayOfMonth: dayOfMonth,
             isOutsideBudget: isOutsideBudget, createdAt: now,
-            frequency: frequency, weekday: weekday, monthOfYear: monthOfYear, autoRecord: autoRecord
+            frequency: frequency, weekday: weekday, monthOfYear: monthOfYear, autoRecord: autoRecord,
+            remindDayBefore: remindDayBefore
         )
         context.insert(item)
         commit()
@@ -22,10 +24,12 @@ extension ExpenseRecorder {
 
     func updateRecurring(
         _ item: RecurringExpense, name: String, amount: Int, categoryKey: String, dayOfMonth: Int, isOutsideBudget: Bool,
-        frequency: RecurringFrequency = .monthly, weekday: Int = 2, monthOfYear: Int = 1, autoRecord: Bool = false
+        frequency: RecurringFrequency = .monthly, weekday: Int = 2, monthOfYear: Int = 1, autoRecord: Bool = false,
+        remindDayBefore: Bool = false
     ) {
         // Đổi lịch thì kỳ đã xử lý không còn đúng nghĩa, nên bắt đầu lại.
         if item.frequency != frequency { item.handledMonth = "" }
+        item.remindDayBefore = remindDayBefore
         item.frequency = frequency
         item.weekday = weekday
         item.monthOfYear = monthOfYear

@@ -16,6 +16,9 @@ struct ReceiptReading: Equatable, Sendable {
     var items: [ReceiptItem] = []
     /// false khi tổng tiền không đứng cạnh từ khóa "tổng", hoặc nhỏ hơn một món lẻ: nên nhắc người dùng kiểm tra.
     var isTotalConfident = true
+    /// false khi ảnh không giống hóa đơn (không có từ khóa "tổng" và không có ít nhất hai dòng món có giá ở cuối dòng),
+    /// ví dụ ảnh chụp màn hình có chữ và số lộn xộn. Khi đó đừng điền sẵn tên và số tiền.
+    var isLikelyReceipt = true
 }
 
 /// Luật tìm tổng tiền, ngày giờ và tên cửa hàng trong các dòng chữ đã nhận dạng. Không tách từng món.
@@ -30,7 +33,8 @@ enum ReceiptParser {
             total: found?.value,
             date: date(in: lines, now: now, calendar: calendar),
             items: items,
-            isTotalConfident: found.map { $0.viaKeyword && $0.value >= largestItem } ?? false
+            isTotalConfident: found.map { $0.viaKeyword && $0.value >= largestItem } ?? false,
+            isLikelyReceipt: found?.viaKeyword == true || items.count >= 2
         )
     }
 
@@ -79,14 +83,33 @@ enum ReceiptParser {
         "tien thua", "tien mat", "the tin dung", "change", "cash", "discount", "phi dich vu", "service", "so du",
     ]
 
-    /// Các món: dòng có số tiền ở cuối và có tên. Không bao giờ là danh sách đầy đủ, chỉ là gợi ý để người dùng chọn.
+    /// Một dòng món dài hơn thế này là đoạn văn chứ không phải tên món.
+    private static let maxItemWords = 8
+    private static let maxItemLength = 48
+
+    /// Các món: dòng có tên ngắn và số tiền nằm cuối dòng. Không bao giờ là danh sách đầy đủ, chỉ là gợi ý để người dùng chọn.
+    /// Số tiền nằm giữa câu (ảnh chụp văn bản) không làm dòng đó thành món.
     static func items(in lines: [String]) -> [ReceiptItem] {
         var items: [ReceiptItem] = []
         for line in lines {
-            guard !contains(nonItemPhrases, in: line), let amount = amounts(in: line).last, let name = itemName(from: line) else { continue }
+            guard !contains(nonItemPhrases, in: line), let amount = trailingAmount(in: line), let name = itemName(from: line),
+                  name.count <= maxItemLength, TextNormalizer.words(name).count <= maxItemWords else { continue }
             items.append(ReceiptItem(id: items.count, name: name, amount: amount))
         }
         return items
+    }
+
+    private static let trailingAmountPattern = try? NSRegularExpression(
+        pattern: #"(?<![\p{L}\p{N}])(\d[\d.,]*\s?[kK]?)\s*(?:đ|d|vnd|vnđ|₫)?\s*$"#, options: [.caseInsensitive]
+    )
+
+    /// Số tiền ở cuối dòng (có thể kèm "đ", "k", "VND"); nil khi dòng không kết thúc bằng một số tiền.
+    static func trailingAmount(in line: String) -> Int? {
+        guard let regex = trailingAmountPattern,
+              let match = regex.firstMatch(in: line, range: NSRange(line.startIndex..., in: line)),
+              let token = Range(match.range(at: 1), in: line) else { return nil }
+        let values = amounts(in: String(line[token]))
+        return values.count == 1 ? values[0] : nil
     }
 
     /// Bỏ số tiền ở cuối và số lượng ("x2", "2") khỏi tên món.

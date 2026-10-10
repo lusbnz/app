@@ -1,20 +1,23 @@
 import SwiftData
 import SwiftUI
 
-/// Đặt hoặc đổi tên nơi ghi của một khoản: gõ tay, chọn tên đã dùng quanh đây, hoặc tìm quán gần đó (gửi vị trí cho Apple).
+/// Chọn tên nơi ghi cho một khoản đang sửa: gõ tay, chọn tên đã dùng quanh đây, hoặc tìm quán gần đó (gửi vị trí cho Apple).
+/// Chỉ ghi vào `name` và `appliesToSiblings`; việc lưu vào khoản làm ở nút "Xong" của màn Chi tiết, cùng các trường khác.
 struct PlacePickerView: View {
     private enum SearchState { case idle, searching, found, empty }
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @Environment(AppSettings.self) private var settings
-    @Bindable var expense: Expense
+    let expense: Expense
+    @Binding var name: String
+    @Binding var appliesToSiblings: Bool
     @State private var text = ""
     @State private var candidates: [PlaceCandidate] = []
     @State private var search = SearchState.idle
     @State private var usedNearby: [String] = []
     @State private var siblings = 0
-    @State private var appliesToSiblings = true
+    @State private var applies = true
 
     private var coordinate: Coordinate? {
         guard let latitude = expense.latitude, let longitude = expense.longitude else { return nil }
@@ -30,7 +33,7 @@ struct PlacePickerView: View {
                     TextField("Quán phở Thìn", text: $text)
                         .submitLabel(.done)
                         .onSubmit(save)
-                    if expense.placeName != nil {
+                    if !text.isEmpty {
                         Button("Bỏ tên nơi", role: .destructive) {
                             text = ""
                             save()
@@ -50,7 +53,7 @@ struct PlacePickerView: View {
                 nearbySection
                 if siblings > 0 {
                     Section {
-                        Toggle("Áp cho \(siblings) khoản khác ở cùng chỗ", isOn: $appliesToSiblings)
+                        Toggle("Áp cho \(siblings) khoản khác ở cùng chỗ", isOn: $applies)
                     }
                     .listRowBackground(Color.xuSurface)
                 }
@@ -61,7 +64,7 @@ struct PlacePickerView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Hủy") { dismiss() } }
-                ToolbarItem(placement: .confirmationAction) { Button("Lưu", action: save) }
+                ToolbarItem(placement: .confirmationAction) { Button("Xong", action: save) }
             }
             .onAppear(perform: load)
         }
@@ -107,7 +110,8 @@ struct PlacePickerView: View {
     }
 
     private func load() {
-        text = expense.placeName ?? ""
+        text = name
+        applies = appliesToSiblings
         siblings = recorder.siblingCount(of: expense)
         if let coordinate {
             usedNearby = PlaceNaming.nearbyNames(near: coordinate, in: recorder.namedPlaces())
@@ -127,7 +131,8 @@ struct PlacePickerView: View {
     }
 
     private func save() {
-        recorder.setPlace(of: expense, to: text, applyingToSiblings: appliesToSiblings && siblings > 0)
+        name = text
+        appliesToSiblings = applies && siblings > 0
         dismiss()
     }
 }

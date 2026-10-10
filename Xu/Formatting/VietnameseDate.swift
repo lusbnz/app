@@ -79,6 +79,14 @@ enum VietnameseDate {
         return sameYear ? text : "\(text), \(parts.year ?? 0)"
     }
 
+    /// "3/9 – 10/10", có năm khi một đầu khác năm nay.
+    static func range(_ first: Date, _ last: Date, now: Date, calendar: Calendar) -> String {
+        let year = calendar.component(.year, from: now)
+        let withYear = calendar.component(.year, from: first) != year || calendar.component(.year, from: last) != year
+        if calendar.isDate(first, inSameDayAs: last) { return shortDate(first, withYear: withYear, calendar: calendar) }
+        return "\(shortDate(first, withYear: withYear, calendar: calendar)) – \(shortDate(last, withYear: withYear, calendar: calendar))"
+    }
+
     /// "29/9" hoặc "29/9/2025"; ngôn ngữ khác theo cách viết của ngôn ngữ đó.
     private static func shortDate(_ date: Date, withYear: Bool, calendar: Calendar) -> String {
         if isVietnamese {

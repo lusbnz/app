@@ -11,6 +11,7 @@ struct OnboardingView: View {
     @Environment(LocationProvider.self) private var location
     @Environment(\.calendar) private var calendar
     @State private var step = Step.typing
+    @State private var restoreRequest: BackupFileRequest?
     @State private var text = ""
     @FocusState private var isFocused: Bool
 
@@ -24,6 +25,7 @@ struct OnboardingView: View {
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
         .xuScreen()
+        .backupFileHost(request: $restoreRequest)
         .animation(.snappy, value: step)
         .onChange(of: step) { _, newStep in isFocused = newStep == .budget }
     }
@@ -68,6 +70,11 @@ struct OnboardingView: View {
                 .font(.subheadline)
                 .foregroundStyle(Color.xuTextSecondary)
             Spacer()
+            // Máy mới: lấy lại dữ liệu từ tệp sao lưu. Có ngân sách trong bản sao lưu thì onboarding tự xong.
+            Button("Đã có bản sao lưu? Khôi phục") { restoreRequest = .chooseBackup }
+                .font(.subheadline)
+                .foregroundStyle(Color.xuTextSecondary)
+                .frame(minHeight: 44)
             navigation()
         }
     }

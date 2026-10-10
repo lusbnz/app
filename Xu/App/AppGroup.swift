@@ -28,6 +28,7 @@ enum SettingsKey {
     static let appTheme = "appTheme"
     static let placeLookup = "placeLookup"
     static let limitsShapeDaily = "limitsShapeDaily"
+    static let autoBackup = "autoBackup"
     /// Nằm trong `UserDefaults.standard` (không phải App Group) vì hệ thống đọc `AppleLanguages` ở đó.
     static let appLanguage = "appLanguage"
 }

@@ -40,9 +40,13 @@ struct RootView: View {
                 Task { await PlaceLookup.shared.backfill(context: modelContext, groupLimit: 5) }
                 NotificationManager.shared.refreshRecurringReminders()
                 NotificationManager.shared.refreshSummaryReminders()
+                runAutomaticBackup()
             }
         }
-        .onAppear { recordAutomaticRecurring() }
+        .onAppear {
+            recordAutomaticRecurring()
+            runAutomaticBackup()
+        }
     }
 }
 
@@ -53,6 +57,17 @@ extension RootView {
         guard settings.monthlyBudget > 0 else { return }
         let batches = ExpenseRecorder(context: modelContext).recordAutomaticRecurring(now: Date(), calendar: .current)
         if let last = batches.last { appState.didSave(last) }
+    }
+}
+
+extension RootView {
+    /// Pennyline Pro: mỗi ngày mở app lưu một bản sao lưu trên máy nếu người dùng đã bật.
+    @MainActor
+    fileprivate func runAutomaticBackup() {
+        guard settings.autoBackupEnabled, SaveGate.isPro, settings.monthlyBudget > 0 else { return }
+        Task {
+            await AutoBackup.runIfNeeded(context: modelContext, settings: settings.backupSettings(), now: Date(), calendar: .current)
+        }
     }
 }
 

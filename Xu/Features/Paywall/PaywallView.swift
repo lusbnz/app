@@ -150,7 +150,11 @@ struct PaywallView: View {
 enum PaywallBenefit {
     /// Chỉ liệt kê quyền lợi đã có trong bản này.
     @MainActor static var current: [String] {
-        [String(localized: "Gõ không giới hạn")]
+        [
+            String(localized: "Gõ không giới hạn"),
+            String(localized: "Màu chủ đề và biểu tượng app đổi được"),
+            String(localized: "Sao lưu tự động mỗi ngày"),
+        ]
     }
 }
 

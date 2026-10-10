@@ -21,6 +21,7 @@ struct TodayContent: View {
     @State private var scroll = TodayScrollTracker()
     /// Ngày cần cuộn tới sau khi cửa sổ tải xong (kéo dải ngày tới một ngày chưa tải).
     @State private var pendingJump: Date?
+    @State private var lastJump: Date?
     @State private var openedWeek: WeekRef?
 
     let now: Date
@@ -32,16 +33,39 @@ struct TodayContent: View {
     let loadMore: () -> Void
     let ensureLoaded: (Date) -> Void
     let dataChanged: () -> Void
-    private static let topID = "today.top"
 
     /// Một tuần được mở ở màn Chi tiết tuần.
     private struct WeekRef: Hashable {
         let start: Date
     }
 
-    /// Mốc cuộn tới một ngày; bọc `Date` cho khỏi lẫn với mã định danh của `ForEach`.
-    private struct DayAnchor: Hashable {
-        let day: Date
+    /// Một dòng của danh sách. Mỗi dòng là một phần tử riêng của `ForEach` với mã riêng, vì `scrollTo` của `List`
+    /// chỉ cuộn được tới mã của chính một dòng (đặt `.id` lên một dòng con của nhóm thì không cuộn tới được).
+    private enum Row: Identifiable {
+        case top
+        case recurring(RecurringExpense)
+        case week(WeekSummary, topPadding: CGFloat)
+        case todayHeader
+        case dayHeader(day: Date, total: Int, depth: Int)
+        /// `depth` nil là khoản của hôm nay (không nhạt dần).
+        case expense(Expense, depth: Int?)
+        case loadMore
+
+        static let topID = "today.top"
+
+        static func dayID(_ day: Date) -> String { "day-\(Int(day.timeIntervalSince1970))" }
+
+        var id: String {
+            switch self {
+            case .top: Self.topID
+            case .recurring(let item): "recurring-\(item.id)"
+            case .week(let summary, _): "week-\(Int(summary.start.timeIntervalSince1970))"
+            case .todayHeader: "today-header"
+            case .dayHeader(let day, _, _): Self.dayID(day)
+            case .expense(let expense, _): "expense-\(expense.id)"
+            case .loadMore: "load-more"
+            }
+        }
     }
 
     init(
@@ -84,13 +108,8 @@ struct TodayContent: View {
         let catalog = CategoryCatalog(custom: customCategories)
         ScrollViewReader { proxy in
         List {
-            Group {
-                header(status).id(Self.topID)
-                ForEach(dueRecurring) { item in
-                    DueRecurringRow(item: item) { recordRecurring(item) } skip: { skipRecurring(item) }
-                }
-                history(catalog: catalog)
-                if hasOlder { loadMoreRow }
+            ForEach(rows()) { row in
+                rowView(row, catalog: catalog, status: status)
             }
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
@@ -131,7 +150,7 @@ struct TodayContent: View {
                 accessibilityText: accessibilitySummary(status),
                 openSearch: { appState.showsSearch = true },
                 openSettings: { appState.showsSettings = true },
-                scrollToToday: { withAnimation(.smooth) { proxy.scrollTo(Self.topID, anchor: .top) } }
+                scrollToToday: { withAnimation(.smooth) { proxy.scrollTo(Row.topID, anchor: .top) } }
             )
         }
         .overlay(alignment: .trailing) {
@@ -145,11 +164,18 @@ struct TodayContent: View {
             pendingJump = nil
             Task {
                 try? await Task.sleep(for: .milliseconds(80))
-                proxy.scrollTo(DayAnchor(day: day), anchor: .top)
+                scroll(to: Row.dayID(day), day: day, proxy: proxy)
             }
         }
         .onChange(of: expenses.count) { dataChanged() }
         #if DEBUG
+        .task(id: scrubDays.count) {
+            // Cờ chạy thử `-scrub N`: cùng đường nhảy với nút kéo ở mép phải.
+            guard let index = appState.debugScrubIndex, scrubDays.indices.contains(index) else { return }
+            appState.debugScrubIndex = nil
+            try? await Task.sleep(for: .seconds(2))
+            jump(to: scrubDays[index], proxy: proxy)
+        }
         .onChange(of: appState.debugOpensWeek) { _, opens in
             // Cờ chạy thử `-open week`.
             guard opens else { return }
@@ -347,20 +373,50 @@ struct TodayContent: View {
         return blocks
     }
 
-    @ViewBuilder
-    private func history(catalog: CategoryCatalog) -> some View {
-        ForEach(weekBlocks()) { block in
+    /// Mọi dòng của danh sách, từ trên xuống: số lớn, khoản định kỳ đến hạn, rồi từng tuần.
+    private func rows() -> [Row] {
+        var rows: [Row] = [.top]
+        rows += dueRecurring.map(Row.recurring)
+        for block in weekBlocks() {
             // Tuần này chỉ có hôm nay thì tiêu đề tuần trùng với tiêu đề hôm nay, nên bỏ.
-            if !block.days.isEmpty, let summary = block.summary { weekHeader(summary, topPadding: block.isCurrent ? 12 : 36) }
+            if !block.days.isEmpty, let summary = block.summary {
+                rows.append(.week(summary, topPadding: block.isCurrent ? 12 : 36))
+            }
             if block.isCurrent {
-                if !todays.isEmpty { todayHeader }
-                ForEach(todays) { expenseRow($0, catalog: catalog) }
+                if !todays.isEmpty { rows.append(.todayHeader) }
+                rows += todays.map { Row.expense($0, depth: nil) }
             }
-            ForEach(block.days, id: \.day) { group in
+            for group in block.days {
                 let total = group.expenses.filter { !$0.isOutsideBudget }.reduce(0) { $0 + $1.amount }
-                dayHeader(group.day, total: total, depth: group.depth)
-                ForEach(group.expenses) { expenseRow($0, catalog: catalog).dayDepth(group.depth) }
+                rows.append(.dayHeader(day: group.day, total: total, depth: group.depth))
+                rows += group.expenses.map { Row.expense($0, depth: group.depth) }
             }
+        }
+        if hasOlder { rows.append(.loadMore) }
+        return rows
+    }
+
+    @ViewBuilder
+    private func rowView(_ row: Row, catalog: CategoryCatalog, status: BudgetStatus) -> some View {
+        switch row {
+        case .top:
+            header(status)
+        case .recurring(let item):
+            DueRecurringRow(item: item) { recordRecurring(item) } skip: { skipRecurring(item) }
+        case .week(let summary, let topPadding):
+            weekHeader(summary, topPadding: topPadding)
+        case .todayHeader:
+            todayHeader
+        case .dayHeader(let day, let total, let depth):
+            dayHeader(day, total: total, depth: depth)
+        case .expense(let expense, let depth):
+            if let depth {
+                expenseRow(expense, catalog: catalog).dayDepth(depth)
+            } else {
+                expenseRow(expense, catalog: catalog)
+            }
+        case .loadMore:
+            loadMoreRow
         }
     }
 
@@ -409,13 +465,26 @@ struct TodayContent: View {
 
     /// Nhảy tới một ngày ở dải ngày. Ngày chưa tải thì mở rộng cửa sổ rồi mới cuộn.
     private func jump(to day: Date, proxy: ScrollViewProxy) {
+        lastJump = day
         if day >= calendar.startOfDay(for: now) {
-            proxy.scrollTo(Self.topID, anchor: .top)
+            scroll(to: Row.topID, day: day, proxy: proxy)
         } else if day >= windowStart {
-            proxy.scrollTo(DayAnchor(day: day), anchor: .top)
+            scroll(to: Row.dayID(day), day: day, proxy: proxy)
         } else {
             pendingJump = day
             ensureLoaded(day)
+        }
+    }
+
+    /// Cuộn tới một dòng, rồi cuộn lại một lần sau khi danh sách đo xong các dòng mới hiện ra: chiều cao dòng chưa đo
+    /// chỉ là ước lượng, nên lần cuộn đầu hay lệch. Nếu người dùng đã kéo sang ngày khác thì bỏ lần cuộn lại.
+    private func scroll(to id: String, day: Date, proxy: ScrollViewProxy) {
+        // Tiêu đề của ngày nằm ngay đầu danh sách, sau thanh nhỏ; thanh nhỏ đã ghi tên ngày đó nên vẫn rõ là đang ở đâu.
+        proxy.scrollTo(id, anchor: .top)
+        Task {
+            try? await Task.sleep(for: .milliseconds(200))
+            guard lastJump == day else { return }
+            proxy.scrollTo(id, anchor: .top)
         }
     }
 
@@ -454,7 +523,6 @@ struct TodayContent: View {
         )
         .padding(.top, 24)
         .dayDepth(depth)
-        .id(DayAnchor(day: day))
         .onGeometryChange(for: CGFloat.self) { $0.frame(in: .global).minY } action: { scroll.headerMoved(day: day, minY: $0) }
         // Rung nhẹ mỗi khi một ngày mới trượt vào màn hình, chỉ khi người dùng đang cuộn.
         .onScrollVisibilityChange(threshold: 0.9) { visible in

@@ -113,7 +113,7 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 
     // MARK: - Khoản định kỳ
 
-    /// Xếp lại lời nhắc 9:00 vào ngày đến hạn của mọi khoản định kỳ (tháng này và tháng sau).
+    /// Xếp lại lời nhắc 9:00 vào ngày đến hạn của mọi khoản định kỳ (vài kỳ tới), và 9:00 ngày hôm trước với khoản bật nhắc trước.
     /// Xóa hết lời nhắc cũ rồi xếp lại, nên khoản đã ghi, bỏ qua hay xóa tự biến mất khỏi lịch.
     func refreshRecurringReminders() {
         let now = Date()
@@ -127,22 +127,29 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
             center.removePendingNotificationRequests(
                 withIdentifiers: pending.map(\.identifier).filter { $0.hasPrefix(Self.recurringPrefix) }
             )
-            for (id, date) in dates {
+            for (id, date, isDayBefore) in dates {
                 guard let item = byID[id] else { continue }
                 let content = UNMutableNotificationContent()
-                content.title = String(localized: "Đến hạn: \(item.name)")
-                content.body = item.autoRecord
-                    ? String(localized: "\(MoneyFormatter.short(item.amount)). Mở Pennyline để tự ghi, hoặc chạm Bỏ qua kỳ này.")
-                    : String(localized: "\(MoneyFormatter.short(item.amount)). Chạm Ghi để ghi, hoặc Bỏ qua kỳ này.")
                 content.sound = .default
-                content.categoryIdentifier = Self.recurringCategory
-                content.userInfo = ["recurringID": id.uuidString]
+                if isDayBefore {
+                    // Chỉ báo trước: không có nút và không mang mã khoản, ghi hay bỏ qua vẫn làm vào ngày đến hạn.
+                    content.title = String(localized: "Ngày mai: \(item.name)")
+                    content.body = String(localized: "\(MoneyFormatter.short(item.amount)). Đến hạn vào ngày mai.")
+                } else {
+                    content.title = String(localized: "Đến hạn: \(item.name)")
+                    content.body = item.autoRecord
+                        ? String(localized: "\(MoneyFormatter.short(item.amount)). Mở Pennyline để tự ghi, hoặc chạm Bỏ qua kỳ này.")
+                        : String(localized: "\(MoneyFormatter.short(item.amount)). Chạm Ghi để ghi, hoặc Bỏ qua kỳ này.")
+                    content.categoryIdentifier = Self.recurringCategory
+                    content.userInfo = ["recurringID": id.uuidString]
+                }
                 let parts = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
                 let trigger = UNCalendarNotificationTrigger(dateMatching: parts, repeats: false)
                 // Khoản theo tuần có nhiều lần trong một tháng, nên mã theo ngày nhắc.
                 let key = RecurringPlanner.dayKey(date, calendar: calendar)
                 try? await center.add(UNNotificationRequest(
-                    identifier: "\(Self.recurringPrefix)\(id.uuidString).\(key)", content: content, trigger: trigger
+                    identifier: "\(Self.recurringPrefix)\(id.uuidString).\(key)\(isDayBefore ? ".before" : "")",
+                    content: content, trigger: trigger
                 ))
             }
         }
