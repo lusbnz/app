@@ -15,11 +15,9 @@ struct TodayView: View {
     @State private var reapply: ReapplyOffer?
     @State private var isScrolling = false
     @State private var hapticDay: Date?
-    /// 0 là số lớn còn nguyên, 1 là đã cuộn khuất hẳn và thanh nhỏ hiện ra.
-    @State private var collapse: CGFloat = 0
-    /// Vị trí dọc của tiêu đề từng ngày trước, để biết ngày nào đang nằm dưới thanh nhỏ.
-    @State private var headerTops: [Date: CGFloat] = [:]
-    @State private var topInset: CGFloat = 0
+    /// Theo dõi vị trí cuộn. Cố ý là lớp tham chiếu: cập nhật từng khung hình không được làm dựng lại cả màn hình,
+    /// chỉ `ScrollingBarHost` đọc nó.
+    @State private var scroll = TodayScrollTracker()
 
     let now: Date
 
@@ -51,6 +49,7 @@ struct TodayView: View {
     var body: some View {
         @Bindable var appState = appState
         let status = status
+        let catalog = CategoryCatalog(custom: customCategories)
         List {
             Group {
                 header(status)
@@ -58,8 +57,8 @@ struct TodayView: View {
                     DueRecurringRow(item: item) { recordRecurring(item) } skip: { skipRecurring(item) }
                 }
                 if !todays.isEmpty { todayHeader }
-                ForEach(todays) { expenseRow($0) }
-                pastDays
+                ForEach(todays) { expenseRow($0, catalog: catalog) }
+                pastDays(catalog: catalog)
             }
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
@@ -74,20 +73,15 @@ struct TodayView: View {
             let offset = geometry.contentOffset.y + geometry.contentInsets.top
             return (min(max((offset - 80) / 80, 0), 1) * 20).rounded() / 20
         } action: { _, newValue in
-            collapse = newValue
+            scroll.setCollapse(newValue)
         }
-        .onGeometryChange(for: CGFloat.self) { $0.safeAreaInsets.top } action: { topInset = $0 }
+        .onGeometryChange(for: CGFloat.self) { $0.safeAreaInsets.top } action: { scroll.setTopInset($0) }
         .overlay(alignment: .top) {
-            CompactTodayBar(
-                dayTitle: currentDayTitle,
-                amountText: MoneyFormatter.short(status.remainingToday),
-                fraction: status.todayFraction,
+            ScrollingBarHost(
+                tracker: scroll, now: now, calendar: calendar,
+                amountText: MoneyFormatter.short(status.remainingToday), fraction: status.todayFraction,
                 accessibilityText: accessibilitySummary(status)
             )
-            .opacity(collapse)
-            .offset(y: (1 - collapse) * -10)
-            .allowsHitTesting(false)
-            .accessibilityHidden(collapse < 0.5)
         }
         .sensoryFeedback(.selection, trigger: hapticDay)
         .xuScreen()
@@ -204,8 +198,8 @@ struct TodayView: View {
     }
 
     /// Một dòng khoản chi, kèm các nút vuốt nhanh. Dùng cho hôm nay và các ngày trước.
-    private func expenseRow(_ expense: Expense) -> some View {
-        Button { selected = expense } label: { ExpenseRow(expense: expense, category: CategoryCatalog(custom: customCategories).info(for: expense.categoryKey)) }
+    private func expenseRow(_ expense: Expense, catalog: CategoryCatalog) -> some View {
+        Button { selected = expense } label: { ExpenseRow(expense: expense, category: catalog.info(for: expense.categoryKey)) }
             .buttonStyle(.plain)
             .swipeActions(edge: .leading) {
                 Button("Ghi lại", systemImage: "plus.circle") { repeatExpense(expense) }
@@ -223,7 +217,7 @@ struct TodayView: View {
                     ExpenseRecorder(context: modelContext).delete(expense)
                 }
                 Menu {
-                    ForEach(CategoryCatalog(custom: customCategories).all) { category in
+                    ForEach(catalog.all) { category in
                         Button(category.title) {
                             let recorder = ExpenseRecorder(context: modelContext)
                             recorder.setCategory(of: expense, to: category.key)
@@ -249,11 +243,11 @@ struct TodayView: View {
     }
 
     @ViewBuilder
-    private var pastDays: some View {
+    private func pastDays(catalog: CategoryCatalog) -> some View {
         ForEach(Array(pastGroups.enumerated()), id: \.element.day) { index, group in
             let total = group.expenses.filter { !$0.isOutsideBudget }.reduce(0) { $0 + $1.amount }
             dayHeader(group.day, total: total, depth: index)
-            ForEach(group.expenses) { expenseRow($0).dayDepth(index) }
+            ForEach(group.expenses) { expenseRow($0, catalog: catalog).dayDepth(index) }
         }
     }
 
@@ -292,20 +286,11 @@ struct TodayView: View {
         )
         .padding(.top, 24)
         .dayDepth(depth)
-        .onGeometryChange(for: CGFloat.self) { $0.frame(in: .global).minY } action: { headerTops[day] = $0 }
+        .onGeometryChange(for: CGFloat.self) { $0.frame(in: .global).minY } action: { scroll.headerMoved(day: day, minY: $0) }
         // Rung nhẹ mỗi khi một ngày mới trượt vào màn hình, chỉ khi người dùng đang cuộn.
         .onScrollVisibilityChange(threshold: 0.9) { visible in
             if visible, isScrolling { hapticDay = day }
         }
-    }
-
-    /// Ngày đang nằm dưới thanh nhỏ: tiêu đề cuối cùng đã cuộn qua mép trên, không thì hôm nay.
-    private var currentDayTitle: String {
-        let edge = topInset + 56
-        if let passed = headerTops.filter({ $0.value <= edge }).max(by: { $0.value < $1.value }) {
-            return VietnameseDate.relativeDay(passed.key, now: now, calendar: calendar)
-        }
-        return VietnameseDate.relativeDay(now, now: now, calendar: calendar)
     }
 
     // MARK: - Đáy màn hình

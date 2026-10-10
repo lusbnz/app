@@ -27,3 +27,20 @@ struct DayLoadTests {
         #expect(september == 310_000)      // 30 ngày
     }
 }
+
+struct TodayScrollTrackerTests {
+    private let monday = TestClock.date(2026, 10, 5)
+    private let tuesday = TestClock.date(2026, 10, 6)
+
+    @Test func staysOnTodayUntilAHeaderPassesTheEdge() {
+        #expect(TodayScrollTracker.currentDay(headerTops: [:], edge: 116) == nil)
+        #expect(TodayScrollTracker.currentDay(headerTops: [tuesday: 300, monday: 700], edge: 116) == nil)
+    }
+
+    @Test func picksTheLastHeaderThatPassedTheEdge() {
+        // Thứ Ba đã qua mép trên, thứ Hai chưa: đang xem thứ Ba.
+        #expect(TodayScrollTracker.currentDay(headerTops: [tuesday: 40, monday: 400], edge: 116) == tuesday)
+        // Cả hai đã qua: gần mép nhất (nằm thấp nhất) là thứ Hai.
+        #expect(TodayScrollTracker.currentDay(headerTops: [tuesday: -300, monday: 90], edge: 116) == monday)
+    }
+}

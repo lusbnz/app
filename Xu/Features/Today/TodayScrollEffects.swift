@@ -84,3 +84,64 @@ struct CompactTodayBar: View {
         .accessibilityLabel(accessibilityText)
     }
 }
+
+/// Vị trí cuộn của màn Hôm nay. Chỉ `collapse` và `currentDay` được quan sát; vị trí các tiêu đề đổi từng khung hình
+/// nên giữ ngoài cơ chế quan sát, tránh dựng lại giao diện mỗi lần cuộn.
+@MainActor @Observable
+final class TodayScrollTracker {
+    /// 0 là số lớn còn nguyên, 1 là đã cuộn khuất hẳn và thanh nhỏ hiện ra.
+    private(set) var collapse: CGFloat = 0
+    /// Ngày đang nằm dưới thanh nhỏ; nil là hôm nay.
+    private(set) var currentDay: Date?
+
+    @ObservationIgnored private var headerTops: [Date: CGFloat] = [:]
+    @ObservationIgnored private var edge: CGFloat = 116
+
+    func setCollapse(_ value: CGFloat) {
+        if value != collapse { collapse = value }
+    }
+
+    func setTopInset(_ inset: CGFloat) {
+        edge = inset + 56
+        refresh()
+    }
+
+    func headerMoved(day: Date, minY: CGFloat) {
+        headerTops[day] = minY
+        refresh()
+    }
+
+    private func refresh() {
+        let day = Self.currentDay(headerTops: headerTops, edge: edge)
+        if day != currentDay { currentDay = day }
+    }
+
+    /// Tiêu đề cuối cùng đã cuộn qua mép trên (lệch khỏi `edge` ít nhất); nil khi chưa tiêu đề nào qua, tức vẫn ở hôm nay.
+    nonisolated static func currentDay(headerTops: [Date: CGFloat], edge: CGFloat) -> Date? {
+        headerTops.filter { $0.value <= edge }.max { $0.value < $1.value }?.key
+    }
+}
+
+/// Chỗ duy nhất đọc `TodayScrollTracker`, nên chỉ phần này được dựng lại khi cuộn.
+struct ScrollingBarHost: View {
+    let tracker: TodayScrollTracker
+    let now: Date
+    let calendar: Calendar
+    let amountText: String
+    let fraction: Double
+    let accessibilityText: String
+
+    var body: some View {
+        let collapse = tracker.collapse
+        CompactTodayBar(
+            dayTitle: VietnameseDate.relativeDay(tracker.currentDay ?? now, now: now, calendar: calendar),
+            amountText: amountText,
+            fraction: fraction,
+            accessibilityText: accessibilityText
+        )
+        .opacity(collapse)
+        .offset(y: (1 - collapse) * -10)
+        .allowsHitTesting(false)
+        .accessibilityHidden(collapse < 0.5)
+    }
+}
