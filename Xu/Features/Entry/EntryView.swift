@@ -170,14 +170,14 @@ struct EntryView: View {
         .accessibilityLabel(isListening ? "Dừng nói" : "Nói khoản chi")
     }
 
-    /// Đang nói và đã nghe ra ít nhất một số tiền: rung nhẹ một lần để biết Xu hiểu đúng.
+    /// Đang nói và đã nghe ra ít nhất một số tiền: rung nhẹ một lần để biết Nhẩm hiểu đúng.
     private func heardAmount(_ rows: [EntryRow]) -> Bool {
         voice.state == .listening && rows.contains { $0.amount != nil }
     }
 
     private var voiceMessage: String? {
         switch voice.state {
-        case .denied: String(localized: "Xu chưa được dùng micro hoặc nhận dạng giọng nói. Bạn bật lại trong Cài đặt của iPhone.")
+        case .denied: String(localized: "Nhẩm chưa được dùng micro hoặc nhận dạng giọng nói. Bạn bật lại trong Cài đặt của iPhone.")
         case .unavailable: String(localized: "Máy này chưa nhận dạng được giọng nói tiếng Việt.")
         case .idle, .listening: nil
         }
@@ -294,7 +294,7 @@ struct EntryView: View {
     }
 
     private func record(_ items: [RecordItem], rawText: String, confirmedDuplicate: Bool = false) {
-        // Bản miễn phí: lần lưu thứ 6 trong ngày mở Xu Pro.
+        // Bản miễn phí: lần lưu thứ 6 trong ngày mở Nhẩm Pro.
         guard SaveGate.canSave(now: Date(), calendar: calendar) else {
             showsPaywall = true
             return

@@ -4,11 +4,17 @@ import Testing
 
 @MainActor
 struct AppPreferencesTests {
+    private let suiteName = "AppPreferencesTests-\(UUID().uuidString)"
+
     private func suite() -> UserDefaults {
-        let name = "AppPreferencesTests-\(UUID().uuidString)"
-        let defaults = UserDefaults(suiteName: name) ?? .standard
-        defaults.removePersistentDomain(forName: name)
+        let defaults = UserDefaults(suiteName: suiteName) ?? .standard
+        defaults.removePersistentDomain(forName: suiteName)
         return defaults
+    }
+
+    /// Giá trị thật đã lưu trong suite; `stringArray(forKey:)` còn đọc cả tham số dòng lệnh (`-testLanguage`).
+    private func storedLanguages(_ defaults: UserDefaults) -> [String]? {
+        defaults.persistentDomain(forName: suiteName)?["AppleLanguages"] as? [String]
     }
 
     @Test func appearanceDefaultsToSystemAndPersists() {
@@ -27,11 +33,10 @@ struct AppPreferencesTests {
         #expect(settings.language == .system)
         #expect(!settings.needsRelaunchForLanguage)
         settings.language = .english
-        #expect(defaults.stringArray(forKey: "AppleLanguages") == ["en"])
+        #expect(storedLanguages(defaults) == ["en"])
         #expect(settings.needsRelaunchForLanguage)
         settings.language = .system
-        // Xóa ghi đè thì đọc lại sẽ rơi về ngôn ngữ hệ thống, không còn là "en".
-        #expect(defaults.stringArray(forKey: "AppleLanguages") != ["en"])
+        #expect(storedLanguages(defaults) == nil)
         #expect(!settings.needsRelaunchForLanguage)
     }
 

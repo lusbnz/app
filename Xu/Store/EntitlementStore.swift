@@ -1,7 +1,7 @@
 import Observation
 import StoreKit
 
-/// Trạng thái Xu Pro, đọc từ StoreKit 2.
+/// Trạng thái Nhẩm Pro, đọc từ StoreKit 2.
 @MainActor @Observable
 final class EntitlementStore {
     static let shared = EntitlementStore()
@@ -34,7 +34,7 @@ final class EntitlementStore {
     #if DEBUG
     @ObservationIgnored private var isGrantedForDebug = false
 
-    /// Mở Xu Pro không qua StoreKit, chỉ cho tham số khởi chạy `-pro` của bản Debug.
+    /// Mở Nhẩm Pro không qua StoreKit, chỉ cho tham số khởi chạy `-pro` của bản Debug.
     func grantForDebug() {
         isGrantedForDebug = true
         isPro = true
@@ -66,7 +66,7 @@ final class EntitlementStore {
         products = Self.productIDs.compactMap { id in loaded.first { $0.id == id } }
     }
 
-    /// Xử lý kết quả mua. Trả về true khi đã có Xu Pro.
+    /// Xử lý kết quả mua. Trả về true khi đã có Nhẩm Pro.
     @discardableResult
     func process(_ result: Product.PurchaseResult) async -> Bool {
         if case .success(.verified(let transaction)) = result {

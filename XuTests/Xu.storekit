@@ -13,12 +13,12 @@
       "id": "21600001",
       "localizations": [
         {
-          "description": "Gõ không giới hạn, chụp hóa đơn, Hỏi Xu.",
-          "displayName": "Xu Pro",
+          "description": "Gõ không giới hạn, chụp hóa đơn, Hỏi Nhẩm.",
+          "displayName": "Nhẩm Pro",
           "locale": "vi"
         }
       ],
-      "name": "Xu Pro",
+      "name": "Nhẩm Pro",
       "subscriptions": [
         {
           "adHocOffers": [],
@@ -35,14 +35,14 @@
           },
           "localizations": [
             {
-              "description": "Xu Pro theo năm, 7 ngày đầu miễn phí.",
-              "displayName": "Xu Pro gói năm",
+              "description": "Nhẩm Pro theo năm, 7 ngày đầu miễn phí.",
+              "displayName": "Nhẩm Pro gói năm",
               "locale": "vi"
             }
           ],
           "productID": "xu.pro.yearly",
           "recurringSubscriptionPeriod": "P1Y",
-          "referenceName": "Xu Pro năm",
+          "referenceName": "Nhẩm Pro năm",
           "subscriptionGroupID": "21600001",
           "type": "RecurringSubscription"
         },
@@ -56,14 +56,14 @@
           "introductoryOffer": null,
           "localizations": [
             {
-              "description": "Xu Pro theo tháng.",
-              "displayName": "Xu Pro gói tháng",
+              "description": "Nhẩm Pro theo tháng.",
+              "displayName": "Nhẩm Pro gói tháng",
               "locale": "vi"
             }
           ],
           "productID": "xu.pro.monthly",
           "recurringSubscriptionPeriod": "P1M",
-          "referenceName": "Xu Pro tháng",
+          "referenceName": "Nhẩm Pro tháng",
           "subscriptionGroupID": "21600001",
           "type": "RecurringSubscription"
         }

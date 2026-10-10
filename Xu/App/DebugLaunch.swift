@@ -4,7 +4,7 @@ import SwiftData
 
 /// Tham số khởi chạy chỉ có ở bản Debug, để xem nhanh các màn hình trên máy ảo:
 /// `-reset` xóa sạch, `-demo` nạp dữ liệu mẫu, `-open entry|month|settings|paywall|receipt|search`, `-text "phở 45k"`.
-/// `-open receipt` đưa sẵn một hóa đơn mẫu vào bộ đọc. `-pro` mở Xu Pro, `-ask "câu hỏi"` hỏi Xu, `-budget 3tr` đặt ngân sách.
+/// `-open receipt` đưa sẵn một hóa đơn mẫu vào bộ đọc. `-pro` mở Nhẩm Pro, `-ask "câu hỏi"` hỏi Nhẩm, `-budget 3tr` đặt ngân sách.
 @MainActor
 enum DebugLaunch {
     static func apply(settings: AppSettings, appState: AppState, container: ModelContainer) {

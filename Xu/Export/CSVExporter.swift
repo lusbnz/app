@@ -1,6 +1,6 @@
 import Foundation
 
-/// Một dòng của tệp CSV. Tên danh mục đã tra sẵn, nên tệp đọc được mà không cần Xu.
+/// Một dòng của tệp CSV. Tên danh mục đã tra sẵn, nên tệp đọc được mà không cần Nhẩm.
 struct ExportRecord: Equatable, Sendable {
     var date: Date
     var name: String

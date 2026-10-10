@@ -73,7 +73,7 @@ struct SpendingFactsTests {
 
     @Test func acceptsAnswersThatOnlyQuoteTheSheet() {
         #expect(SpendingFacts.usesOnlyKnownNumbers("232k cho 8 lần, trung bình 29k mỗi lần.", sheet: sheet, question: "cf hết bao nhiêu?"))
-        #expect(SpendingFacts.usesOnlyKnownNumbers("Xu chưa có số liệu cho câu này.", sheet: sheet, question: "?"))
+        #expect(SpendingFacts.usesOnlyKnownNumbers("Nhẩm chưa có số liệu cho câu này.", sheet: sheet, question: "?"))
         #expect(SpendingFacts.usesOnlyKnownNumbers("Tháng 10 bạn tiêu 264k.", sheet: sheet, question: "tháng 10 tiêu bao nhiêu?"))
     }
 

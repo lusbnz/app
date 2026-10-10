@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Tỷ giá để quy ngoại tệ gõ vào ("20 usd") ra đồng. Xu không có mạng nên tỷ giá do bạn tự chỉnh.
+/// Tỷ giá để quy ngoại tệ gõ vào ("20 usd") ra đồng. Nhẩm không có mạng nên tỷ giá do bạn tự chỉnh.
 struct ExchangeRatesView: View {
     @State private var texts: [Currency: String] = [:]
     @FocusState private var focused: Currency?
@@ -25,7 +25,7 @@ struct ExchangeRatesView: View {
             } header: {
                 Text("Đồng cho một đơn vị")
             } footer: {
-                Text("Gõ “20 usd”, “$20”, “5 euro” hay “1000 yên”, Xu quy ra đồng theo tỷ giá này và ghi kèm số gốc. Tỷ giá để trống là giá trị gần đúng có sẵn, nên hãy chỉnh cho sát.")
+                Text("Gõ “20 usd”, “$20”, “5 euro” hay “1000 yên”, Nhẩm quy ra đồng theo tỷ giá này và ghi kèm số gốc. Tỷ giá để trống là giá trị gần đúng có sẵn, nên hãy chỉnh cho sát.")
             }
             .listRowBackground(Color.xuSurface)
             Section {

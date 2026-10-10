@@ -86,7 +86,7 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
                 let content = UNMutableNotificationContent()
                 content.title = String(localized: "Đến hạn: \(item.name)")
                 content.body = item.autoRecord
-                    ? String(localized: "\(MoneyFormatter.short(item.amount)). Mở Xu để tự ghi, hoặc chạm Bỏ qua kỳ này.")
+                    ? String(localized: "\(MoneyFormatter.short(item.amount)). Mở Nhẩm để tự ghi, hoặc chạm Bỏ qua kỳ này.")
                     : String(localized: "\(MoneyFormatter.short(item.amount)). Chạm Ghi để ghi, hoặc Bỏ qua kỳ này.")
                 content.sound = .default
                 content.categoryIdentifier = Self.recurringCategory
@@ -161,7 +161,7 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         let text = "\(name) \(MoneyFormatter.short(amount))"
         switch action {
         case Self.logAction:
-            // Lưu không mở app. Hết lượt miễn phí thì mở ô gõ, nơi sẽ hiện Xu Pro.
+            // Lưu không mở app. Hết lượt miễn phí thì mở ô gõ, nơi sẽ hiện Nhẩm Pro.
             let now = Date()
             guard SaveGate.canSave(now: now, calendar: .current) else {
                 AppState.shared.openEntry(text: text)

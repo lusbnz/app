@@ -49,7 +49,7 @@ struct OnboardingView: View {
             Spacer()
             Text("Gõ một dòng là xong")
                 .font(.title.weight(.bold))
-            Text("Không cần chọn danh mục hay nhập từng ô. Xu tự tách tên, số tiền và ngày.")
+            Text("Không cần chọn danh mục hay nhập từng ô. Nhẩm tự tách tên, số tiền và ngày.")
                 .font(.body)
                 .foregroundStyle(Color.xuTextSecondary)
             VStack(alignment: .leading, spacing: 14) {
@@ -78,7 +78,7 @@ struct OnboardingView: View {
         @Bindable var settings = settings
         return VStack(alignment: .leading, spacing: 16) {
             Spacer()
-            Text("Xu nhắc khi bạn quên")
+            Text("Nhẩm nhắc khi bạn quên")
                 .font(.title.weight(.bold))
             Text("Cả hai đều tùy chọn, mặc định tắt. Bật hay tắt lúc nào cũng được trong Tùy chỉnh.")
                 .font(.body)
@@ -138,7 +138,7 @@ struct OnboardingView: View {
                     .font(.title3)
                     .accessibilityLabel("Tức khoảng \(MoneyFormatter.spoken(daily)) mỗi ngày.")
             }
-            Text("Tiền nhà và các khoản cố định thì thêm ở Tùy chỉnh, mục Khoản định kỳ: Xu nhắc đến hạn và bạn chạm để ghi. Đổi ngân sách lúc nào cũng được, không cần tài khoản.")
+            Text("Tiền nhà và các khoản cố định thì thêm ở Tùy chỉnh, mục Khoản định kỳ: Nhẩm nhắc đến hạn và bạn chạm để ghi. Đổi ngân sách lúc nào cũng được, không cần tài khoản.")
                 .font(.subheadline)
                 .foregroundStyle(Color.xuTextSecondary)
             Spacer()

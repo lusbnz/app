@@ -1,6 +1,6 @@
-# Xu
+# Nhẩm
 
-Sổ chi tiêu kiểu tin nhắn cho người Việt. iOS, SwiftUI và SwiftData.
+Sổ chi tiêu kiểu tin nhắn cho người Việt. Tên hiển thị là "Nhẩm" (trước đây là "Xu"); tên dự án, thư mục `Xu/`, scheme, bundle ID, App Group, tệp `Xu.store` và các tiền tố mã (`XuStore`, `xuTextPrimary`...) vẫn giữ "Xu" để không mất dữ liệu và không phải đổi dự án. Tên hiển thị đặt ở `InfoPlist.xcstrings` (ghi đè `INFOPLIST_KEY_CFBundleDisplayName` trong project, không sửa `project.pbxproj`). iOS, SwiftUI và SwiftData.
 
 ## Ràng buộc
 
@@ -9,7 +9,7 @@ Sổ chi tiêu kiểu tin nhắn cho người Việt. iOS, SwiftUI và SwiftData
 - Chỉ dùng framework của Apple: SwiftUI, SwiftData, AppIntents, StoreKit 2, Vision, CoreLocation, UserNotifications, FoundationModels, Speech, AVFoundation (chỉ để thu âm đưa vào Speech), LocalAuthentication (khóa app, người dùng đã yêu cầu), Swift Testing. Không thư viện bên thứ ba, không backend, không analytics.
 - Tiền lưu bằng `Int` đơn vị đồng. Không bao giờ dùng `Double` cho tiền.
 - Mọi phép tính ngày nhận `Calendar` và `Date` làm tham số. Ở tầng giao diện lấy từ `Calendar.current`.
-- Chuỗi giao diện bằng tiếng Việt, đặt trong `Xu/Localizable.xcstrings`.
+- Chuỗi giao diện viết bằng tiếng Việt (khóa gốc), đặt trong `Xu/Localizable.xcstrings`, và phải có bản dịch tiếng Anh (`en`) cho mỗi khóa; chuỗi có số đếm dùng biến thể số nhiều (`one`/`other`). Build bằng `xcodebuild` không tự ghi khóa mới vào catalog, nên thêm chuỗi mới thì thêm cả khóa lẫn bản `en` vào tệp. Chuỗi trong Info.plist (tên app, mô tả quyền camera, micro, nhận dạng giọng nói, Face ID) nằm ở `Xu/InfoPlist.xcstrings`. Cụm đặt cho Siri (`AppShortcuts`) hiện chỉ có tiếng Việt. Bộ tách khoản chi, `SpokenNumbers`, nhận dạng giọng nói và `CategoryIcon` chỉ hiểu tiếng Việt, kể cả khi giao diện là tiếng Anh. Ngày giờ ở `VietnameseDate` đổi theo ngôn ngữ giao diện.
 - Bundle ID `com.quocviet.Xu`, App Group `group.com.quocviet.Xu`.
 - Không sửa tay `Xu.xcodeproj/project.pbxproj`. Dự án dùng thư mục đồng bộ: tạo tệp `.swift` đúng thư mục là đủ. Việc cần thêm target hoặc capability thì dừng lại và hướng dẫn người dùng làm trong Xcode. Ngoại lệ đã được người dùng cho phép, mỗi khóa một lần: `INFOPLIST_KEY_NSMicrophoneUsageDescription` và `INFOPLIST_KEY_NSSpeechRecognitionUsageDescription` (giọng nói), `INFOPLIST_KEY_NSCameraUsageDescription` (chụp ảnh). Khóa quyền mới nào khác vẫn phải hỏi trước.
 - Chưa bật App Group và iCloud: những việc này người dùng làm trong Xcode. `XuStore` phải chạy được khi thiếu chúng (lùi về Application Support).
@@ -69,7 +69,7 @@ XuTests/
 - **Đa tiền tệ:** `ForeignAmountParser` nhận `20 usd`, `$20`, `20$`, `usd 20`, `5 euro`, `€5`, `1000 yên`, `10k yên`, `20 đô la` (USD, EUR, JPY, KRW, CNY, GBP, THB, SGD, AUD); phải có tên hoặc ký hiệu tiền, không có thì vẫn là đồng. `ExpenseParser.rates` quy ra đồng (làm tròn 100đ) nên `ParsedExpense.amount` luôn là đồng; số gốc nằm ở `ParsedExpense.foreign` rồi `Expense.foreignCurrency` và `foreignMinor` (đơn vị nhỏ nhất, không dùng số thực; tỷ giá dùng `Decimal`). Sửa số tiền thì xóa số gốc. Không có mạng và không backend nên tỷ giá là giá trị gần đúng có sẵn (`Currency.defaultRate`), người dùng chỉnh ở `ExchangeRatesView`, lưu trong App Group (`ExchangeRates.load`); mọi chỗ gọi bộ tách để ghi phải truyền `ExchangeRates.load()`.
 - **Khóa app:** `AppLock` (`Xu/App/AppLock.swift`) khóa bằng Face ID, Touch ID hoặc mật mã máy (`.deviceOwnerAuthentication`, nên không bao giờ kẹt ngoài app). Bật thì app khóa lúc mở và mỗi khi ra nền; bật hay tắt đều phải xác thực. Hộp xác thực tự hiện chỉ khi vừa từ nền trở về hoặc mới mở app (hộp Face ID làm app qua inactive rồi active, hỏi lại ở đó sẽ lặp mãi khi bấm Hủy). Màn khóa nằm trong một `UIWindow` riêng ở trên cùng (`LockWindowPresenter`) để che cả sheet đang mở, và che luôn khi app inactive (màn hình đa nhiệm). Xác thực đi qua `Authenticating` để test bằng bản giả. Intent ghi nhanh vẫn ghi được khi khóa. Khóa quyền `INFOPLIST_KEY_NSFaceIDUsageDescription` chưa được thêm: người dùng thêm trong Xcode (Info, “Privacy - Face ID Usage Description”); thiếu khóa này hệ thống chỉ cho nhập mật mã chứ không dùng Face ID.
 - **Xuất CSV:** `ExportDataRow` trong Tùy chỉnh chia sẻ mọi khoản chi (không giới hạn 35 ngày, miễn phí) qua `ShareLink`; tệp chỉ được tạo khi chia sẻ. Định dạng do `CSVExporter` (logic thuần, test `CSVExporterTests`) quyết định: cũ đến mới, CRLF, BOM UTF-8 cho Excel, số tiền là số đồng nguyên, ô chữ bắt đầu bằng `= + - @` thêm dấu nháy đơn để không thành công thức.
-- **Biểu tượng app:** `Xu/Assets.xcassets/AppIcon.appiconset` có bản sáng và bản tối, 1024×1024, không kênh alpha. Chữ "xu" tím than trên vệt highlight vàng bơ, cùng bảng màu `XuTextPrimary`, `XuHighlight`, `XuButton`.
+- **Biểu tượng app:** `Xu/Assets.xcassets/AppIcon.appiconset` có bản sáng và bản tối, 1024×1024, không kênh alpha. Bong bóng tin nhắn có dòng chữ và một vệt highlight vàng bơ đè lên "số tiền" (không có chữ nên không phụ thuộc phông), nền tím nhạt (bản tối: tím than), cùng bảng màu `XuTextPrimary`, `XuHighlight`, `XuButton`.
 
 ## Kiểm tra
 
@@ -77,10 +77,10 @@ Chạy sau mỗi thay đổi đáng kể. Không báo xong khi build hoặc test
 
 ```bash
 xcodebuild -scheme Xu -destination 'platform=iOS Simulator,name=iPhone 17,OS=27.0' -derivedDataPath build/DerivedData build
-xcodebuild -scheme Xu -destination 'platform=iOS Simulator,name=iPhone 17,OS=27.0' -derivedDataPath build/DerivedData test
+xcodebuild -scheme Xu -destination 'platform=iOS Simulator,name=iPhone 17,OS=27.0' -derivedDataPath build/DerivedData -testLanguage vi -testRegion VN test
 ```
 
-Máy này có nhiều runtime máy ảo, nên phải ghi rõ `OS=`; chỉ ghi tên máy thì `xcodebuild` không tìm ra.
+Test so sánh chuỗi tiếng Việt nên phải chạy với `-testLanguage vi -testRegion VN` (không có thì máy ảo để tiếng Anh sẽ làm vài test đỏ). Máy này có nhiều runtime máy ảo, nên phải ghi rõ `OS=`; chỉ ghi tên máy thì `xcodebuild` không tìm ra.
 
 Khi máy đang nặng tải hoặc gần hết ổ đĩa, lệnh `test` có thể treo ở bước nhân bản máy ảo. Thêm `-parallel-testing-enabled NO` để test chạy thẳng trên máy ảo đã chọn.
 

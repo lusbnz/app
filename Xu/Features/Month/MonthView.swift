@@ -50,7 +50,7 @@ struct MonthView: View {
         }
         .scrollDismissesKeyboard(.interactively)
         .xuScreen()
-        .navigationTitle("Tháng \(calendar.component(.month, from: now))")
+        .navigationTitle(VietnameseDate.monthTitle(now, calendar: calendar))
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $selected) { expense in
             ExpenseDetailView(expense: expense)

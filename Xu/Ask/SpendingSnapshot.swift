@@ -9,7 +9,7 @@ struct SpendingRecord: Equatable, Sendable {
     var isOutsideBudget: Bool = false
 }
 
-/// Số liệu của tháng đã tổng hợp sẵn. Màn hình Tháng và Hỏi Xu đều đọc từ đây, không đọc dữ liệu thô.
+/// Số liệu của tháng đã tổng hợp sẵn. Màn hình Tháng và Hỏi Nhẩm đều đọc từ đây, không đọc dữ liệu thô.
 struct SpendingSnapshot: Equatable, Sendable {
     struct Group: Equatable, Sendable, Identifiable {
         /// Khóa danh mục, hoặc tên khoản đã chuẩn hóa.

@@ -126,7 +126,7 @@ struct LockView: View {
                 .font(.system(size: 44))
                 .foregroundStyle(Color.xuTextSecondary)
                 .accessibilityHidden(true)
-            Text("Xu đang khóa")
+            Text("Nhẩm đang khóa")
                 .font(.title2.weight(.semibold))
             if lock.showsUnlockButton {
                 Button("Mở khóa bằng \(lock.method.title)") {

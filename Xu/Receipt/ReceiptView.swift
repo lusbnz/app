@@ -47,7 +47,7 @@ struct ReceiptView: View {
                             if items.count >= 2 { itemsPicker }
                         }
                     } else {
-                        Text("Chụp hoặc chọn một ảnh hóa đơn. Xu sẽ đọc tổng tiền và ngày giờ.")
+                        Text("Chụp hoặc chọn một ảnh hóa đơn. Nhẩm sẽ đọc tổng tiền và ngày giờ.")
                             .foregroundStyle(Color.xuTextSecondary)
                     }
                     Text("Ảnh được đọc ngay trên máy và lưu kèm khoản chi để bạn xem lại.")
@@ -180,7 +180,7 @@ struct ReceiptView: View {
     private var uncertainTotalNotice: some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
             ButterLabel(text: "kiểm tra lại")
-            Text("Xu không chắc đây là tổng tiền. Bạn xem lại với hóa đơn nhé.")
+            Text("Nhẩm không chắc đây là tổng tiền. Bạn xem lại với hóa đơn nhé.")
                 .font(.footnote)
                 .foregroundStyle(Color.xuTextSecondary)
         }

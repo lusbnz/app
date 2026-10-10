@@ -1,6 +1,6 @@
 import Foundation
 
-/// Ngoại tệ Xu nhận ra khi gõ ("20 usd", "$20", "5 euro", "1000 yên"). Tiền luôn lưu bằng đồng;
+/// Ngoại tệ Nhẩm nhận ra khi gõ ("20 usd", "$20", "5 euro", "1000 yên"). Tiền luôn lưu bằng đồng;
 /// ngoại tệ chỉ để quy đổi lúc ghi và hiện lại số gốc.
 enum Currency: String, CaseIterable, Identifiable, Sendable {
     case usd, eur, jpy, krw, cny, gbp, thb, sgd, aud

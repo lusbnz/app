@@ -2,17 +2,37 @@
   "sourceLanguage" : "vi",
   "strings" : {
     " " : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " "
+          }
+        }
+      }
     },
     "· %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "· %@"
+          }
+        }
+      }
     },
     "· %@ chia %lld" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "· %1$@ chia %2$lld"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "· %1$@ split %2$lld ways"
           }
         }
       }
@@ -21,7 +41,13 @@
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
+            "value" : "“%1$@” %2$@ %3$@."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "“%1$@” %2$@ %3$@."
           }
         }
@@ -31,8 +57,14 @@
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$@ · %2$@ %3$@ bạn hay ghi"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@ %3$@ you often log"
           }
         }
       }
@@ -41,7 +73,13 @@
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
+            "value" : "%1$@ · %2$@%3$@%4$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "%1$@ · %2$@%3$@%4$@"
           }
         }
@@ -51,7 +89,13 @@
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
+            "value" : "%1$@ / %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "%1$@ / %2$@"
           }
         }
@@ -61,8 +105,14 @@
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$@ chia %2$lld"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ split %2$lld ways"
           }
         }
       }
@@ -71,8 +121,14 @@
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$@ đã dùng %2$lld%% hạn mức"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ has used %2$lld%% of its limit"
           }
         }
       }
@@ -81,8 +137,14 @@
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$@ so với %2$@ cùng ngày tháng trước"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ vs %2$@ over the same days last month"
           }
         }
       }
@@ -91,8 +153,14 @@
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$@ so với %2$@ cùng ngày tuần trước"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ vs %2$@ over the same days last week"
           }
         }
       }
@@ -101,8 +169,14 @@
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$@ vượt hạn mức %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ is over its limit by %2$@"
           }
         }
       }
@@ -111,46 +185,130 @@
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$@, %2$lld tháng %3$lld"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$lld/%3$lld"
           }
         }
       }
     },
     "%@. Chạm Ghi để ghi, hoặc Bỏ qua kỳ này." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@. Tap Log to record it, or Skip this period."
+          }
+        }
+      }
     },
     "%@. Hôm nay còn %@.%@" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$@. Hôm nay còn %2$@.%3$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@. %2$@ left today.%3$@"
           }
         }
       }
     },
-    "%@. Mở Xu để tự ghi, hoặc chạm Bỏ qua kỳ này." : {
-
+    "%@. Mở Nhẩm để tự ghi, hoặc chạm Bỏ qua kỳ này." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@. Open Nhẩm to log it automatically, or tap Skip this period."
+          }
+        }
+      }
     },
     "%@/năm" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/year"
+          }
+        }
+      }
     },
     "%@/tháng" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/month"
+          }
+        }
+      }
     },
     "%lld" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        }
+      }
     },
     "%lld khoản" : {
-
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld expense"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld expenses"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "%lld khoản · %@" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$lld khoản · %2$@"
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld expense · %2$@"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld expenses · %2$@"
+                }
+              }
+            }
           }
         }
       }
@@ -159,8 +317,26 @@
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$lld khoản, tổng %2$@"
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld expense, total %2$@"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld expenses, total %2$@"
+                }
+              }
+            }
           }
         }
       }
@@ -169,194 +345,594 @@
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$lld tháng %2$lld"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld/%2$lld"
           }
         }
       }
     },
     "1 củ 2 tai nghe" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 củ 2 tai nghe"
+          }
+        }
+      }
     },
     "1,2 triệu, cứ gõ như nói" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1.2 million; type it the way you say it"
+          }
+        }
+      }
     },
     "7 ngày đầu miễn phí" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First 7 days free"
+          }
+        }
+      }
     },
     "9tr" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "9tr"
+          }
+        }
+      }
     },
     "45k" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "45k"
+          }
+        }
+      }
     },
     "ăn uống" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "food"
+          }
+        }
+      }
     },
     "Ảnh được đọc ngay trên máy và lưu kèm khoản chi để bạn xem lại." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The photo is read on your device and saved with the expense so you can look back at it."
+          }
+        }
+      }
     },
     "Ảnh hóa đơn" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Receipt photo"
+          }
+        }
+      }
     },
-    "Bạn đang dùng Xu Pro. Cảm ơn bạn." : {
-
+    "Bạn đang dùng Nhẩm Pro. Cảm ơn bạn." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're on Nhẩm Pro. Thank you."
+          }
+        }
+      }
     },
     "Bạn đang gần %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're near %@"
+          }
+        }
+      }
     },
     "Bản miễn phí cho gõ 5 lần mỗi ngày." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The free version lets you log 5 times a day."
+          }
+        }
+      }
     },
-    "Bản miễn phí cho gõ 5 lần mỗi ngày. Mở Xu để dùng Xu Pro." : {
-
+    "Bản miễn phí cho gõ 5 lần mỗi ngày. Mở Nhẩm để dùng Nhẩm Pro." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The free version lets you log 5 times a day. Open Nhẩm to get Nhẩm Pro."
+          }
+        }
+      }
     },
     "Bạn vừa tiêu gì?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What did you just spend on?"
+          }
+        }
+      }
     },
     "bằng kỳ trước" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "same as last period"
+          }
+        }
+      }
     },
     "Bảo mật" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Security"
+          }
+        }
+      }
     },
     "Bắt đầu" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get started"
+          }
+        }
+      }
     },
     "Biểu tượng" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icon"
+          }
+        }
+      }
     },
     "Bỏ qua" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skip"
+          }
+        }
+      }
     },
     "Bỏ qua %@ kỳ này" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skip %@ this period"
+          }
+        }
+      }
     },
     "Cả hai đều tùy chọn, mặc định tắt. Bật hay tắt lúc nào cũng được trong Tùy chỉnh." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Both are optional and off by default. You can switch them on or off any time in Settings."
+          }
+        }
+      }
     },
     "Các khoản có tên “%@” sẽ chuyển sang %@." : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Các khoản có tên “%1$@” sẽ chuyển sang %2$@."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expenses named “%1$@” will move to %2$@."
           }
         }
       }
     },
     "Các khoản và luật đang dùng danh mục này sẽ chuyển về “khác”." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expenses and rules using this category will move to “other”."
+          }
+        }
+      }
     },
     "Chạm để sửa" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to edit"
+          }
+        }
+      }
     },
     "chỉ ghi phần của bạn: 115k" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "logs only your share: 115k"
+          }
+        }
+      }
     },
     "Chỉ nhắc nếu hôm đó bạn chưa ghi gì." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only reminds you if you haven't logged anything that day."
+          }
+        }
+      }
     },
     "Chỉ từ nay" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From now on only"
+          }
+        }
+      }
     },
     "chiều" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "afternoon"
+          }
+        }
+      }
     },
     "chỗ %@ quen" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "your usual %@ spot"
+          }
+        }
+      }
     },
     "cho mượn, không tính vào ngân sách" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "a loan, not counted in your budget"
+          }
+        }
+      }
     },
     "Chọn hết" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select all"
+          }
+        }
+      }
     },
     "Chọn món của bạn" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick your items"
+          }
+        }
+      }
     },
     "Chọn ngày…" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick a date…"
+          }
+        }
+      }
     },
     "Chọn từ Ảnh" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose from Photos"
+          }
+        }
+      }
     },
     "chủ nhật" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sunday"
+          }
+        }
+      }
     },
     "Chưa đọc được tổng tiền, chạm để điền" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't read the total, tap to fill it in"
+          }
+        }
+      }
     },
     "Chưa khóa được app" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't lock the app"
+          }
+        }
+      }
     },
     "Chưa mua được. Bạn thử lại sau nhé." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The purchase didn't go through. Please try again later."
+          }
+        }
+      }
     },
     "Chưa tải được giá từ App Store." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load prices from the App Store."
+          }
+        }
+      }
     },
     "Chụp ảnh" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Take photo"
+          }
+        }
+      }
     },
     "Chụp hóa đơn" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan receipt"
+          }
+        }
+      }
     },
-    "Chụp hoặc chọn một ảnh hóa đơn. Xu sẽ đọc tổng tiền và ngày giờ." : {
-
+    "Chụp hoặc chọn một ảnh hóa đơn. Nhẩm sẽ đọc tổng tiền và ngày giờ." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Take or choose a receipt photo. Nhẩm will read the total and the date."
+          }
+        }
+      }
     },
     "Chụp lại" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retake"
+          }
+        }
+      }
     },
     "Chuyển %lld khoản" : {
-
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Move %lld expense"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Move %lld expenses"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "có ảnh" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "has photo"
+          }
+        }
+      }
     },
     "còn được tiêu hôm nay" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "left to spend today"
+          }
+        }
+      }
     },
     "còn được tiêu hôm nay · đã tiêu %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "left to spend today · spent %@"
+          }
+        }
+      }
     },
     "Còn được tiêu hôm nay %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ left to spend today"
+          }
+        }
+      }
     },
     "Còn được tiêu hôm nay %@, đã tiêu %@" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Còn được tiêu hôm nay %1$@, đã tiêu %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ left to spend today, %2$@ spent"
           }
         }
       }
     },
     "còn lại hôm nay sau khi ghi" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "left today after logging"
+          }
+        }
+      }
     },
     "còn lại sau khi ghi" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "left after logging"
+          }
+        }
+      }
     },
     "Còn lại sau khi ghi %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ left after logging"
+          }
+        }
+      }
     },
     "Cũng nói được bằng micro, và chụp hóa đơn để chọn món của bạn." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can also speak into the mic, and scan a receipt to pick your items."
+          }
+        }
+      }
     },
     "đ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "đ"
+          }
+        }
+      }
     },
     "Đã có danh mục tên này." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A category with this name already exists."
+          }
+        }
+      }
     },
     "Đã ghi %@ %@" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Đã ghi %1$@ %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logged %1$@ %2$@"
           }
         }
       }
@@ -365,175 +941,508 @@
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Đã ghi %1$lld khoản %2$@"
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Logged %1$lld expense %2$@"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Logged %1$lld expenses %2$@"
+                }
+              }
+            }
           }
         }
       }
     },
     "đã ghi cách đây %lld phút" : {
-
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "logged %lld minute ago"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "logged %lld minutes ago"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "Đã ghi ứng cho %@ %@" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Đã ghi ứng cho %1$@ %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logged a loan to %1$@ %2$@"
           }
         }
       }
     },
     "đã lưu vị trí" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "location saved"
+          }
+        }
+      }
     },
     "đã tiêu %@ trên %@" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "đã tiêu %1$@ trên %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "spent %1$@ of %2$@"
           }
         }
       }
     },
     "Đã trả" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repaid"
+          }
+        }
+      }
     },
     "Đang đọc hóa đơn" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reading the receipt"
+          }
+        }
+      }
     },
     "Đăng ký %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscribe %@"
+          }
+        }
+      }
     },
     "Đang tải giá" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading prices"
+          }
+        }
+      }
     },
     "Danh mục" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category"
+          }
+        }
+      }
     },
     "Danh mục của bạn" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your categories"
+          }
+        }
+      }
     },
     "Danh mục mới" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New category"
+          }
+        }
+      }
     },
     "Danh mục và luật" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categories and rules"
+          }
+        }
+      }
     },
-    "Để biết lúc bạn rời một quán đã ghi từ 3 lần, Xu cần quyền vị trí “Luôn luôn” và quyền gửi thông báo. Xu chỉ theo dõi tối đa 20 nơi như vậy, xử lý ngay trên máy và không gửi vị trí đi đâu." : {
-
+    "Để biết lúc bạn rời một quán đã ghi từ 3 lần, Nhẩm cần quyền vị trí “Luôn luôn” và quyền gửi thông báo. Nhẩm chỉ theo dõi tối đa 20 nơi như vậy, xử lý ngay trên máy và không gửi vị trí đi đâu." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To know when you leave a place you've logged at least 3 times, Nhẩm needs “Always” location access and permission to send notifications. Nhẩm tracks at most 20 such places, processes everything on your device and never sends your location anywhere."
+          }
+        }
+      }
     },
     "Để sau" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not now"
+          }
+        }
+      }
     },
     "đến" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "to"
+          }
+        }
+      }
     },
     "đến hạn %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "due %@"
+          }
+        }
+      }
     },
-    "Đến hạn, Xu nhắc lúc 9:00 và hiện khoản đó ở màn Hôm nay. Mặc định bạn chạm Ghi thì mới ghi; khoản nào bật “Tự ghi” thì Xu ghi khi bạn mở app." : {
-
+    "Đến hạn, Nhẩm nhắc lúc 9:00 và hiện khoản đó ở màn Hôm nay. Mặc định bạn chạm Ghi thì mới ghi; khoản nào bật “Tự ghi” thì Nhẩm ghi khi bạn mở app." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When it's due, Nhẩm reminds you at 9:00 and shows it on the Today screen. By default it's only logged when you tap Log; items with “Log automatically” on are logged when you open the app."
+          }
+        }
+      }
     },
     "Đến hạn: %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Due: %@"
+          }
+        }
+      }
     },
     "đi lại" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "transport"
+          }
+        }
+      }
     },
     "Đổi ảnh" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change photo"
+          }
+        }
+      }
     },
     "Đổi tên" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rename"
+          }
+        }
+      }
     },
     "Đóng" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        }
+      }
     },
     "Đồng cho một đơn vị" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dong per unit"
+          }
+        }
+      }
     },
     "Đóng hẳn rồi mở lại app để đổi ngôn ngữ." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fully close and reopen the app to change the language."
+          }
+        }
+      }
     },
     "Dữ liệu" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data"
+          }
+        }
+      }
     },
     "Dừng nói" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop listening"
+          }
+        }
+      }
     },
     "Dùng thử 7 ngày miễn phí" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try free for 7 days"
+          }
+        }
+      }
     },
     "English" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "English"
+          }
+        }
+      }
     },
     "gần chạm hạn mức, còn %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "near the limit, %@ left"
+          }
+        }
+      }
     },
     "Ghi" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log"
+          }
+        }
+      }
     },
     "Ghi %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log %@"
+          }
+        }
+      }
     },
     "Ghi %@ %@" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Ghi %1$@ %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log %1$@ %2$@"
           }
         }
       }
     },
     "Ghi chép" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logging"
+          }
+        }
+      }
     },
     "Ghi chi tiêu" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log expense"
+          }
+        }
+      }
     },
     "ghi cho ngày đã qua" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "log for a past day"
+          }
+        }
+      }
     },
     "Ghi khoản chi" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log an expense"
+          }
+        }
+      }
     },
     "Ghi lại" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log again"
+          }
+        }
+      }
     },
     "Ghi một hoặc nhiều khoản chi bằng một dòng chữ, ví dụ “phở 45k, grab 32”." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log one or more expenses with a line of text, for example “phở 45k, grab 32”."
+          }
+        }
+      }
     },
     "Ghi ngay" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log now"
+          }
+        }
+      }
     },
     "Ghi trùng?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log a duplicate?"
+          }
+        }
+      }
     },
     "giải trí" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "entertainment"
+          }
+        }
+      }
     },
     "giảm %@%@" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "giảm %1$@%2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "down %1$@%2$@"
           }
         }
       }
     },
     "Giao diện" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appearance"
+          }
+        }
+      }
     },
     "Giữ nhịp %@ mỗi ngày, cuối tháng dư khoảng %@." : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Giữ nhịp %1$@ mỗi ngày, cuối tháng dư khoảng %2$@."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At %1$@ a day, you'll end the month about %2$@ under."
           }
         }
       }
@@ -542,511 +1451,1604 @@
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Giữ nhịp %1$@ mỗi ngày, cuối tháng vượt khoảng %2$@."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At %1$@ a day, you'll end the month about %2$@ over."
           }
         }
       }
     },
-    "Gõ “20 usd”, “$20”, “5 euro” hay “1000 yên”, Xu quy ra đồng theo tỷ giá này và ghi kèm số gốc. Tỷ giá để trống là giá trị gần đúng có sẵn, nên hãy chỉnh cho sát." : {
-
+    "Gõ “20 usd”, “$20”, “5 euro” hay “1000 yên”, Nhẩm quy ra đồng theo tỷ giá này và ghi kèm số gốc. Tỷ giá để trống là giá trị gần đúng có sẵn, nên hãy chỉnh cho sát." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type “20 usd”, “$20”, “5 euro” or “1000 yên” and Nhẩm converts it to dong at these rates and keeps the original amount. A blank rate uses a built-in approximation, so adjust it to be accurate."
+          }
+        }
+      }
     },
     "Gõ không giới hạn" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlimited logging"
+          }
+        }
+      }
     },
     "Gõ một dòng là xong" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One line and you're done"
+          }
+        }
+      }
     },
     "Gõ một dòng là xong, ví dụ “phở 45k, grab 32”." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One line and you're done, for example “phở 45k, grab 32”."
+          }
+        }
+      }
     },
     "Gói năm" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yearly plan"
+          }
+        }
+      }
     },
     "Gói tháng" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monthly plan"
+          }
+        }
+      }
     },
     "Gợi ý theo giờ và vị trí" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggestions by time and place"
+          }
+        }
+      }
     },
     "Gợi ý theo vị trí và giờ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggestions by place and time"
+          }
+        }
+      }
     },
     "Hạn mức %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ limit"
+          }
+        }
+      }
     },
     "Hạn mức danh mục" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category limits"
+          }
+        }
+      }
     },
     "Hạn mức danh mục tính vào hạn mức ngày" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category limits count toward the daily limit"
+          }
+        }
+      }
     },
     "Hàng năm" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yearly"
+          }
+        }
+      }
     },
     "Hàng tháng" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monthly"
+          }
+        }
+      }
     },
     "Hàng tuần" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weekly"
+          }
+        }
+      }
     },
     "Hãy nhập tên danh mục." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a category name."
+          }
+        }
+      }
     },
     "Hãy nhập từ khóa." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a keyword."
+          }
+        }
+      }
     },
     "Hiển thị" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Display"
+          }
+        }
+      }
     },
     "hóa đơn" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bills"
+          }
+        }
+      }
     },
     "Hoàn tác" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Undo"
+          }
+        }
+      }
     },
     "Hỏi" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask"
+          }
+        }
+      }
     },
     "Hỏi cũng được: tháng này cf hết bao nhiêu?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can ask too: how much did I spend on coffee this month?"
+          }
+        }
+      }
     },
-    "Hỏi Xu" : {
-
+    "Hỏi Nhẩm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask Nhẩm"
+          }
+        }
+      }
     },
-    "Hỏi Xu câu khác" : {
-
+    "Hỏi Nhẩm câu khác" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask Nhẩm something else"
+          }
+        }
+      }
     },
     "hôm kia" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2 days ago"
+          }
+        }
+      }
     },
     "hôm nay" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "today"
+          }
+        }
+      }
     },
     "Hôm nay bạn chưa ghi gì" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You haven't logged anything today"
+          }
+        }
+      }
     },
     "Hôm nay còn %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ left today"
+          }
+        }
+      }
     },
     "Hôm nay vượt %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Over by %@ today"
+          }
+        }
+      }
     },
     "Hôm nay vượt %@, mai vẫn còn %@" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Hôm nay vượt %1$@, mai vẫn còn %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Over by %1$@ today, still %2$@ for tomorrow"
           }
         }
       }
     },
     "hôm qua" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "yesterday"
+          }
+        }
+      }
     },
     "hôm qua cơm 55k" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "hôm qua cơm 55k"
+          }
+        }
+      }
     },
     "Hủy" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
     },
     "khác" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "other"
+          }
+        }
+      }
     },
     "Khi bật, tiền trong hạn mức của từng danh mục được giữ riêng: hạn mức ngày chỉ tính trên phần ngân sách còn lại, và khoản chi trong hạn mức danh mục không làm nó tụt. Chi vượt hạn mức danh mục thì trừ vào hạn mức ngày." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When on, the money in each category's limit is set aside: the daily limit is based only on the rest of your budget, and spending within a category's limit doesn't lower it. Spending beyond a category's limit comes out of the daily limit."
+          }
+        }
+      }
     },
-    "Khi một danh mục dùng từ 80% hạn mức hoặc vượt, Xu báo lúc bạn ghi và ở màn Tháng. Hạn mức mỗi ngày vẫn tính từ ngân sách tháng. Để trống nghĩa là không đặt hạn mức." : {
-
+    "Khi một danh mục dùng từ 80% hạn mức hoặc vượt, Nhẩm báo lúc bạn ghi và ở màn Tháng. Hạn mức mỗi ngày vẫn tính từ ngân sách tháng. Để trống nghĩa là không đặt hạn mức." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When a category reaches 80% of its limit or goes over, Nhẩm tells you when you log and on the Month screen. The daily limit is still based on the monthly budget. Leave blank for no limit."
+          }
+        }
+      }
     },
     "Khóa app bằng %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lock app with %@"
+          }
+        }
+      }
     },
     "khoản chi" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "expense"
+          }
+        }
+      }
     },
     "Khoản chi" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expense"
+          }
+        }
+      }
     },
     "Khoản có tên chứa từ khóa sẽ tự vào danh mục tương ứng. Từ khóa không phân biệt hoa thường và dấu." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expenses whose name contains a keyword go into the matching category automatically. Keywords ignore case and accents."
+          }
+        }
+      }
     },
     "Khoản định kỳ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recurring expenses"
+          }
+        }
+      }
     },
     "Khoản định kỳ mới" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New recurring expense"
+          }
+        }
+      }
     },
     "Khoảng ngày" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date range"
+          }
+        }
+      }
     },
     "Khôi phục giao dịch" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore purchases"
+          }
+        }
+      }
     },
-    "Không cần chọn danh mục hay nhập từng ô. Xu tự tách tên, số tiền và ngày." : {
-
+    "Không cần chọn danh mục hay nhập từng ô. Nhẩm tự tách tên, số tiền và ngày." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No need to pick a category or fill in fields. Nhẩm splits out the name, amount and date for you."
+          }
+        }
+      }
     },
     "Không có khoản nào khớp." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No matching expenses."
+          }
+        }
+      }
     },
     "không đặt" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "not set"
+          }
+        }
+      }
     },
     "Không ghi" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Don't log"
+          }
+        }
+      }
     },
     "không lưu" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "not saved"
+          }
+        }
+      }
     },
-    "Không tìm thấy giao dịch Xu Pro nào để khôi phục." : {
-
+    "Không tìm thấy giao dịch Nhẩm Pro nào để khôi phục." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Nhẩm Pro purchases found to restore."
+          }
+        }
+      }
     },
     "không tính vào chi tiêu" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "not counted as spending"
+          }
+        }
+      }
     },
     "Không tính vào ngân sách" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not in budget"
+          }
+        }
+      }
     },
     "kiểm tra lại" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "double-check"
+          }
+        }
+      }
     },
     "Kỳ so sánh" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comparison period"
+          }
+        }
+      }
     },
     "Lặp lại" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repeat"
+          }
+        }
+      }
     },
     "Luật đã học" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Learned rules"
+          }
+        }
+      }
     },
     "Luật mới" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New rule"
+          }
+        }
+      }
     },
     "Lưu" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        }
+      }
     },
     "mật mã" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "passcode"
+          }
+        }
+      }
     },
     "Máy chưa đặt mật mã hoặc Face ID. Bạn đặt trong Cài đặt của iPhone rồi bật lại." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This device has no passcode or Face ID set up. Set one up in iPhone Settings, then turn this on again."
+          }
+        }
+      }
     },
-    "Máy này chưa hỗ trợ Hỏi Xu" : {
-
+    "Máy này chưa hỗ trợ Hỏi Nhẩm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This device doesn't support Ask Nhẩm yet"
+          }
+        }
+      }
     },
     "Máy này chưa nhận dạng được giọng nói tiếng Việt." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This device can't recognize Vietnamese speech yet."
+          }
+        }
+      }
     },
-    "Mở app Phím tắt, tìm Xu. Có sẵn “Ghi chi tiêu”, “Ghi nhanh một khoản” và “Mở ô gõ” để bạn ghép vào phím tắt riêng." : {
-
+    "Mở app Phím tắt, tìm Nhẩm. Có sẵn “Ghi chi tiêu”, “Ghi nhanh một khoản” và “Mở ô gõ” để bạn ghép vào phím tắt riêng." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open the Shortcuts app and find Nhẩm. “Log expense”, “Quick log” and “Open entry” are ready to add to your own shortcuts."
+          }
+        }
+      }
     },
     "Mở khóa bằng %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock with %@"
+          }
+        }
+      }
     },
     "Mở khóa để xem chi tiêu của bạn." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock to see your spending."
+          }
+        }
+      }
     },
     "Mở màn hình Tháng" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open the Month screen"
+          }
+        }
+      }
     },
     "Mở ô gõ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open entry"
+          }
+        }
+      }
     },
-    "Mở Xu ngay ở ô gõ để ghi khoản chi." : {
-
+    "Mở Nhẩm ngay ở ô gõ để ghi khoản chi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Nhẩm right at the entry field to log an expense."
+          }
+        }
+      }
     },
     "mỗi %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "every %@"
+          }
+        }
+      }
     },
     "Mọi lúc" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All time"
+          }
+        }
+      }
     },
     "Mỗi tháng bạn muốn tiêu bao nhiêu?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How much do you want to spend each month?"
+          }
+        }
+      }
     },
     "mua sắm" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "shopping"
+          }
+        }
+      }
     },
     "Ngân sách" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Budget"
+          }
+        }
+      }
     },
     "Ngân sách mỗi tháng" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monthly budget"
+          }
+        }
+      }
     },
     "Ngân sách tháng" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monthly budget"
+          }
+        }
+      }
     },
     "Ngày" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Day"
+          }
+        }
+      }
     },
     "ngày %lld hàng tháng" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "day %lld of every month"
+          }
+        }
+      }
     },
     "ngày %lld/%lld hàng năm" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "ngày %1$lld/%2$lld hàng năm"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$lld/%1$lld every year"
           }
         }
       }
     },
     "Ngày trên hóa đơn: %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date on receipt: %@"
+          }
+        }
+      }
     },
     "Ngày trong tháng" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Day of month"
+          }
+        }
+      }
     },
     "ngoài ngân sách" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "outside budget"
+          }
+        }
+      }
     },
     "Ngoài ngân sách" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Outside budget"
+          }
+        }
+      }
     },
     "Ngôn ngữ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Language"
+          }
+        }
+      }
     },
     "Nhắc ghi lúc 21:00" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remind me to log at 21:00"
+          }
+        }
+      }
     },
     "Nhắc ghi lúc 21:00 nếu hôm đó chưa ghi gì" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remind me at 21:00 if I haven't logged anything that day"
+          }
+        }
+      }
     },
     "Nhắc khi rời quán quen" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remind me when I leave a usual place"
+          }
+        }
+      }
     },
     "Nhắc và gợi ý" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reminders and suggestions"
+          }
+        }
+      }
     },
     "nhậu 460k chia 4" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nhậu 460k chia 4"
+          }
+        }
+      }
     },
     "nhiều khoản trong một dòng" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "several expenses in one line"
+          }
+        }
+      }
     },
-    "Nói “Ghi chi tiêu trong Xu”, Siri sẽ hỏi bạn tiêu gì. Trả lời như khi gõ: “phở 45k”." : {
-
+    "Nói “Ghi chi tiêu trong Nhẩm”, Siri sẽ hỏi bạn tiêu gì. Trả lời như khi gõ: “phở 45k”." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Say “Log expense in Nhẩm” and Siri will ask what you spent on. Answer the way you'd type it: “phở 45k”."
+          }
+        }
+      }
     },
     "Nơi ghi" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logged at"
+          }
+        }
+      }
     },
     "Nói khoản chi" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speak an expense"
+          }
+        }
+      }
     },
     "Nút Tác vụ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Action Button"
+          }
+        }
+      }
     },
     "phần của bạn · %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "your share · %@"
+          }
+        }
+      }
     },
     "Phím tắt" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shortcuts"
+          }
+        }
+      }
     },
     "phở" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "phở"
+          }
+        }
+      }
     },
     "phở 45k" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "phở 45k"
+          }
+        }
+      }
     },
     "phở 45k, grab 32" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "phở 45k, grab 32"
+          }
+        }
+      }
     },
     "phở, grab, cf…" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "phở, grab, cf…"
+          }
+        }
+      }
     },
     "PRO" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PRO"
+          }
+        }
+      }
     },
     "quán %@ quen" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "your usual %@ place"
+          }
+        }
+      }
     },
     "Quán quen hiện sẵn một chạm là ghi. Vị trí chỉ xử lý trên máy, không gửi đi đâu." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your usual places show up ready to log with one tap. Location is processed on your device only and never sent anywhere."
+          }
+        }
+      }
     },
     "Quay lại" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
+          }
+        }
+      }
     },
     "sáng" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "morning"
+          }
+        }
+      }
     },
     "Sáng" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Light"
+          }
+        }
+      }
     },
     "Siri" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siri"
+          }
+        }
+      }
     },
     "Siri, Phím tắt và Nút Tác vụ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siri, Shortcuts and Action Button"
+          }
+        }
+      }
     },
     "Số tiền" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amount"
+          }
+        }
+      }
     },
     "So với kỳ trước" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compared with last period"
+          }
+        }
+      }
     },
     "Sửa" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
+          }
+        }
+      }
     },
     "Sửa khoản chi" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit expense"
+          }
+        }
+      }
     },
     "Sửa khoản định kỳ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit recurring expense"
+          }
+        }
+      }
     },
     "Sửa luật" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit rule"
+          }
+        }
+      }
     },
     "sức khỏe" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "health"
+          }
+        }
+      }
     },
     "tăng %@%@" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "tăng %1$@%2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "up %1$@%2$@"
           }
         }
       }
     },
     "Tên" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
     },
     "Tên tối đa %lld ký tự." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Names can be up to %lld characters."
+          }
+        }
+      }
     },
     "Tháng" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Month"
+          }
+        }
+      }
     },
     "Tháng %lld" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Month %lld"
+          }
+        }
+      }
     },
-    "Tháng nào không có ngày này thì tính vào ngày cuối tháng. Xu nhắc lúc 9:00 và bạn chạm Ghi." : {
-
+    "Tháng nào không có ngày này thì tính vào ngày cuối tháng. Nhẩm nhắc lúc 9:00 và bạn chạm Ghi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In months without this day, the last day of the month is used. Nhẩm reminds you at 9:00 and you tap Log."
+          }
+        }
+      }
     },
     "Tháng này" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This month"
+          }
+        }
+      }
     },
     "Tháng này chưa tiêu gì." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing spent this month yet."
+          }
+        }
+      }
     },
     "Tháng này còn %@, đã tiêu %@ trên %@. %@" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Tháng này còn %1$@, đã tiêu %2$@ trên %3$@. %4$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ left this month, %2$@ spent of %3$@. %4$@"
           }
         }
       }
     },
     "Tháng trước" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last month"
+          }
+        }
+      }
     },
     "Thêm ảnh" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add photo"
+          }
+        }
+      }
     },
     "Thêm danh mục" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add category"
+          }
+        }
+      }
     },
     "Thêm khoản định kỳ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add recurring expense"
+          }
+        }
+      }
     },
     "Thêm luật" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add rule"
+          }
+        }
+      }
     },
     "Theo hệ thống" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System"
+          }
+        }
+      }
     },
     "thiếu số tiền" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "amount missing"
+          }
+        }
+      }
     },
     "Thời gian" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time"
+          }
+        }
+      }
     },
     "Thời gian: %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time: %@"
+          }
+        }
+      }
     },
     "Thứ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weekday"
+          }
+        }
+      }
     },
     "thứ %lld" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "weekday %lld"
+          }
+        }
+      }
     },
     "Thú cưng" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pets"
+          }
+        }
+      }
     },
     "Thử lại" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try again"
+          }
+        }
+      }
     },
-    "Tiền nhà và các khoản cố định thì thêm ở Tùy chỉnh, mục Khoản định kỳ: Xu nhắc đến hạn và bạn chạm để ghi. Đổi ngân sách lúc nào cũng được, không cần tài khoản." : {
-
+    "Tiền nhà và các khoản cố định thì thêm ở Tùy chỉnh, mục Khoản định kỳ: Nhẩm nhắc đến hạn và bạn chạm để ghi. Đổi ngân sách lúc nào cũng được, không cần tài khoản." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add rent and other fixed costs in Settings under Recurring expenses: Nhẩm reminds you when they're due and you tap to log. You can change your budget any time, no account needed."
+          }
+        }
+      }
     },
     "Tiếng Việt" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiếng Việt"
+          }
+        }
+      }
     },
     "Tiếp" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next"
+          }
+        }
+      }
     },
     "Tiếp tục" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
     },
     "Tìm khoản chi" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search expenses"
+          }
+        }
+      }
     },
     "Tính vào ngân sách" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In budget"
+          }
+        }
+      }
     },
     "tối" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "evening"
+          }
+        }
+      }
     },
     "Tối" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark"
+          }
+        }
+      }
     },
     "trà sữa" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "trà sữa"
+          }
+        }
+      }
     },
-    "Trợ giúp và Xu Pro" : {
-
+    "Trợ giúp và Nhẩm Pro" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Help and Nhẩm Pro"
+          }
+        }
+      }
     },
     "trưa" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "noon"
+          }
+        }
+      }
     },
     "Từ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From"
+          }
+        }
+      }
     },
     "Tự ghi khi đến hạn" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log automatically when due"
+          }
+        }
+      }
     },
     "Từ khóa" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keyword"
+          }
+        }
+      }
     },
     "Tuần này" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This week"
+          }
+        }
+      }
     },
     "Tuần trước" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last week"
+          }
+        }
+      }
     },
     "Tức khoảng %@ mỗi ngày." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "That's about %@ a day."
+          }
+        }
+      }
     },
     "Tùy chỉnh" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
     },
     "Tỷ giá ngoại tệ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exchange rates"
+          }
+        }
+      }
     },
     "ứng cho %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "loan to %@"
+          }
+        }
+      }
     },
     "ứng cho %@ · chưa trả %@" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "ứng cho %1$@ · chưa trả %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "loan to %1$@ · %2$@ unpaid"
           }
         }
       }
@@ -1055,111 +3057,333 @@
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "ứng cho %1$@, chưa trả %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "loan to %1$@, %2$@ unpaid"
           }
         }
       }
     },
     "ứng cho Minh 200k" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ứng cho Minh 200k"
+          }
+        }
+      }
     },
     "Vẫn ghi" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log anyway"
+          }
+        }
+      }
     },
-    "Vào Cài đặt, Nút Tác vụ, chọn Phím tắt rồi chọn “Mở ô gõ” của Xu. Bấm giữ nút là gõ được ngay." : {
-
+    "Vào Cài đặt, Nút Tác vụ, chọn Phím tắt rồi chọn “Mở ô gõ” của Nhẩm. Bấm giữ nút là gõ được ngay." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to Settings, Action Button, choose Shortcut, then pick Nhẩm's “Open entry”. Press and hold the button to start typing right away."
+          }
+        }
+      }
     },
     "Về tỷ giá có sẵn" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset to built-in rates"
+          }
+        }
+      }
     },
     "Vị trí và ảnh hóa đơn được xử lý trên máy, không gửi đi đâu." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location and receipt photos are processed on your device and never sent anywhere."
+          }
+        }
+      }
     },
     "vừa được ghi" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "was just logged"
+          }
+        }
+      }
     },
     "Vừa rời %@. Ghi %@ %@ như mọi lần?" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Vừa rời %1$@. Ghi %2$@ %3$@ như mọi lần?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You just left %1$@. Log %2$@ %3$@ as usual?"
           }
         }
       }
     },
     "Vuốt để tiếp tục" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swipe to continue"
+          }
+        }
+      }
     },
     "vượt hạn mức %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "over the limit by %@"
+          }
+        }
+      }
     },
     "vượt hôm nay" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "over today"
+          }
+        }
+      }
     },
     "vượt hôm nay · mai vẫn còn %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "over today · still %@ for tomorrow"
+          }
+        }
+      }
     },
     "Xác nhận để bật khóa app." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm to turn on app lock."
+          }
+        }
+      }
     },
     "Xác nhận để tắt khóa app." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm to turn off app lock."
+          }
+        }
+      }
     },
     "Xem toàn màn hình" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View full screen"
+          }
+        }
+      }
     },
     "Xóa" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
     },
     "Xóa “%@”" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete “%@”"
+          }
+        }
+      }
     },
     "Xóa danh mục?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete category?"
+          }
+        }
+      }
     },
     "Xóa khoản này" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete this expense"
+          }
+        }
+      }
     },
     "Xóa khoản này?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete this expense?"
+          }
+        }
+      }
     },
     "Xóa một danh mục thì các khoản đã gán chuyển về “khác”." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deleting a category moves its expenses to “other”."
+          }
+        }
+      }
     },
     "Xong" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        }
+      }
     },
-    "Xu chưa đọc được số tiền trong “%@”." : {
-
+    "Nhẩm chưa đọc được số tiền trong “%@”." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhẩm couldn't read an amount in “%@”."
+          }
+        }
+      }
     },
-    "Xu chưa được dùng micro hoặc nhận dạng giọng nói. Bạn bật lại trong Cài đặt của iPhone." : {
-
+    "Nhẩm chưa được dùng micro hoặc nhận dạng giọng nói. Bạn bật lại trong Cài đặt của iPhone." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhẩm isn't allowed to use the microphone or speech recognition. Turn them back on in iPhone Settings."
+          }
+        }
+      }
     },
-    "Xu chưa trả lời chắc được câu này. Bạn thử hỏi cách khác nhé." : {
-
+    "Nhẩm chưa trả lời chắc được câu này. Bạn thử hỏi cách khác nhé." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhẩm isn't sure how to answer that. Try asking another way."
+          }
+        }
+      }
     },
-    "Xu đang khóa" : {
-
+    "Nhẩm đang khóa" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhẩm is locked"
+          }
+        }
+      }
     },
-    "Xu ghi khi bạn mở app sau ngày đến hạn, vẫn tính vào 5 lần ghi mỗi ngày của bản miễn phí. Ghi nhầm thì xóa hoặc sửa như khoản thường." : {
-
+    "Nhẩm ghi khi bạn mở app sau ngày đến hạn, vẫn tính vào 5 lần ghi mỗi ngày của bản miễn phí. Ghi nhầm thì xóa hoặc sửa như khoản thường." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhẩm logs it when you open the app after the due date and it still counts toward the free version's 5 logs a day. If it's wrong, delete or edit it like any other expense."
+          }
+        }
+      }
     },
-    "Xu khóa khi mở app và khi ra ngoài app. Quên Face ID thì nhập mật mã máy. Ghi nhanh từ Siri và Phím tắt vẫn ghi được khi app khóa, nhưng không đọc được số liệu." : {
-
+    "Nhẩm khóa khi mở app và khi ra ngoài app. Quên Face ID thì nhập mật mã máy. Ghi nhanh từ Siri và Phím tắt vẫn ghi được khi app khóa, nhưng không đọc được số liệu." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhẩm locks when you open the app and whenever you leave it. If Face ID doesn't work, enter your device passcode. Quick logging from Siri and Shortcuts still works while the app is locked, but can't read your data."
+          }
+        }
+      }
     },
-    "Xu không chắc đây là tổng tiền. Bạn xem lại với hóa đơn nhé." : {
-
+    "Nhẩm không chắc đây là tổng tiền. Bạn xem lại với hóa đơn nhé." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhẩm isn't sure this is the total. Please check it against the receipt."
+          }
+        }
+      }
     },
-    "Xu nhắc khi bạn quên" : {
-
+    "Nhẩm nhắc khi bạn quên" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhẩm reminds you when you forget"
+          }
+        }
+      }
     },
-    "Xu Pro" : {
-
+    "Nhẩm Pro" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhẩm Pro"
+          }
+        }
+      }
     },
     "Xuất dữ liệu ra CSV" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export data as CSV"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

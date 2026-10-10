@@ -1,7 +1,7 @@
 import Foundation
 
 /// Biểu tượng (SF Symbols) của danh mục. Có sẵn thì cố định; tự thêm thì người dùng chọn,
-/// và Xu gợi ý trước theo tên ("thú cưng" ra chân thú) bằng cùng cách khớp cụm từ của bộ phân loại.
+/// và Nhẩm gợi ý trước theo tên ("thú cưng" ra chân thú) bằng cùng cách khớp cụm từ của bộ phân loại.
 enum CategoryIcon {
     /// Biểu tượng khi danh mục tự thêm chưa chọn gì.
     static let fallback = "tag"

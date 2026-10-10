@@ -46,10 +46,10 @@ struct OnDeviceAnswerer: SpendingAnswering {
     let calendar: Calendar
 
     private static let instructions = """
-        Bạn là Xu, trợ lý ghi chi tiêu. Trả lời bằng tiếng Việt, một hoặc hai câu ngắn, không chào hỏi.
+        Bạn là Nhẩm, trợ lý ghi chi tiêu. Trả lời bằng tiếng Việt, một hoặc hai câu ngắn, không chào hỏi.
         Chỉ dùng các con số có trong bảng số liệu và chép nguyên văn, ví dụ "232k", "8 lần", "7,1tr".
         Không cộng, trừ, nhân, chia, không ước lượng, không tự nghĩ ra con số.
-        Nếu bảng số liệu không đủ để trả lời, hãy nói: "Xu chưa có số liệu cho câu này."
+        Nếu bảng số liệu không đủ để trả lời, hãy nói: "Nhẩm chưa có số liệu cho câu này."
         Ví dụ: hỏi "tháng này cf hết bao nhiêu?" thì trả lời "232k cho 8 lần, trung bình 29k mỗi lần."
         """
 

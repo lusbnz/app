@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Tùy chỉnh, chia nhóm: ngân sách, ghi chép, nhắc và gợi ý, hiển thị (giao diện, ngôn ngữ), dữ liệu, trợ giúp và Xu Pro.
+/// Tùy chỉnh, chia nhóm: ngân sách, ghi chép, nhắc và gợi ý, hiển thị (giao diện, ngôn ngữ), dữ liệu, trợ giúp và Nhẩm Pro.
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(AppSettings.self) private var settings
@@ -91,14 +91,14 @@ struct SettingsView: View {
                 } header: {
                     Text("Bảo mật")
                 } footer: {
-                    Text("Xu khóa khi mở app và khi ra ngoài app. Quên Face ID thì nhập mật mã máy. Ghi nhanh từ Siri và Phím tắt vẫn ghi được khi app khóa, nhưng không đọc được số liệu.")
+                    Text("Nhẩm khóa khi mở app và khi ra ngoài app. Quên Face ID thì nhập mật mã máy. Ghi nhanh từ Siri và Phím tắt vẫn ghi được khi app khóa, nhưng không đọc được số liệu.")
                 }
                 .listRowBackground(Color.xuSurface)
                 Section("Dữ liệu") {
                     ExportDataRow()
                 }
                 .listRowBackground(Color.xuSurface)
-                Section("Trợ giúp và Xu Pro") {
+                Section("Trợ giúp và Nhẩm Pro") {
                     NavigationLink("Siri, Phím tắt và Nút Tác vụ") {
                         ShortcutsGuideView()
                     }
@@ -106,7 +106,7 @@ struct SettingsView: View {
                         showsPaywall = true
                     } label: {
                         HStack {
-                            Text("Xu Pro").foregroundStyle(Color.xuTextPrimary)
+                            Text("Nhẩm Pro").foregroundStyle(Color.xuTextPrimary)
                             Spacer()
                             ButterLabel(text: "PRO")
                         }
@@ -135,7 +135,7 @@ struct SettingsView: View {
                 Button("Tiếp tục") { setLeaveReminder(true) }
                 Button("Để sau", role: .cancel) {}
             } message: {
-                Text("Để biết lúc bạn rời một quán đã ghi từ 3 lần, Xu cần quyền vị trí “Luôn luôn” và quyền gửi thông báo. Xu chỉ theo dõi tối đa 20 nơi như vậy, xử lý ngay trên máy và không gửi vị trí đi đâu.")
+                Text("Để biết lúc bạn rời một quán đã ghi từ 3 lần, Nhẩm cần quyền vị trí “Luôn luôn” và quyền gửi thông báo. Nhẩm chỉ theo dõi tối đa 20 nơi như vậy, xử lý ngay trên máy và không gửi vị trí đi đâu.")
             }
             .sheet(isPresented: $showsPaywall) {
                 PaywallView()
