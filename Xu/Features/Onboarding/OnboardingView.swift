@@ -49,7 +49,7 @@ struct OnboardingView: View {
             Spacer()
             Text("Gõ một dòng là xong")
                 .font(.title.weight(.bold))
-            Text("Không cần chọn danh mục hay nhập từng ô. Nhẩm tự tách tên, số tiền và ngày.")
+            Text("Không cần chọn danh mục hay nhập từng ô. Pennyline tự tách tên, số tiền và ngày.")
                 .font(.body)
                 .foregroundStyle(Color.xuTextSecondary)
             VStack(alignment: .leading, spacing: 14) {
@@ -78,7 +78,7 @@ struct OnboardingView: View {
         @Bindable var settings = settings
         return VStack(alignment: .leading, spacing: 16) {
             Spacer()
-            Text("Nhẩm nhắc khi bạn quên")
+            Text("Pennyline nhắc khi bạn quên")
                 .font(.title.weight(.bold))
             Text("Cả hai đều tùy chọn, mặc định tắt. Bật hay tắt lúc nào cũng được trong Tùy chỉnh.")
                 .font(.body)
@@ -133,12 +133,12 @@ struct OnboardingView: View {
                 .onSubmit(start)
                 .accessibilityLabel("Ngân sách mỗi tháng")
             if let budget {
-                let daily = BudgetCalculator.dailyAverage(monthlyBudget: budget, now: Date(), calendar: calendar)
+                let daily = BudgetCalculator.dailyAverage(budget: budget, now: Date(), calendar: calendar)
                 Text("Tức khoảng \(MoneyFormatter.short(daily)) mỗi ngày.")
                     .font(.title3)
                     .accessibilityLabel("Tức khoảng \(MoneyFormatter.spoken(daily)) mỗi ngày.")
             }
-            Text("Tiền nhà và các khoản cố định thì thêm ở Tùy chỉnh, mục Khoản định kỳ: Nhẩm nhắc đến hạn và bạn chạm để ghi. Đổi ngân sách lúc nào cũng được, không cần tài khoản.")
+            Text("Tiền nhà và các khoản cố định thì thêm ở Tùy chỉnh, mục Khoản định kỳ: Pennyline nhắc đến hạn và bạn chạm để ghi. Đổi ngân sách lúc nào cũng được, không cần tài khoản.")
                 .font(.subheadline)
                 .foregroundStyle(Color.xuTextSecondary)
             Spacer()

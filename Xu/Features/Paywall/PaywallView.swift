@@ -1,7 +1,7 @@
 import StoreKit
 import SwiftUI
 
-/// Nhẩm Pro: quyền lợi, hai gói, dùng thử, khôi phục.
+/// Pennyline Pro: quyền lợi, hai gói, dùng thử, khôi phục.
 struct PaywallView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.purchase) private var purchase
@@ -19,9 +19,9 @@ struct PaywallView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     VStack(alignment: .leading, spacing: 8) {
-                        HighlightedNumber(text: "Nhẩm Pro", fraction: 1, size: 48)
+                        HighlightedNumber(text: "Pennyline Pro", fraction: 1, size: 48)
                             .accessibilityAddTraits(.isHeader)
-                        Text(store.isPro ? "Bạn đang dùng Nhẩm Pro. Cảm ơn bạn." : "Bản miễn phí cho gõ 5 lần mỗi ngày.")
+                        Text(store.isPro ? "Bạn đang dùng Pennyline Pro. Cảm ơn bạn." : "Bản miễn phí cho gõ 5 lần mỗi ngày.")
                             .foregroundStyle(Color.xuTextSecondary)
                     }
                     VStack(alignment: .leading, spacing: 12) {
@@ -121,7 +121,7 @@ struct PaywallView: View {
                     isWorking = true
                     await store.restore()
                     isWorking = false
-                    message = store.isPro ? nil : String(localized: "Không tìm thấy giao dịch Nhẩm Pro nào để khôi phục.")
+                    message = store.isPro ? nil : String(localized: "Không tìm thấy giao dịch Pennyline Pro nào để khôi phục.")
                 }
             }
             .font(.subheadline)

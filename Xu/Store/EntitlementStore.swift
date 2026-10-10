@@ -1,7 +1,7 @@
 import Observation
 import StoreKit
 
-/// Trạng thái Nhẩm Pro, đọc từ StoreKit 2.
+/// Trạng thái Pennyline Pro, đọc từ StoreKit 2.
 @MainActor @Observable
 final class EntitlementStore {
     static let shared = EntitlementStore()
@@ -34,11 +34,26 @@ final class EntitlementStore {
     #if DEBUG
     @ObservationIgnored private var isGrantedForDebug = false
 
-    /// Mở Nhẩm Pro không qua StoreKit, chỉ cho tham số khởi chạy `-pro` của bản Debug.
+    /// Bật hoặc tắt Pennyline Pro để thử (công tắc ở mục "Thử nghiệm" trong Tùy chỉnh, chỉ bản Debug). Tắt thì quay về
+    /// trạng thái thật theo StoreKit.
+    func setDebugPro(_ on: Bool) async {
+        if on {
+            grantForDebug()
+        } else {
+            isGrantedForDebug = false
+            isPro = false
+            SaveGate.isPro = false
+            ThemeStore.shared.proUnlocked = false
+            await refresh()
+        }
+    }
+
+    /// Mở Pennyline Pro không qua StoreKit, chỉ cho tham số khởi chạy `-pro` của bản Debug.
     func grantForDebug() {
         isGrantedForDebug = true
         isPro = true
         SaveGate.isPro = true
+        ThemeStore.shared.proUnlocked = true
     }
     #endif
 
@@ -56,6 +71,7 @@ final class EntitlementStore {
         guard active != isPro || active != SaveGate.isPro else { return }
         isPro = active
         SaveGate.isPro = active
+        ThemeStore.shared.proUnlocked = active
     }
 
     func loadProducts() async {
@@ -66,7 +82,7 @@ final class EntitlementStore {
         products = Self.productIDs.compactMap { id in loaded.first { $0.id == id } }
     }
 
-    /// Xử lý kết quả mua. Trả về true khi đã có Nhẩm Pro.
+    /// Xử lý kết quả mua. Trả về true khi đã có Pennyline Pro.
     @discardableResult
     func process(_ result: Product.PurchaseResult) async -> Bool {
         if case .success(.verified(let transaction)) = result {

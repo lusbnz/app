@@ -3,8 +3,8 @@ import Foundation
 import SwiftData
 
 /// Tham số khởi chạy chỉ có ở bản Debug, để xem nhanh các màn hình trên máy ảo:
-/// `-reset` xóa sạch, `-demo` nạp dữ liệu mẫu, `-sample` thêm 90 ngày dữ liệu mẫu, `-open entry|month|settings|paywall|receipt|search`, `-text "phở 45k"`.
-/// `-open receipt` đưa sẵn một hóa đơn mẫu vào bộ đọc. `-pro` mở Nhẩm Pro, `-ask "câu hỏi"` hỏi Nhẩm, `-budget 3tr` đặt ngân sách.
+/// `-reset` xóa sạch, `-demo` nạp dữ liệu mẫu, `-sample` thêm 90 ngày dữ liệu mẫu, `-week` tính ngân sách theo tuần, `-pro` mở Pro, `-theme mint|peach|sky|coffee|graphite` (cần `-pro`), `-open entry|month|week|map|goals|goal|settings|paywall|receipt|search`, `-text "phở 45k"`.
+/// `-open receipt` đưa sẵn một hóa đơn mẫu vào bộ đọc. `-pro` mở Pennyline Pro, `-ask "câu hỏi"` hỏi Pennyline, `-budget 3tr` đặt ngân sách.
 @MainActor
 enum DebugLaunch {
     static func apply(settings: AppSettings, appState: AppState, container: ModelContainer) {
@@ -27,6 +27,14 @@ enum DebugLaunch {
             settings.lastQuestion = ""
             settings.lastAnswer = ""
             AppGroup.defaults.removeObject(forKey: "saveQuota")
+            for key in [
+                SettingsKey.budgetPeriod, SettingsKey.weeklyBudget, SettingsKey.weeklySummary, SettingsKey.monthlySummary,
+                SettingsKey.appTheme, SettingsKey.limitsShapeDaily, SettingsKey.placeLookup,
+            ] {
+                AppGroup.defaults.removeObject(forKey: key)
+            }
+            settings.budgetPeriod = .month
+            ThemeStore.shared.theme = .lavender
         }
         if arguments.contains("-demo") {
             settings.monthlyBudget = 9_000_000
@@ -40,8 +48,14 @@ enum DebugLaunch {
         if let budget = value(after: "-budget").flatMap(BudgetInput.parse) {
             settings.monthlyBudget = budget
         }
+        if arguments.contains("-week") {
+            settings.setBudgetPeriod(.week)
+        }
         if arguments.contains("-pro") {
             EntitlementStore.shared.grantForDebug()
+        }
+        if let theme = value(after: "-theme").flatMap(AppTheme.init(rawValue:)) {
+            ThemeStore.shared.theme = theme
         }
         try? context.save()
         let screen = value(after: "-open")
@@ -53,6 +67,10 @@ enum DebugLaunch {
             switch screen {
             case "entry": appState.openEntry(text: text)
             case "month": appState.showsMonth = true
+            case "week": appState.debugOpensWeek = true
+            case "map", "goals", "goal":
+                appState.debugMonthDestination = screen
+                appState.showsMonth = true
             case "settings": appState.showsSettings = true
             case "search": appState.showsSearch = true
             case "paywall": appState.showsPaywall = true

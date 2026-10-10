@@ -14,8 +14,8 @@ struct DayLoad: Equatable, Sendable {
         return DayLoad(fraction: min(ratio, 1), isOver: spent > allowance)
     }
 
-    /// Hạn mức ngày của một ngày đã qua: ngân sách chia đều cho số ngày của tháng đó.
-    static func pastDayAllowance(monthlyBudget: Int, day: Date, calendar: Calendar) -> Int {
-        BudgetCalculator.dailyAverage(monthlyBudget: monthlyBudget, now: day, calendar: calendar)
+    /// Hạn mức ngày của một ngày đã qua: ngân sách của kỳ chia đều cho số ngày của kỳ chứa ngày đó.
+    static func pastDayAllowance(_ setting: BudgetSetting, day: Date, calendar: Calendar) -> Int {
+        BudgetCalculator.dailyAverage(budget: setting.amount, period: setting.period, now: day, calendar: calendar)
     }
 }

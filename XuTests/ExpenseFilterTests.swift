@@ -94,4 +94,28 @@ struct ExpenseFilterTests {
         filter.apply(.all, now: now, calendar: calendar)
         #expect(filter.from == nil && filter.to == nil)
     }
+
+    @Test func textAlsoMatchesPlaceNameAndCurrency() {
+        let record = SpendingRecord(
+            name: "cơm", amount: 400_000, categoryKey: "food", date: now, placeName: "Quán Hải Sản Bà Hai", foreignCode: "usd"
+        )
+        #expect(matches(ExpenseFilter(text: "hai san"), record))
+        #expect(matches(ExpenseFilter(text: "com bà"), record))        // từ ở tên khoản lẫn tên nơi
+        #expect(matches(ExpenseFilter(text: "USD"), record))
+        #expect(!matches(ExpenseFilter(text: "cà phê"), record))
+        #expect(!matches(ExpenseFilter(text: "hai san"), SpendingRecord(name: "cơm", amount: 1, categoryKey: "food", date: now)))
+    }
+
+    @Test func currencyFilterKeepsOnlyMatchingForeignExpenses() {
+        let dollars = SpendingRecord(name: "vé", amount: 500_000, categoryKey: "fun", date: now, foreignCode: "usd")
+        let euros = SpendingRecord(name: "vé", amount: 600_000, categoryKey: "fun", date: now, foreignCode: "eur")
+        let dong = SpendingRecord(name: "vé", amount: 50_000, categoryKey: "fun", date: now)
+        let filter = ExpenseFilter(currencies: ["usd"])
+        #expect(filter.isActive)
+        #expect(matches(filter, dollars))
+        #expect(!matches(filter, euros))
+        #expect(!matches(filter, dong))
+        #expect(matches(ExpenseFilter(currencies: ["usd", "eur"]), euros))
+        #expect(matches(ExpenseFilter(), dong))
+    }
 }

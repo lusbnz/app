@@ -19,6 +19,7 @@ struct EntryView: View {
     @State private var duplicate: PendingDuplicate?
     @State private var voice = VoiceInput()
     @State private var voiceBase = ""
+    @State private var placeState = EntryPlaceState.none
     @FocusState private var isFocused: Bool
     private let startsListening: Bool
 
@@ -34,9 +35,7 @@ struct EntryView: View {
     }
 
     private var status: BudgetStatus {
-        BudgetCalculator.status(
-            monthlyBudget: settings.monthlyBudget, entries: expenses.map(\.budgetEntry), now: now, calendar: calendar
-        )
+        BudgetCalculator.status(settings.budgetSetting, entries: expenses.map(\.budgetEntry), now: now, calendar: calendar)
     }
 
     var body: some View {
@@ -67,6 +66,11 @@ struct EntryView: View {
                             .font(.footnote)
                             .foregroundStyle(Color.xuTextSecondary)
                     }
+                    EntryPlaceChip(
+                        state: placeState,
+                        remove: { placeState = .removed },
+                        restore: { placeState = .none; Task { await resolvePlace() } }
+                    )
                     if isEmpty {
                         Text("Hỏi cũng được: tháng này cf hết bao nhiêu?")
                             .font(.footnote)
@@ -115,6 +119,7 @@ struct EntryView: View {
             text = voiceBase.isEmpty ? heard.prefix(1).uppercased() + heard.dropFirst() : heard
         }
         .onDisappear { voice.cancel() }
+        .task(id: coordinateKey) { await resolvePlace() }
         .onAppear {
             if startsListening, voice.isSupported {
                 startListening()
@@ -138,6 +143,38 @@ struct EntryView: View {
         .sheet(item: $editing) { row in
             EntryRowEditor(row: row) { overrides[row.id] = $0 }
         }
+    }
+
+    // MARK: - Nơi ghi
+
+    /// Đổi khi vị trí đổi (khoảng 10 m), để tra lại tên nơi.
+    private var coordinateKey: String? {
+        guard settings.suggestionsEnabled, let coordinate = location.freshCoordinate else { return nil }
+        return String(format: "%.4f,%.4f", coordinate.latitude, coordinate.longitude)
+    }
+
+    /// Tên nơi sẽ gắn vào khoản này: dùng lại tên đã có ở cùng chỗ (không cần mạng), không thì tìm quán gần đó
+    /// khi người dùng đã bật "Tự nhận tên nơi ghi".
+    private func resolvePlace() async {
+        guard placeState != .removed else { return }
+        guard settings.suggestionsEnabled, let coordinate = location.freshCoordinate else {
+            placeState = .none
+            return
+        }
+        let known = ExpenseRecorder(context: modelContext).namedPlaces()
+        if let name = PlaceNaming.reusableName(near: coordinate, in: known) {
+            placeState = .named(name)
+            return
+        }
+        guard settings.placeLookupEnabled else {
+            placeState = .none
+            return
+        }
+        placeState = .searching
+        let name = await PlaceLookup.shared.bestName(near: coordinate)
+        // Trong lúc chờ mạng người dùng có thể đã bỏ nơi này.
+        guard placeState == .searching else { return }
+        placeState = name.map(EntryPlaceState.named) ?? .none
     }
 
     // MARK: - Giọng nói
@@ -170,14 +207,14 @@ struct EntryView: View {
         .accessibilityLabel(isListening ? "Dừng nói" : "Nói khoản chi")
     }
 
-    /// Đang nói và đã nghe ra ít nhất một số tiền: rung nhẹ một lần để biết Nhẩm hiểu đúng.
+    /// Đang nói và đã nghe ra ít nhất một số tiền: rung nhẹ một lần để biết Pennyline hiểu đúng.
     private func heardAmount(_ rows: [EntryRow]) -> Bool {
         voice.state == .listening && rows.contains { $0.amount != nil }
     }
 
     private var voiceMessage: String? {
         switch voice.state {
-        case .denied: String(localized: "Nhẩm chưa được dùng micro hoặc nhận dạng giọng nói. Bạn bật lại trong Cài đặt của iPhone.")
+        case .denied: String(localized: "Pennyline chưa được dùng micro hoặc nhận dạng giọng nói. Bạn bật lại trong Cài đặt của iPhone.")
         case .unavailable: String(localized: "Máy này chưa nhận dạng được giọng nói tiếng Việt.")
         case .idle, .listening: nil
         }
@@ -196,7 +233,7 @@ struct EntryView: View {
                 row.amount.map { BudgetEntry(amount: $0, date: row.date ?? now, categoryKey: row.categoryKey) }
             }
             let shaped = BudgetCalculator.status(
-                monthlyBudget: settings.monthlyBudget, entries: expenses.map(\.budgetEntry) + typed,
+                settings.budgetSetting, entries: expenses.map(\.budgetEntry) + typed,
                 categoryLimits: limits, now: now, calendar: calendar
             )
             after = shaped.remainingToday
@@ -294,7 +331,7 @@ struct EntryView: View {
     }
 
     private func record(_ items: [RecordItem], rawText: String, confirmedDuplicate: Bool = false) {
-        // Bản miễn phí: lần lưu thứ 6 trong ngày mở Nhẩm Pro.
+        // Bản miễn phí: lần lưu thứ 6 trong ngày mở Pennyline Pro.
         guard SaveGate.canSave(now: Date(), calendar: calendar) else {
             showsPaywall = true
             return
@@ -304,9 +341,10 @@ struct EntryView: View {
             return
         }
         var info = RecordContext(rawText: rawText, date: Date())
-        if settings.suggestionsEnabled, let coordinate = location.freshCoordinate {
+        if settings.suggestionsEnabled, placeState.savesLocation, let coordinate = location.freshCoordinate {
             info.latitude = coordinate.latitude
             info.longitude = coordinate.longitude
+            info.placeName = placeState.name
         }
         let batch = ExpenseRecorder(context: modelContext).record(items, in: info)
         appState.didSave(batch)

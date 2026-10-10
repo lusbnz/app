@@ -29,7 +29,7 @@ struct CategoryCatalog {
         all.first { $0.key == key } ?? all.first { $0.key == SpendingCategory.other.rawValue } ?? all[0]
     }
 
-    /// Tên hiện cho từng khóa, để đưa vào bảng số liệu của Hỏi Nhẩm.
+    /// Tên hiện cho từng khóa, để đưa vào bảng số liệu của Hỏi Pennyline.
     var titles: [String: String] {
         Dictionary(all.map { ($0.key, $0.title) }, uniquingKeysWith: { first, _ in first })
     }

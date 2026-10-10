@@ -3,7 +3,7 @@ import AppIntents
 /// Mở thẳng ô gõ. Hợp với Nút Tác vụ.
 struct OpenEntryIntent: AppIntent {
     static let title: LocalizedStringResource = "Mở ô gõ"
-    static let description = IntentDescription("Mở Nhẩm ngay ở ô gõ để ghi khoản chi.")
+    static let description = IntentDescription("Mở Pennyline ngay ở ô gõ để ghi khoản chi.")
     static let openAppWhenRun = true
 
     @MainActor

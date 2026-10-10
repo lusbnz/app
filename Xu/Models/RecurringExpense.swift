@@ -1,7 +1,7 @@
 import Foundation
 import SwiftData
 
-/// Khoản chi lặp lại mỗi tuần, tháng hoặc năm. Đến hạn thì Nhẩm nhắc và hỏi; chỉ tự ghi khi `autoRecord` bật.
+/// Khoản chi lặp lại mỗi tuần, tháng hoặc năm. Đến hạn thì Pennyline nhắc và hỏi; chỉ tự ghi khi `autoRecord` bật.
 @Model final class RecurringExpense {
     var id: UUID = UUID()
     var name: String = ""

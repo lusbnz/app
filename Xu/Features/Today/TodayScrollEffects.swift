@@ -33,9 +33,11 @@ extension View {
     }
 }
 
-/// Vệt highlight dưới tiêu đề ngày: dài theo phần hạn mức ngày đã dùng, đỏ nhạt khi vượt.
-struct DayLoadBar: View {
-    let load: DayLoad
+/// Vệt highlight mảnh: một đường nền, một đoạn vàng bơ dài theo `fraction`, đỏ nhạt khi `isWarning`.
+/// Dùng ở tiêu đề ngày (phần hạn mức ngày đã dùng) và ở mục tiêu tiết kiệm (phần đã để dành).
+struct HighlightBar: View {
+    let fraction: Double
+    var isWarning = false
     @State private var shown = false
 
     var body: some View {
@@ -44,13 +46,22 @@ struct DayLoadBar: View {
                 .fill(Color.xuDivider.opacity(0.35))
                 .overlay(alignment: .leading) {
                     Capsule()
-                        .fill(load.isOver ? Color.red.opacity(0.55) : Color.xuHighlight)
-                        .frame(width: max(5, proxy.size.width * (shown ? load.fraction : 0)))
+                        .fill(isWarning ? Color.red.opacity(0.55) : Color.xuHighlight)
+                        .frame(width: max(5, proxy.size.width * (shown ? min(max(fraction, 0), 1) : 0)))
                 }
         }
         .frame(height: 5)
         .onAppear { withAnimation(.spring(duration: 0.7)) { shown = true } }
         .accessibilityHidden(true)
+    }
+}
+
+/// Vệt highlight dưới tiêu đề ngày: dài theo phần hạn mức ngày đã dùng, đỏ nhạt khi vượt.
+struct DayLoadBar: View {
+    let load: DayLoad
+
+    var body: some View {
+        HighlightBar(fraction: load.fraction, isWarning: load.isOver)
     }
 }
 
@@ -124,12 +135,51 @@ final class TodayScrollTracker {
     private(set) var collapse: CGFloat = 0
     /// Ngày đang nằm dưới thanh nhỏ; nil là hôm nay.
     private(set) var currentDay: Date?
+    /// Vị trí cuộn trong cả danh sách, 0 ở đầu và 1 ở cuối, để đặt nút kéo của dải ngày.
+    private(set) var scrollFraction: CGFloat = 0
+    /// Nút kéo của dải ngày hiện khi đang cuộn, rồi ẩn sau một lúc.
+    private(set) var thumbVisible = false
 
+    @ObservationIgnored private var hideTask: Task<Void, Never>?
+    @ObservationIgnored private var isHolding = false
     @ObservationIgnored private var headerTops: [Date: CGFloat] = [:]
     @ObservationIgnored private var edge: CGFloat = 116
 
     func setCollapse(_ value: CGFloat) {
         if value != collapse { collapse = value }
+    }
+
+    func setFraction(_ value: CGFloat) {
+        if value != scrollFraction { scrollFraction = value }
+    }
+
+    /// Đang cuộn thì hiện nút kéo; dừng cuộn một lúc thì ẩn, trừ khi người dùng đang cầm nút.
+    func setScrolling(_ scrolling: Bool) {
+        if scrolling {
+            hideTask?.cancel()
+            if !thumbVisible { thumbVisible = true }
+        } else if !isHolding {
+            scheduleHide()
+        }
+    }
+
+    func hold(_ holding: Bool) {
+        isHolding = holding
+        if holding {
+            hideTask?.cancel()
+            if !thumbVisible { thumbVisible = true }
+        } else {
+            scheduleHide()
+        }
+    }
+
+    private func scheduleHide() {
+        hideTask?.cancel()
+        hideTask = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(1.6))
+            guard !Task.isCancelled else { return }
+            self?.thumbVisible = false
+        }
     }
 
     func setTopInset(_ inset: CGFloat) {

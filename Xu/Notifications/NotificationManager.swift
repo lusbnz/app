@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 import UserNotifications
 
-/// Thông báo cục bộ: nhắc 21:00, nhắc khi rời quán quen và nhắc khoản định kỳ đến hạn.
+/// Thông báo cục bộ: nhắc 21:00, nhắc khi rời quán quen, nhắc khoản định kỳ đến hạn, và tổng kết cuối tuần, cuối tháng.
 @MainActor
 final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     static let shared = NotificationManager()
@@ -13,6 +13,7 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     private static let logAction = "leave.log"
     private static let editAction = "leave.edit"
     private static let skipAction = "leave.skip"
+    private static let summaryPrefix = "summary."
     private static let recurringPrefix = "recurring."
     private static let recurringLogAction = "recurring.log"
     private static let recurringSkipAction = "recurring.skip"
@@ -65,6 +66,51 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         }
     }
 
+    // MARK: - Tổng kết cuối tuần, cuối tháng
+
+    /// Xếp lại thông báo tổng kết kế tiếp (tối ngày cuối tuần, tối ngày cuối tháng) theo công tắc trong Tùy chỉnh.
+    /// Nội dung tính từ dữ liệu lúc này; vì mọi lần ghi, sửa, xóa đều gọi lại hàm này (`ExpenseRecorder.afterCommit`)
+    /// nên lúc thông báo đến, số liệu vẫn là mới nhất. Kỳ chưa chi gì thì không gửi.
+    func refreshSummaryReminders() {
+        let now = Date()
+        let calendar = Calendar.current
+        let defaults = AppGroup.defaults
+        var kinds: [SummaryKind] = []
+        if defaults.bool(forKey: SettingsKey.weeklySummary) { kinds.append(.week) }
+        if defaults.bool(forKey: SettingsKey.monthlySummary) { kinds.append(.month) }
+        let budget = BudgetSetting.load(from: defaults)
+        let recorder = ExpenseRecorder(context: XuStore.shared.mainContext)
+
+        var requests: [UNNotificationRequest] = []
+        for kind in kinds {
+            let component: Calendar.Component = kind == .week ? .weekOfYear : .month
+            guard let fire = SummaryPlanner.nextFire(kind: kind, now: now, calendar: calendar),
+                  let period = calendar.dateInterval(of: component, for: fire),
+                  let previousStart = calendar.date(byAdding: component, value: -1, to: period.start) else { continue }
+            let records = recorder.expenses(since: previousStart).map(\.record)
+            guard let summary = SummaryComposer.make(
+                kind: kind, records: records, budget: budget, containing: fire, calendar: calendar
+            ) else { continue }
+            let text = SummaryText.compose(summary, categoryTitle: { recorder.categoryTitle(for: $0) }, calendar: calendar)
+            let content = UNMutableNotificationContent()
+            content.title = text.title
+            content.body = text.body
+            content.sound = .default
+            let parts = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: fire)
+            requests.append(UNNotificationRequest(
+                identifier: Self.summaryPrefix + kind.rawValue, content: content,
+                trigger: UNCalendarNotificationTrigger(dateMatching: parts, repeats: false)
+            ))
+        }
+        Task {
+            let pending = await center.pendingNotificationRequests()
+            center.removePendingNotificationRequests(
+                withIdentifiers: pending.map(\.identifier).filter { $0.hasPrefix(Self.summaryPrefix) }
+            )
+            for request in requests { try? await center.add(request) }
+        }
+    }
+
     // MARK: - Khoản định kỳ
 
     /// Xếp lại lời nhắc 9:00 vào ngày đến hạn của mọi khoản định kỳ (tháng này và tháng sau).
@@ -86,7 +132,7 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
                 let content = UNMutableNotificationContent()
                 content.title = String(localized: "Đến hạn: \(item.name)")
                 content.body = item.autoRecord
-                    ? String(localized: "\(MoneyFormatter.short(item.amount)). Mở Nhẩm để tự ghi, hoặc chạm Bỏ qua kỳ này.")
+                    ? String(localized: "\(MoneyFormatter.short(item.amount)). Mở Pennyline để tự ghi, hoặc chạm Bỏ qua kỳ này.")
                     : String(localized: "\(MoneyFormatter.short(item.amount)). Chạm Ghi để ghi, hoặc Bỏ qua kỳ này.")
                 content.sound = .default
                 content.categoryIdentifier = Self.recurringCategory
@@ -161,15 +207,14 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         let text = "\(name) \(MoneyFormatter.short(amount))"
         switch action {
         case Self.logAction:
-            // Lưu không mở app. Hết lượt miễn phí thì mở ô gõ, nơi sẽ hiện Nhẩm Pro.
+            // Lưu không mở app. Hết lượt miễn phí thì mở ô gõ, nơi sẽ hiện Pennyline Pro.
             let now = Date()
             guard SaveGate.canSave(now: now, calendar: .current) else {
                 AppState.shared.openEntry(text: text)
                 return
             }
-            let budget = AppGroup.defaults.integer(forKey: SettingsKey.monthlyBudget)
             let batch = ExpenseRecorder(context: XuStore.shared.mainContext).recordQuick(
-                name: name, amount: amount, monthlyBudget: budget, now: now, calendar: .current, coordinate: coordinate
+                name: name, amount: amount, budget: BudgetSetting.load(), now: now, calendar: .current, coordinate: coordinate
             )
             AppState.shared.didSave(batch)
         case Self.editAction, UNNotificationDefaultActionIdentifier:
@@ -203,6 +248,8 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         await MainActor.run {
             if identifier.hasPrefix(Self.dailyPrefix), action == UNNotificationDefaultActionIdentifier {
                 AppState.shared.openEntry()
+            } else if identifier.hasPrefix(Self.summaryPrefix), action == UNNotificationDefaultActionIdentifier {
+                AppState.shared.openMonth()
             } else if identifier.hasPrefix(Self.recurringPrefix), let recurringID {
                 handleRecurringAction(action, id: recurringID)
             } else if identifier.hasPrefix(Self.leavePrefix), let name, let amount {

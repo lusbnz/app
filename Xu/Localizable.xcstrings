@@ -201,6 +201,22 @@
         }
       }
     },
+    "%@, %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@"
+          }
+        }
+      }
+    },
     "%@, %lld tháng %lld" : {
       "localizations" : {
         "en" : {
@@ -213,6 +229,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@, %2$lld tháng %3$lld"
+          }
+        }
+      }
+    },
+    "%@, để dành %@ trên %@. %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@ saved of %3$@. %4$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, để dành %2$@ trên %3$@. %4$@"
           }
         }
       }
@@ -243,12 +275,12 @@
         }
       }
     },
-    "%@. Mở Nhẩm để tự ghi, hoặc chạm Bỏ qua kỳ này." : {
+    "%@. Mở Pennyline để tự ghi, hoặc chạm Bỏ qua kỳ này." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@. Open Nhẩm to log it automatically, or tap Skip this period."
+            "value" : "%@. Open Pennyline to log it automatically, or tap Skip this period."
           }
         }
       }
@@ -361,6 +393,28 @@
         }
       }
     },
+    "%lld lần" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld time"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld times"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld tháng %lld" : {
       "localizations" : {
         "en" : {
@@ -397,6 +451,16 @@
         }
       }
     },
+    "2tr" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2tr"
+          }
+        }
+      }
+    },
     "7 ngày đầu miễn phí" : {
       "localizations" : {
         "en" : {
@@ -417,12 +481,32 @@
         }
       }
     },
+    "10tr" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10tr"
+          }
+        }
+      }
+    },
     "45k" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "45k"
+          }
+        }
+      }
+    },
+    "500k" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "500k"
           }
         }
       }
@@ -489,12 +573,13 @@
         }
       }
     },
-    "Bạn đang dùng Nhẩm Pro. Cảm ơn bạn." : {
+    "Bạc hà" : {},
+    "Bạn đang dùng Pennyline Pro. Cảm ơn bạn." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You're on Nhẩm Pro. Thank you."
+            "value" : "You're on Pennyline Pro. Thank you."
           }
         }
       }
@@ -509,6 +594,26 @@
         }
       }
     },
+    "Bản đồ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Map"
+          }
+        }
+      }
+    },
+    "Bản đồ chi tiêu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spending map"
+          }
+        }
+      }
+    },
     "Bản miễn phí cho gõ 5 lần mỗi ngày." : {
       "localizations" : {
         "en" : {
@@ -519,12 +624,12 @@
         }
       }
     },
-    "Bản miễn phí cho gõ 5 lần mỗi ngày. Mở Nhẩm để dùng Nhẩm Pro." : {
+    "Bản miễn phí cho gõ 5 lần mỗi ngày. Mở Pennyline để dùng Pennyline Pro." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The free version lets you log 5 times a day. Open Nhẩm to get Nhẩm Pro."
+            "value" : "The free version lets you log 5 times a day. Open Pennyline to get Pennyline Pro."
           }
         }
       }
@@ -539,12 +644,52 @@
         }
       }
     },
+    "bằng cùng ngày tuần trước" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "same as the same days last week"
+          }
+        }
+      }
+    },
     "bằng kỳ trước" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "same as last period"
+          }
+        }
+      }
+    },
+    "Bằng tháng trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Same as last month."
+          }
+        }
+      }
+    },
+    "bằng tuần trước" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "same as last week"
+          }
+        }
+      }
+    },
+    "Bằng tuần trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Same as last week."
           }
         }
       }
@@ -629,6 +774,7 @@
         }
       }
     },
+    "Cà phê" : {},
     "Các khoản có tên “%@” sẽ chuyển sang %@." : {
       "localizations" : {
         "en" : {
@@ -651,6 +797,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Expenses and rules using this category will move to “other”."
+          }
+        }
+      }
+    },
+    "Các lần gửi và rút của mục tiêu cũng bị xóa. Việc này không hoàn lại được." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The goal's deposits and withdrawals are deleted too. This can't be undone."
+          }
+        }
+      }
+    },
+    "Cần để dành %@ mỗi tháng" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save %@ a month"
           }
         }
       }
@@ -691,6 +857,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Only reminds you if you haven't logged anything that day."
+          }
+        }
+      }
+    },
+    "Chi ở đâu nhiều nhất" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Where you spend the most"
+          }
+        }
+      }
+    },
+    "Chỉ rút được tối đa %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can withdraw at most %@."
           }
         }
       }
@@ -785,6 +971,36 @@
         }
       }
     },
+    "Chưa có khoản nào kèm vị trí. Bật “Gợi ý theo vị trí và giờ” ở Tùy chỉnh để Pennyline lưu nơi bạn ghi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No expenses have a location yet. Turn on “Suggestions by place and time” in Settings so Pennyline saves where you log."
+          }
+        }
+      }
+    },
+    "Chưa có mục tiêu nào. Đặt một mục tiêu để để dành dần, ví dụ du lịch hay mua xe." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No goals yet. Set one to save up little by little, such as a trip or a bike."
+          }
+        }
+      }
+    },
+    "Chưa đặt tên" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unnamed"
+          }
+        }
+      }
+    },
     "Chưa đọc được tổng tiền, chạm để điền" : {
       "localizations" : {
         "en" : {
@@ -825,6 +1041,16 @@
         }
       }
     },
+    "Chưa xóa được" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't delete"
+          }
+        }
+      }
+    },
     "Chụp ảnh" : {
       "localizations" : {
         "en" : {
@@ -845,12 +1071,12 @@
         }
       }
     },
-    "Chụp hoặc chọn một ảnh hóa đơn. Nhẩm sẽ đọc tổng tiền và ngày giờ." : {
+    "Chụp hoặc chọn một ảnh hóa đơn. Pennyline sẽ đọc tổng tiền và ngày giờ." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Take or choose a receipt photo. Nhẩm will read the total and the date."
+            "value" : "Take or choose a receipt photo. Pennyline will read the total and the date."
           }
         }
       }
@@ -893,6 +1119,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "has photo"
+          }
+        }
+      }
+    },
+    "còn %lld tháng" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld month left"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld months left"
+                }
+              }
+            }
           }
         }
       }
@@ -973,6 +1221,16 @@
         }
       }
     },
+    "Còn thiếu %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ to go"
+          }
+        }
+      }
+    },
     "Cũng nói được bằng micro, và chụp hóa đơn để chọn món của bạn." : {
       "localizations" : {
         "en" : {
@@ -999,6 +1257,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A category with this name already exists."
+          }
+        }
+      }
+    },
+    "đã để dành, trên %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "saved, of %@"
+          }
+        }
+      }
+    },
+    "Đã đủ mục tiêu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goal reached"
           }
         }
       }
@@ -1105,6 +1383,16 @@
         }
       }
     },
+    "Đã quá hạn, còn thiếu %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Past the deadline, %@ to go"
+          }
+        }
+      }
+    },
     "đã tiêu %@ trên %@" : {
       "localizations" : {
         "en" : {
@@ -1117,6 +1405,48 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "đã tiêu %1$@ trên %2$@"
+          }
+        }
+      }
+    },
+    "Đã tiêu %@ trên %@, còn dư %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spent %1$@ of %2$@, %3$@ left over."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã tiêu %1$@ trên %2$@, còn dư %3$@."
+          }
+        }
+      }
+    },
+    "Đã tiêu %@ trên %@, vượt %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spent %1$@ of %2$@, over by %3$@."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã tiêu %1$@ trên %2$@, vượt %3$@."
+          }
+        }
+      }
+    },
+    "đã tiêu trong tuần" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "spent this week"
           }
         }
       }
@@ -1157,6 +1487,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Loading prices"
+          }
+        }
+      }
+    },
+    "Đang tải thêm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading more"
+          }
+        }
+      }
+    },
+    "Đang tìm nơi ghi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Looking for the place"
           }
         }
       }
@@ -1211,22 +1561,52 @@
         }
       }
     },
-    "Để biết lúc bạn rời một quán đã ghi từ 3 lần, Nhẩm cần quyền vị trí “Luôn luôn” và quyền gửi thông báo. Nhẩm chỉ theo dõi tối đa 20 nơi như vậy, xử lý ngay trên máy và không gửi vị trí đi đâu." : {
+    "Đặt hạn" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To know when you leave a place you've logged at least 3 times, Nhẩm needs “Always” location access and permission to send notifications. Nhẩm tracks at most 20 such places, processes everything on your device and never sends your location anywhere."
+            "value" : "Set a deadline"
           }
         }
       }
     },
-    "Để hiện tên quán ở mỗi khoản, Nhẩm gửi vị trí chỗ bạn ghi cho Apple để tìm quán gần đó. Nhẩm không gửi gì khác, chỉ tìm một lần cho mỗi chỗ mới, và dùng lại tên cho những khoản ở cùng chỗ. Bạn vẫn tự đặt hoặc đổi tên được ở màn Chi tiết, và tắt công tắc bất cứ lúc nào." : {
+    "Đặt hạn thì Pennyline tính mỗi tháng cần để dành bao nhiêu." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To show a place name on each expense, Nhẩm sends the location where you log to Apple to look up nearby places. Nothing else is sent, it looks up each new place only once, and it reuses the name for other expenses at the same place. You can still set or change a name on the Detail screen, and turn this off any time."
+            "value" : "With a deadline, Pennyline works out how much to save each month."
+          }
+        }
+      }
+    },
+    "Đặt mục tiêu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set a goal"
+          }
+        }
+      }
+    },
+    "Để biết lúc bạn rời một quán đã ghi từ 3 lần, Pennyline cần quyền vị trí “Luôn luôn” và quyền gửi thông báo. Pennyline chỉ theo dõi tối đa 20 nơi như vậy, xử lý ngay trên máy và không gửi vị trí đi đâu." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To know when you leave a place you've logged at least 3 times, Pennyline needs “Always” location access and permission to send notifications. Pennyline tracks at most 20 such places, processes everything on your device and never sends your location anywhere."
+          }
+        }
+      }
+    },
+    "Để hiện tên quán ở mỗi khoản, Pennyline gửi vị trí chỗ bạn ghi cho Apple để tìm quán gần đó. Pennyline không gửi gì khác, chỉ tìm một lần cho mỗi chỗ mới, và dùng lại tên cho những khoản ở cùng chỗ. Bạn vẫn tự đặt hoặc đổi tên được ở màn Chi tiết, và tắt công tắc bất cứ lúc nào." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To show a place name on each expense, Pennyline sends the location where you log to Apple to look up nearby places. Nothing else is sent, it looks up each new place only once, and it reuses the name for other expenses at the same place. You can still set or change a name on the Detail screen, and turn this off any time."
           }
         }
       }
@@ -1261,12 +1641,12 @@
         }
       }
     },
-    "Đến hạn, Nhẩm nhắc lúc 9:00 và hiện khoản đó ở màn Hôm nay. Mặc định bạn chạm Ghi thì mới ghi; khoản nào bật “Tự ghi” thì Nhẩm ghi khi bạn mở app." : {
+    "Đến hạn, Pennyline nhắc lúc 9:00 và hiện khoản đó ở màn Hôm nay. Mặc định bạn chạm Ghi thì mới ghi; khoản nào bật “Tự ghi” thì Pennyline ghi khi bạn mở app." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "When it's due, Nhẩm reminds you at 9:00 and shows it on the Today screen. By default it's only logged when you tap Log; items with “Log automatically” on are logged when you open the app."
+            "value" : "When it's due, Pennyline reminds you at 9:00 and shows it on the Today screen. By default it's only logged when you tap Log; items with “Log automatically” on are logged when you open the app."
           }
         }
       }
@@ -1301,6 +1681,7 @@
         }
       }
     },
+    "Đổi cả biểu tượng app" : {},
     "Đổi tên" : {
       "localizations" : {
         "en" : {
@@ -1337,6 +1718,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fully close and reopen the app to change the language."
+          }
+        }
+      }
+    },
+    "Du lịch Đà Lạt" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trip to Da Lat"
           }
         }
       }
@@ -1387,6 +1778,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "near the limit, %@ left"
+          }
+        }
+      }
+    },
+    "gần nhất %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "last %@"
           }
         }
       }
@@ -1457,6 +1858,16 @@
         }
       }
     },
+    "Ghi chú" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Note"
+          }
+        }
+      }
+    },
     "Ghi khoản chi" : {
       "localizations" : {
         "en" : {
@@ -1513,6 +1924,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "entertainment"
+          }
+        }
+      }
+    },
+    "giảm %@ so với cùng ngày tuần trước" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "down %@ from the same days last week"
+          }
+        }
+      }
+    },
+    "Giảm %@ so với tháng trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Down %@ from last month."
+          }
+        }
+      }
+    },
+    "giảm %@ so với tuần trước" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "down %@ from last week"
+          }
+        }
+      }
+    },
+    "Giảm %@ so với tuần trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Down %@ from last week."
           }
         }
       }
@@ -1575,12 +2026,64 @@
         }
       }
     },
-    "Gõ “20 usd”, “$20”, “5 euro” hay “1000 yên”, Nhẩm quy ra đồng theo tỷ giá này và ghi kèm số gốc. Tỷ giá để trống là giá trị gần đúng có sẵn, nên hãy chỉnh cho sát." : {
+    "Giữ nhịp %@ mỗi ngày, cuối tuần dư khoảng %@." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Type “20 usd”, “$20”, “5 euro” or “1000 yên” and Nhẩm converts it to dong at these rates and keeps the original amount. A blank rate uses a built-in approximation, so adjust it to be accurate."
+            "value" : "At %1$@ a day, you'll end the week about %2$@ under."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giữ nhịp %1$@ mỗi ngày, cuối tuần dư khoảng %2$@."
+          }
+        }
+      }
+    },
+    "Giữ nhịp %@ mỗi ngày, cuối tuần vượt khoảng %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At %1$@ a day, you'll end the week about %2$@ over."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giữ nhịp %1$@ mỗi ngày, cuối tuần vượt khoảng %2$@."
+          }
+        }
+      }
+    },
+    "Giữ nhịp này thì cuối tháng dư khoảng %@. Chạm một mục tiêu để gửi phần dư vào." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At this pace you'll end the month about %@ under. Tap a goal to put the leftover into it."
+          }
+        }
+      }
+    },
+    "Giữ nhịp này thì cuối tuần dư khoảng %@. Chạm một mục tiêu để gửi phần dư vào." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At this pace you'll end the week about %@ under. Tap a goal to put the leftover into it."
+          }
+        }
+      }
+    },
+    "Gõ “20 usd”, “$20”, “5 euro” hay “1000 yên”, Pennyline quy ra đồng theo tỷ giá này và ghi kèm số gốc. Tỷ giá để trống là giá trị gần đúng có sẵn, nên hãy chỉnh cho sát." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type “20 usd”, “$20”, “5 euro” or “1000 yên” and Pennyline converts it to dong at these rates and keeps the original amount. A blank rate uses a built-in approximation, so adjust it to be accurate."
           }
         }
       }
@@ -1655,12 +2158,52 @@
         }
       }
     },
+    "Gửi thêm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add money"
+          }
+        }
+      }
+    },
+    "Gửi vào" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deposit"
+          }
+        }
+      }
+    },
+    "Gửi vào “%@”" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add to “%@”"
+          }
+        }
+      }
+    },
     "Gửi vị trí cho Apple?" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Send your location to Apple?"
+          }
+        }
+      }
+    },
+    "Hạn" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deadline"
           }
         }
       }
@@ -1691,6 +2234,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Category limits count toward the daily limit"
+          }
+        }
+      }
+    },
+    "Hạn: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deadline: %@"
           }
         }
       }
@@ -1795,22 +2348,22 @@
         }
       }
     },
-    "Hỏi Nhẩm" : {
+    "Hỏi Pennyline" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ask Nhẩm"
+            "value" : "Ask Pennyline"
           }
         }
       }
     },
-    "Hỏi Nhẩm câu khác" : {
+    "Hỏi Pennyline câu khác" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ask Nhẩm something else"
+            "value" : "Ask Pennyline something else"
           }
         }
       }
@@ -1901,6 +2454,7 @@
         }
       }
     },
+    "Hồng đào" : {},
     "Hủy" : {
       "localizations" : {
         "en" : {
@@ -1931,12 +2485,29 @@
         }
       }
     },
-    "Khi một danh mục dùng từ 80% hạn mức hoặc vượt, Nhẩm báo lúc bạn ghi và ở màn Tháng. Hạn mức mỗi ngày vẫn tính từ ngân sách tháng. Để trống nghĩa là không đặt hạn mức." : {
+    "Khi một danh mục dùng từ 80% hạn mức hoặc vượt, Pennyline báo lúc bạn ghi và ở màn Tháng. Hạn mức mỗi ngày vẫn tính từ ngân sách của bạn. Để trống nghĩa là không đặt hạn mức." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "When a category reaches 80% of its limit or goes over, Nhẩm tells you when you log and on the Month screen. The daily limit is still based on the monthly budget. Leave blank for no limit."
+            "value" : "When a category reaches 80% of its limit or goes over, Pennyline tells you when you log and on the Month screen. The daily limit is still based on your budget. Leave blank for no limit."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Khi một danh mục dùng từ 80% hạn mức hoặc vượt, Pennyline báo lúc bạn ghi và ở màn Tháng. Hạn mức mỗi ngày vẫn tính từ ngân sách của bạn. Để trống nghĩa là không đặt hạn mức."
+          }
+        }
+      }
+    },
+    "Khi một danh mục dùng từ 80% hạn mức hoặc vượt, Pennyline báo lúc bạn ghi và ở màn Tháng. Hạn mức mỗi ngày vẫn tính từ ngân sách tháng. Để trống nghĩa là không đặt hạn mức." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When a category reaches 80% of its limit or goes over, Pennyline tells you when you log and on the Month screen. The daily limit is still based on the monthly budget. Leave blank for no limit."
           }
         }
       }
@@ -2021,6 +2592,16 @@
         }
       }
     },
+    "Khoảng thời gian" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time range"
+          }
+        }
+      }
+    },
     "Khôi phục giao dịch" : {
       "localizations" : {
         "en" : {
@@ -2031,12 +2612,22 @@
         }
       }
     },
-    "Không cần chọn danh mục hay nhập từng ô. Nhẩm tự tách tên, số tiền và ngày." : {
+    "không bắt buộc" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No need to pick a category or fill in fields. Nhẩm splits out the name, amount and date for you."
+            "value" : "optional"
+          }
+        }
+      }
+    },
+    "Không cần chọn danh mục hay nhập từng ô. Pennyline tự tách tên, số tiền và ngày." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No need to pick a category or fill in fields. Pennyline splits out the name, amount and date for you."
           }
         }
       }
@@ -2081,12 +2672,32 @@
         }
       }
     },
-    "Không tìm thấy giao dịch Nhẩm Pro nào để khôi phục." : {
+    "Không lưu nơi cho khoản này" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No Nhẩm Pro purchases found to restore."
+            "value" : "Don't save a place for this expense"
+          }
+        }
+      }
+    },
+    "Không lưu nơi cho khoản này. Hoàn lại" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not saving a place for this expense. Undo"
+          }
+        }
+      }
+    },
+    "Không tìm thấy giao dịch Pennyline Pro nào để khôi phục." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Pennyline Pro purchases found to restore."
           }
         }
       }
@@ -2141,12 +2752,32 @@
         }
       }
     },
+    "Lần gửi này đã được rút một phần. Hãy xóa lần rút trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Part of this deposit has been withdrawn. Delete the withdrawal first."
+          }
+        }
+      }
+    },
     "Lặp lại" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Repeat"
+          }
+        }
+      }
+    },
+    "Lịch sử" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "History"
           }
         }
       }
@@ -2191,6 +2822,7 @@
         }
       }
     },
+    "Màu chủ đề" : {},
     "Máy chưa đặt mật mã hoặc Face ID. Bạn đặt trong Cài đặt của iPhone rồi bật lại." : {
       "localizations" : {
         "en" : {
@@ -2201,12 +2833,12 @@
         }
       }
     },
-    "Máy này chưa hỗ trợ Hỏi Nhẩm" : {
+    "Máy này chưa hỗ trợ Hỏi Pennyline" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This device doesn't support Ask Nhẩm yet"
+            "value" : "This device doesn't support Ask Pennyline yet"
           }
         }
       }
@@ -2221,12 +2853,12 @@
         }
       }
     },
-    "Mở app Phím tắt, tìm Nhẩm. Có sẵn “Ghi chi tiêu”, “Ghi nhanh một khoản” và “Mở ô gõ” để bạn ghép vào phím tắt riêng." : {
+    "Mở app Phím tắt, tìm Pennyline. Có sẵn “Ghi chi tiêu”, “Ghi nhanh một khoản” và “Mở ô gõ” để bạn ghép vào phím tắt riêng." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open the Shortcuts app and find Nhẩm. “Log expense”, “Quick log” and “Open entry” are ready to add to your own shortcuts."
+            "value" : "Open the Shortcuts app and find Pennyline. “Log expense”, “Quick log” and “Open entry” are ready to add to your own shortcuts."
           }
         }
       }
@@ -2261,12 +2893,22 @@
         }
       }
     },
-    "Mở Nhẩm ngay ở ô gõ để ghi khoản chi." : {
+    "Mở một khoản ở đây và chạm “Nơi ghi” để đặt tên." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open Nhẩm right at the entry field to log an expense."
+            "value" : "Open an expense here and tap “Logged at” to name it."
+          }
+        }
+      }
+    },
+    "Mở Pennyline ngay ở ô gõ để ghi khoản chi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Pennyline right at the entry field to log an expense."
           }
         }
       }
@@ -2321,6 +2963,26 @@
         }
       }
     },
+    "Mục tiêu mới" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New goal"
+          }
+        }
+      }
+    },
+    "Mục tiêu tiết kiệm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Savings goals"
+          }
+        }
+      }
+    },
     "Ngân sách" : {
       "localizations" : {
         "en" : {
@@ -2347,6 +3009,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Monthly budget"
+          }
+        }
+      }
+    },
+    "Ngân sách tuần" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weekly budget"
           }
         }
       }
@@ -2477,92 +3149,92 @@
         }
       }
     },
-    "Nhẩm chưa đọc được số tiền trong “%@”." : {
+    "Pennyline chưa đọc được số tiền trong “%@”." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm couldn't read an amount in “%@”."
+            "value" : "Pennyline couldn't read an amount in “%@”."
           }
         }
       }
     },
-    "Nhẩm chưa được dùng micro hoặc nhận dạng giọng nói. Bạn bật lại trong Cài đặt của iPhone." : {
+    "Pennyline chưa được dùng micro hoặc nhận dạng giọng nói. Bạn bật lại trong Cài đặt của iPhone." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm isn't allowed to use the microphone or speech recognition. Turn them back on in iPhone Settings."
+            "value" : "Pennyline isn't allowed to use the microphone or speech recognition. Turn them back on in iPhone Settings."
           }
         }
       }
     },
-    "Nhẩm chưa trả lời chắc được câu này. Bạn thử hỏi cách khác nhé." : {
+    "Pennyline chưa trả lời chắc được câu này. Bạn thử hỏi cách khác nhé." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm isn't sure how to answer that. Try asking another way."
+            "value" : "Pennyline isn't sure how to answer that. Try asking another way."
           }
         }
       }
     },
-    "Nhẩm đang khóa" : {
+    "Pennyline đang khóa" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm is locked"
+            "value" : "Pennyline is locked"
           }
         }
       }
     },
-    "Nhẩm ghi khi bạn mở app sau ngày đến hạn, vẫn tính vào 5 lần ghi mỗi ngày của bản miễn phí. Ghi nhầm thì xóa hoặc sửa như khoản thường." : {
+    "Pennyline ghi khi bạn mở app sau ngày đến hạn, vẫn tính vào 5 lần ghi mỗi ngày của bản miễn phí. Ghi nhầm thì xóa hoặc sửa như khoản thường." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm logs it when you open the app after the due date and it still counts toward the free version's 5 logs a day. If it's wrong, delete or edit it like any other expense."
+            "value" : "Pennyline logs it when you open the app after the due date and it still counts toward the free version's 5 logs a day. If it's wrong, delete or edit it like any other expense."
           }
         }
       }
     },
-    "Nhẩm khóa khi mở app và khi ra ngoài app. Quên Face ID thì nhập mật mã máy. Ghi nhanh từ Siri và Phím tắt vẫn ghi được khi app khóa, nhưng không đọc được số liệu." : {
+    "Pennyline khóa khi mở app và khi ra ngoài app. Quên Face ID thì nhập mật mã máy. Ghi nhanh từ Siri và Phím tắt vẫn ghi được khi app khóa, nhưng không đọc được số liệu." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm locks when you open the app and whenever you leave it. If Face ID doesn't work, enter your device passcode. Quick logging from Siri and Shortcuts still works while the app is locked, but can't read your data."
+            "value" : "Pennyline locks when you open the app and whenever you leave it. If Face ID doesn't work, enter your device passcode. Quick logging from Siri and Shortcuts still works while the app is locked, but can't read your data."
           }
         }
       }
     },
-    "Nhẩm không chắc đây là tổng tiền. Bạn xem lại với hóa đơn nhé." : {
+    "Pennyline không chắc đây là tổng tiền. Bạn xem lại với hóa đơn nhé." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm isn't sure this is the total. Please check it against the receipt."
+            "value" : "Pennyline isn't sure this is the total. Please check it against the receipt."
           }
         }
       }
     },
-    "Nhẩm nhắc khi bạn quên" : {
+    "Pennyline nhắc khi bạn quên" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm reminds you when you forget"
+            "value" : "Pennyline reminds you when you forget"
           }
         }
       }
     },
-    "Nhẩm Pro" : {
+    "Pennyline Pro" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm Pro"
+            "value" : "Pennyline Pro"
           }
         }
       }
@@ -2587,12 +3259,28 @@
         }
       }
     },
-    "Nói “Ghi chi tiêu trong Nhẩm”, Siri sẽ hỏi bạn tiêu gì. Trả lời như khi gõ: “phở 45k”." : {
+    "Nhiều nhất: %@ %@." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Say “Log expense in Nhẩm” and Siri will ask what you spent on. Answer the way you'd type it: “phở 45k”."
+            "value" : "Most: %1$@ %2$@."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhiều nhất: %1$@ %2$@."
+          }
+        }
+      }
+    },
+    "Nói “Ghi chi tiêu trong Pennyline”, Siri sẽ hỏi bạn tiêu gì. Trả lời như khi gõ: “phở 45k”." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Say “Log expense in Pennyline” and Siri will ask what you spent on. Answer the way you'd type it: “phở 45k”."
           }
         }
       }
@@ -2678,11 +3366,22 @@
       }
     },
     "phở, grab, cf…" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "phở, grab, cf…"
+          }
+        }
+      }
+    },
+    "phở, grab, tên quán…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "phở, grab, a place name…"
           }
         }
       }
@@ -2747,6 +3446,36 @@
         }
       }
     },
+    "Rút bớt" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Withdraw"
+          }
+        }
+      }
+    },
+    "Rút ra" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Withdrawal"
+          }
+        }
+      }
+    },
+    "Rút từ “%@”" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Withdraw from “%@”"
+          }
+        }
+      }
+    },
     "sáng" : {
       "localizations" : {
         "en" : {
@@ -2793,6 +3522,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Amount"
+          }
+        }
+      }
+    },
+    "Số tiền cần có" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amount needed"
           }
         }
       }
@@ -2847,12 +3586,62 @@
         }
       }
     },
+    "Sửa mục tiêu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit goal"
+          }
+        }
+      }
+    },
     "sức khỏe" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "health"
+          }
+        }
+      }
+    },
+    "tăng %@ so với cùng ngày tuần trước" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "up %@ from the same days last week"
+          }
+        }
+      }
+    },
+    "Tăng %@ so với tháng trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Up %@ from last month."
+          }
+        }
+      }
+    },
+    "tăng %@ so với tuần trước" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "up %@ from last week"
+          }
+        }
+      }
+    },
+    "Tăng %@ so với tuần trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Up %@ from last week."
           }
         }
       }
@@ -2873,12 +3662,32 @@
         }
       }
     },
+    "Tất cả" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All"
+          }
+        }
+      }
+    },
     "Tên" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Name"
+          }
+        }
+      }
+    },
+    "Tên mục tiêu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goal name"
           }
         }
       }
@@ -2903,6 +3712,7 @@
         }
       }
     },
+    "Than chì" : {},
     "Tháng" : {
       "localizations" : {
         "en" : {
@@ -2923,12 +3733,12 @@
         }
       }
     },
-    "Tháng nào không có ngày này thì tính vào ngày cuối tháng. Nhẩm nhắc lúc 9:00 và bạn chạm Ghi." : {
+    "Tháng nào không có ngày này thì tính vào ngày cuối tháng. Pennyline nhắc lúc 9:00 và bạn chạm Ghi." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "In months without this day, the last day of the month is used. Nhẩm reminds you at 9:00 and you tap Log."
+            "value" : "In months without this day, the last day of the month is used. Pennyline reminds you at 9:00 and you tap Log."
           }
         }
       }
@@ -2939,6 +3749,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "This month"
+          }
+        }
+      }
+    },
+    "Tháng này bạn đã tiêu %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've spent %@ this month."
           }
         }
       }
@@ -3015,6 +3835,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add rule"
+          }
+        }
+      }
+    },
+    "Thêm mục tiêu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a goal"
+          }
+        }
+      }
+    },
+    "Theo danh mục" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "By category"
           }
         }
       }
@@ -3099,12 +3939,22 @@
         }
       }
     },
-    "Tiền nhà và các khoản cố định thì thêm ở Tùy chỉnh, mục Khoản định kỳ: Nhẩm nhắc đến hạn và bạn chạm để ghi. Đổi ngân sách lúc nào cũng được, không cần tài khoản." : {
+    "Tiền để dành không phải chi tiêu nên không trừ vào ngân sách. Bạn tự gửi vào hoặc rút ra ở từng mục tiêu." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Add rent and other fixed costs in Settings under Recurring expenses: Nhẩm reminds you when they're due and you tap to log. You can change your budget any time, no account needed."
+            "value" : "Saved money isn't spending, so it doesn't come out of your budget. You add or withdraw money on each goal yourself."
+          }
+        }
+      }
+    },
+    "Tiền nhà và các khoản cố định thì thêm ở Tùy chỉnh, mục Khoản định kỳ: Pennyline nhắc đến hạn và bạn chạm để ghi. Đổi ngân sách lúc nào cũng được, không cần tài khoản." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add rent and other fixed costs in Settings under Recurring expenses: Pennyline reminds you when they're due and you tap to log. You can change your budget any time, no account needed."
           }
         }
       }
@@ -3149,6 +3999,7 @@
         }
       }
     },
+    "Tím nhạt" : {},
     "Tìm quán gần đây" : {
       "localizations" : {
         "en" : {
@@ -3165,6 +4016,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Finding places sends this expense's location to Apple."
+          }
+        }
+      }
+    },
+    "Tính ngân sách theo" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Budget by"
+          }
+        }
+      }
+    },
+    "Tính theo tuần thì hạn mức ngày là phần còn lại của tuần chia cho số ngày còn lại. Hạn mức danh mục đặt theo tháng nên chưa tính vào hạn mức ngày." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "With a weekly budget, the daily limit is what's left of the week divided by the days remaining. Category limits are monthly, so they don't count toward the daily limit yet."
           }
         }
       }
@@ -3199,6 +4070,46 @@
         }
       }
     },
+    "Tổng kết %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Summary: %@"
+          }
+        }
+      }
+    },
+    "Tổng kết cuối tháng" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End-of-month summary"
+          }
+        }
+      }
+    },
+    "Tổng kết cuối tuần" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End-of-week summary"
+          }
+        }
+      }
+    },
+    "Tổng kết tuần" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weekly summary"
+          }
+        }
+      }
+    },
     "trà sữa" : {
       "localizations" : {
         "en" : {
@@ -3209,16 +4120,17 @@
         }
       }
     },
-    "Trợ giúp và Nhẩm Pro" : {
+    "Trợ giúp và Pennyline Pro" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Help and Nhẩm Pro"
+            "value" : "Help and Pennyline Pro"
           }
         }
       }
     },
+    "Trời xanh" : {},
     "trưa" : {
       "localizations" : {
         "en" : {
@@ -3269,12 +4181,58 @@
         }
       }
     },
+    "Tuần" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Week"
+          }
+        }
+      }
+    },
     "Tuần này" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "This week"
+          }
+        }
+      }
+    },
+    "Tuần này bạn đã tiêu %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've spent %@ this week."
+          }
+        }
+      }
+    },
+    "Tuần này chưa tiêu gì." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing spent this week yet."
+          }
+        }
+      }
+    },
+    "Tuần này còn %@, đã tiêu %@ trên %@. %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ left this week, %2$@ spent of %3$@. %4$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuần này còn %1$@, đã tiêu %2$@ trên %3$@. %4$@"
           }
         }
       }
@@ -3295,6 +4253,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "That's about %@ a day."
+          }
+        }
+      }
+    },
+    "Từng ngày" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Day by day"
           }
         }
       }
@@ -3381,12 +4349,12 @@
         }
       }
     },
-    "Vào Cài đặt, Nút Tác vụ, chọn Phím tắt rồi chọn “Mở ô gõ” của Nhẩm. Bấm giữ nút là gõ được ngay." : {
+    "Vào Cài đặt, Nút Tác vụ, chọn Phím tắt rồi chọn “Mở ô gõ” của Pennyline. Bấm giữ nút là gõ được ngay." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Go to Settings, Action Button, choose Shortcut, then pick Nhẩm's “Open entry”. Press and hold the button to start typing right away."
+            "value" : "Go to Settings, Action Button, choose Shortcut, then pick Pennyline's “Open entry”. Press and hold the button to start typing right away."
           }
         }
       }
@@ -3534,6 +4502,46 @@
         }
       }
     },
+    "Xem các khoản" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See expenses"
+          }
+        }
+      }
+    },
+    "Xem các khoản trong tuần" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See this week's expenses"
+          }
+        }
+      }
+    },
+    "Xem chi tiết tuần" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See week details"
+          }
+        }
+      }
+    },
+    "Xem tất cả" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See all"
+          }
+        }
+      }
+    },
     "Xem toàn màn hình" : {
       "localizations" : {
         "en" : {
@@ -3600,6 +4608,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Deleting a category moves its expenses to “other”."
+          }
+        }
+      }
+    },
+    "Xóa mục tiêu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete goal"
+          }
+        }
+      }
+    },
+    "Xóa mục tiêu này?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete this goal?"
           }
         }
       }

@@ -2,7 +2,10 @@ import Foundation
 import SwiftData
 
 enum XuStore {
-    static let schema = Schema([Expense.self, Loan.self, CategoryRule.self, CustomCategory.self, RecurringExpense.self, CategoryBudget.self])
+    static let schema = Schema([
+        Expense.self, Loan.self, CategoryRule.self, CustomCategory.self, RecurringExpense.self, CategoryBudget.self,
+        SavingsGoal.self, SavingsDeposit.self,
+    ])
 
     /// Kho dùng chung cho app và intent, đặt trong App Group khi có.
     static let shared: ModelContainer = {

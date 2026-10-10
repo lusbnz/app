@@ -61,6 +61,26 @@ struct SampleDataRecorderTests {
         #expect(left.map(\.name) == ["phở"])
     }
 
+    @Test func sampleGoalsComeAndGoWithTheSampleData() throws {
+        let container = XuStore.inMemory()
+        defer { withExtendedLifetime(container) {} }
+        let recorder = ExpenseRecorder(context: container.mainContext)
+        let real = try #require(recorder.addGoal(name: "Du lịch Đà Lạt", target: 1_000_000, deadline: nil))
+        recorder.addDeposit(to: real, amount: 100_000, note: "của tôi")
+
+        recorder.insertSampleData(days: 30, now: TestClock.now, calendar: TestClock.calendar)
+        let goals = try container.mainContext.fetch(FetchDescriptor<SavingsGoal>())
+        #expect(goals.count == 1 + SampleData.goals.count)
+        let sample = try #require(goals.first { $0.name == "Mua laptop" })
+        #expect(recorder.saved(for: sample.id) == 5_000_000)
+
+        recorder.removeSampleData()
+        let left = try container.mainContext.fetch(FetchDescriptor<SavingsGoal>())
+        #expect(left.map(\.id) == [real.id])                        // mục tiêu thật trùng tên vẫn còn
+        #expect(recorder.saved(for: real.id) == 100_000)
+        #expect(try container.mainContext.fetch(FetchDescriptor<SavingsDeposit>()).count == 1)
+    }
+
     @Test func insertingTwiceDoesNotDuplicate() throws {
         let container = XuStore.inMemory()
         defer { withExtendedLifetime(container) {} }

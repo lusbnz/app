@@ -16,9 +16,32 @@ struct SamplePlace: Equatable, Sendable {
     var longitude: Double
 }
 
+/// Mục tiêu tiết kiệm mẫu, kèm các lần gửi (số ngày trước và số tiền).
+struct SampleGoal: Equatable, Sendable {
+    var name: String
+    var target: Int
+    /// Số tháng tới hạn; nil là không đặt hạn.
+    var monthsToDeadline: Int?
+    var deposits: [(daysAgo: Int, amount: Int)]
+
+    static func == (lhs: SampleGoal, rhs: SampleGoal) -> Bool {
+        lhs.name == rhs.name && lhs.target == rhs.target && lhs.monthsToDeadline == rhs.monthsToDeadline
+            && lhs.deposits.elementsEqual(rhs.deposits) { $0 == $1 }
+    }
+}
+
 enum SampleData {
-    /// Gắn vào `Expense.rawText` để xóa đúng các khoản mẫu, không đụng dữ liệu thật.
+    /// Gắn vào `Expense.rawText` và `SavingsDeposit.note` để xóa đúng dữ liệu mẫu, không đụng dữ liệu thật.
     static let marker = "[dữ liệu mẫu]"
+
+    static let goals: [SampleGoal] = [
+        SampleGoal(
+            name: "Du lịch Đà Lạt", target: 10_000_000, monthsToDeadline: 4,
+            deposits: [(40, 1_500_000), (20, 1_000_000), (6, 700_000)]
+        ),
+        SampleGoal(name: "Mua laptop", target: 25_000_000, monthsToDeadline: nil, deposits: [(30, 3_000_000), (8, 2_000_000)]),
+        SampleGoal(name: "Quỹ dự phòng", target: 5_000_000, monthsToDeadline: nil, deposits: [(50, 3_000_000), (25, 2_500_000)]),
+    ]
 
     private struct Template {
         var name: String
@@ -28,7 +51,7 @@ enum SampleData {
     }
 
     private static let everyday: [Template] = [
-        Template(name: "phở", range: 40...60, step: 5, place: SamplePlace(name: "Phở Thìn", latitude: 10.7765, longitude: 106.7010)),
+        Template(name: "phở", range: 40...60, step: 5, place: SamplePlace(name: "Phở Thìn", latitude: 10.7795, longitude: 106.7035)),
         Template(name: "cơm tấm", range: 45...65, step: 5, place: SamplePlace(name: "Cơm tấm Ba Ghiền", latitude: 10.7788, longitude: 106.6968)),
         Template(name: "cf", range: 25...45, step: 5, place: SamplePlace(name: "The Coffee House", latitude: 10.7790, longitude: 106.6990)),
         Template(name: "trà sữa", range: 35...55, step: 5),

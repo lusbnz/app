@@ -7,13 +7,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm"
+            "value" : "Pennyline"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm"
+            "value" : "Pennyline"
           }
         }
       }
@@ -24,13 +24,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm"
+            "value" : "Pennyline"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm"
+            "value" : "Pennyline"
           }
         }
       }
@@ -41,13 +41,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm uses the camera to scan receipts and attach photos to expenses."
+            "value" : "Pennyline uses the camera to scan receipts and attach photos to expenses."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm dùng camera để chụp hóa đơn và ảnh cho khoản chi."
+            "value" : "Pennyline dùng camera để chụp hóa đơn và ảnh cho khoản chi."
           }
         }
       }
@@ -58,13 +58,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm uses Face ID to lock the app and protect your spending data."
+            "value" : "Pennyline uses Face ID to lock the app and protect your spending data."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm dùng Face ID để khóa app và bảo vệ số liệu chi tiêu của bạn."
+            "value" : "Pennyline dùng Face ID để khóa app và bảo vệ số liệu chi tiêu của bạn."
           }
         }
       }
@@ -75,13 +75,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm uses the microphone so you can say an expense instead of typing it."
+            "value" : "Pennyline uses the microphone so you can say an expense instead of typing it."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm dùng micro để bạn nói khoản chi thay vì gõ."
+            "value" : "Pennyline dùng micro để bạn nói khoản chi thay vì gõ."
           }
         }
       }
@@ -92,13 +92,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm listens to your voice to log expenses."
+            "value" : "Pennyline listens to your voice to log expenses."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhẩm nghe giọng nói của bạn để ghi khoản chi."
+            "value" : "Pennyline nghe giọng nói của bạn để ghi khoản chi."
           }
         }
       }

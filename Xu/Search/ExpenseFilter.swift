@@ -29,9 +29,11 @@ struct ExpenseFilter: Equatable, Sendable {
     /// Ngày đầu và ngày cuối (tính cả ngày cuối), theo ngày.
     var from: Date?
     var to: Date?
+    /// Mã ngoại tệ ("usd"); trống là không lọc theo ngoại tệ.
+    var currencies: Set<String> = []
 
     var isActive: Bool {
-        !TextNormalizer.keyword(text).isEmpty || !categoryKeys.isEmpty || from != nil || to != nil
+        !TextNormalizer.keyword(text).isEmpty || !categoryKeys.isEmpty || !currencies.isEmpty || from != nil || to != nil
     }
 
     /// Đặt khoảng ngày từ mốc chọn nhanh. `custom` giữ nguyên khoảng đang có.
@@ -51,18 +53,22 @@ struct ExpenseFilter: Equatable, Sendable {
 
     func matches(_ record: SpendingRecord, calendar: Calendar) -> Bool {
         if !categoryKeys.isEmpty, !categoryKeys.contains(record.categoryKey) { return false }
+        if !currencies.isEmpty {
+            guard let code = record.foreignCode, currencies.contains(code) else { return false }
+        }
         if let from, record.date < calendar.startOfDay(for: from) { return false }
         if let to,
            let end = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: to)),
            record.date >= end { return false }
-        return matchesText(record.name)
+        return matchesText(record)
     }
 
-    /// Mọi từ gõ vào phải có trong tên khoản, không phân biệt dấu và hoa thường ("pho" tìm ra "phở bò").
-    private func matchesText(_ name: String) -> Bool {
+    /// Mọi từ gõ vào phải có trong tên khoản, tên nơi ghi hoặc mã ngoại tệ, không phân biệt dấu và hoa thường
+    /// ("pho" tìm ra "phở bò", "thìn" tìm ra khoản ghi ở "Phở Thìn", "usd" tìm ra khoản gõ bằng đô la).
+    private func matchesText(_ record: SpendingRecord) -> Bool {
         let query = TextNormalizer.words(TextNormalizer.keyword(text))
         guard !query.isEmpty else { return true }
-        let target = TextNormalizer.keyword(name)
+        let target = TextNormalizer.keyword([record.name, record.placeName, record.foreignCode].compactMap(\.self).joined(separator: " "))
         return query.allSatisfy { target.contains($0) }
     }
 }

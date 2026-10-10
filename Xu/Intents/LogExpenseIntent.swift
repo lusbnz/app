@@ -21,14 +21,14 @@ struct LogExpenseIntent: AppIntent {
         let now = Date()
         let calendar = Calendar.current
         guard SaveGate.canSave(now: now, calendar: calendar) else {
-            return .result(dialog: "Bản miễn phí cho gõ 5 lần mỗi ngày. Mở Nhẩm để dùng Nhẩm Pro.")
+            return .result(dialog: "Bản miễn phí cho gõ 5 lần mỗi ngày. Mở Pennyline để dùng Pennyline Pro.")
         }
         let recorder = ExpenseRecorder(context: XuStore.shared.mainContext)
-        let budget = AppGroup.defaults.integer(forKey: SettingsKey.monthlyBudget)
-        guard let batch = recorder.record(text: text, monthlyBudget: budget, now: now, calendar: calendar) else {
-            return .result(dialog: "Nhẩm chưa đọc được số tiền trong “\(text)”.")
+        let budget = BudgetSetting.load()
+        guard let batch = recorder.record(text: text, budget: budget, now: now, calendar: calendar) else {
+            return .result(dialog: "Pennyline chưa đọc được số tiền trong “\(text)”.")
         }
-        let remaining = recorder.status(monthlyBudget: budget, now: now, calendar: calendar).remainingToday
+        let remaining = recorder.status(budget: budget, now: now, calendar: calendar).remainingToday
         let warning = batch.warning.map { " \($0)." } ?? ""
         return .result(dialog: "\(batch.summary). Hôm nay còn \(MoneyFormatter.short(remaining)).\(warning)")
     }

@@ -24,11 +24,11 @@ struct RecurringItem: Equatable, Sendable, Identifiable {
     var weekday: Int = 2
     /// 1...12, chỉ dùng cho khoản theo năm.
     var monthOfYear: Int = 1
-    /// Đến hạn thì Nhẩm tự ghi khi mở app (vẫn qua `SaveGate.canSave`); không thì chỉ nhắc.
+    /// Đến hạn thì Pennyline tự ghi khi mở app (vẫn qua `SaveGate.canSave`); không thì chỉ nhắc.
     var autoRecord: Bool = false
 }
 
-/// Lịch của các khoản định kỳ. Mặc định Nhẩm chỉ nhắc, người dùng chạm mới ghi; khoản đặt tự ghi thì ghi khi mở app.
+/// Lịch của các khoản định kỳ. Mặc định Pennyline chỉ nhắc, người dùng chạm mới ghi; khoản đặt tự ghi thì ghi khi mở app.
 enum RecurringPlanner {
     static let reminderHour = 9
 

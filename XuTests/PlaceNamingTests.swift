@@ -86,9 +86,17 @@ struct PlaceNamingTests {
     }
 }
 
+private final class CallCounter: @unchecked Sendable {
+    var count = 0
+}
+
 private struct FakeSearch: PlaceSearching {
     var results: [PlaceCandidate]
-    func candidates(near coordinate: Coordinate) async -> [PlaceCandidate] { results }
+    var counter: CallCounter?
+    func candidates(near coordinate: Coordinate) async -> [PlaceCandidate] {
+        counter?.count += 1
+        return results
+    }
 }
 
 @MainActor
@@ -115,7 +123,9 @@ struct PlaceRecorderTests {
         let searcher = PlaceLookup.shared.searcher
         AppGroup.defaults.set(true, forKey: key)
         PlaceLookup.shared.searcher = FakeSearch(results: results)
+        PlaceLookup.shared.clearCache()
         return {
+            PlaceLookup.shared.clearCache()
             if let before { AppGroup.defaults.set(before, forKey: key) } else { AppGroup.defaults.removeObject(forKey: key) }
             PlaceLookup.shared.searcher = searcher
         }
@@ -181,6 +191,7 @@ struct PlaceRecorderTests {
         #expect(try context.fetch(FetchDescriptor<Expense>()).first?.placeName == nil)
 
         AppGroup.defaults.set(false, forKey: SettingsKey.placeLookup)
+        PlaceLookup.shared.clearCache()
         PlaceLookup.shared.searcher = FakeSearch(results: [PlaceCandidate(name: "Có", coordinate: here)])
         await PlaceLookup.shared.nameBatch(batch.batchID, context: context)
         #expect(try context.fetch(FetchDescriptor<Expense>()).first?.placeName == nil)
@@ -263,5 +274,33 @@ struct PlaceRecorderTests {
         #expect(expense.placeName == "Quán quen")
         recorder.setPlace(of: expense, to: "   ", applyingToSiblings: true)
         #expect(expense.placeName == nil)
+    }
+}
+
+@MainActor
+struct PlaceLookupCacheTests {
+    private let here = Coordinate(latitude: 10.7769, longitude: 106.7009)
+
+    @Test func foundNamesAreRememberedAndMissesAreNot() async {
+        let searcher = PlaceLookup.shared.searcher
+        defer { PlaceLookup.shared.searcher = searcher; PlaceLookup.shared.clearCache() }
+        PlaceLookup.shared.clearCache()
+
+        let counter = CallCounter()
+        PlaceLookup.shared.searcher = FakeSearch(results: [], counter: counter)
+        #expect(await PlaceLookup.shared.bestName(near: here) == nil)
+        #expect(await PlaceLookup.shared.bestName(near: here) == nil)
+        #expect(counter.count == 2)                               // lần thất bại không được nhớ
+
+        let hits = CallCounter()
+        PlaceLookup.shared.searcher = FakeSearch(results: [PlaceCandidate(name: "Phở Thìn", coordinate: here)], counter: hits)
+        #expect(await PlaceLookup.shared.bestName(near: here) == "Phở Thìn")
+        #expect(await PlaceLookup.shared.bestName(near: here) == "Phở Thìn")
+        let nearby = Coordinate(latitude: here.latitude + 0.00002, longitude: here.longitude)     // cùng ô lưới 10 m
+        #expect(await PlaceLookup.shared.bestName(near: nearby) == "Phở Thìn")
+        #expect(hits.count == 1)
+        let far = Coordinate(latitude: here.latitude + 0.01, longitude: here.longitude)
+        #expect(await PlaceLookup.shared.bestName(near: far) == "Phở Thìn")
+        #expect(hits.count == 2)
     }
 }

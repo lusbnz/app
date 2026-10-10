@@ -1,7 +1,7 @@
 import SwiftData
 import SwiftUI
 
-/// Khoản định kỳ (tiền nhà, Netflix): thêm, sửa, xóa. Đến hạn Nhẩm nhắc, người dùng chạm mới ghi.
+/// Khoản định kỳ (tiền nhà, Netflix): thêm, sửa, xóa. Đến hạn Pennyline nhắc, người dùng chạm mới ghi.
 struct RecurringView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.calendar) private var calendar
@@ -34,7 +34,7 @@ struct RecurringView: View {
                 }
                 Button("Thêm khoản định kỳ") { form = RecurringForm(editing: nil) }
             } footer: {
-                Text("Đến hạn, Nhẩm nhắc lúc 9:00 và hiện khoản đó ở màn Hôm nay. Mặc định bạn chạm Ghi thì mới ghi; khoản nào bật “Tự ghi” thì Nhẩm ghi khi bạn mở app.")
+                Text("Đến hạn, Pennyline nhắc lúc 9:00 và hiện khoản đó ở màn Hôm nay. Mặc định bạn chạm Ghi thì mới ghi; khoản nào bật “Tự ghi” thì Pennyline ghi khi bạn mở app.")
             }
             .listRowBackground(Color.xuSurface)
         }
@@ -104,8 +104,8 @@ struct RecurringEditor: View {
                     Toggle("Tự ghi khi đến hạn", isOn: $autoRecord)
                         .frame(minHeight: 52)
                     Text(autoRecord
-                         ? "Nhẩm ghi khi bạn mở app sau ngày đến hạn, vẫn tính vào 5 lần ghi mỗi ngày của bản miễn phí. Ghi nhầm thì xóa hoặc sửa như khoản thường."
-                         : "Tháng nào không có ngày này thì tính vào ngày cuối tháng. Nhẩm nhắc lúc 9:00 và bạn chạm Ghi.")
+                         ? "Pennyline ghi khi bạn mở app sau ngày đến hạn, vẫn tính vào 5 lần ghi mỗi ngày của bản miễn phí. Ghi nhầm thì xóa hoặc sửa như khoản thường."
+                         : "Tháng nào không có ngày này thì tính vào ngày cuối tháng. Pennyline nhắc lúc 9:00 và bạn chạm Ghi.")
                         .font(.footnote)
                         .foregroundStyle(Color.xuTextSecondary)
                 }

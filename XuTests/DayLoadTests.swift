@@ -21,8 +21,8 @@ struct DayLoadTests {
 
     @Test func pastDayAllowanceUsesThatMonthsLength() {
         let calendar = TestClock.calendar
-        let october = DayLoad.pastDayAllowance(monthlyBudget: 9_300_000, day: TestClock.date(2026, 10, 3), calendar: calendar)
-        let september = DayLoad.pastDayAllowance(monthlyBudget: 9_300_000, day: TestClock.date(2026, 9, 3), calendar: calendar)
+        let october = DayLoad.pastDayAllowance(.monthly(9_300_000), day: TestClock.date(2026, 10, 3), calendar: calendar)
+        let september = DayLoad.pastDayAllowance(.monthly(9_300_000), day: TestClock.date(2026, 9, 3), calendar: calendar)
         #expect(october == 300_000)        // 31 ngày
         #expect(september == 310_000)      // 30 ngày
     }

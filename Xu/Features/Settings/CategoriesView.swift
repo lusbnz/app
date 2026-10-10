@@ -1,7 +1,7 @@
 import SwiftData
 import SwiftUI
 
-/// Danh mục tự thêm và các luật Nhẩm đã học: thêm, đổi tên, đổi danh mục của luật, xóa.
+/// Danh mục tự thêm và các luật Pennyline đã học: thêm, đổi tên, đổi danh mục của luật, xóa.
 struct CategoriesView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \CustomCategory.createdAt) private var customCategories: [CustomCategory]

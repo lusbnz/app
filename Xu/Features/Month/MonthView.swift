@@ -1,17 +1,25 @@
 import SwiftData
 import SwiftUI
 
-/// Màn hình Tháng: còn lại của tháng, dự báo, hạn mức danh mục, các danh mục, các khoản không tính vào ngân sách.
+/// Màn hình Tháng: còn lại của kỳ ngân sách (tháng hoặc tuần), dự báo, hạn mức danh mục, các danh mục, chi ở đâu nhiều nhất,
+/// so với kỳ trước, mục tiêu tiết kiệm, các khoản không tính vào ngân sách.
 struct MonthView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.calendar) private var calendar
     @Environment(AppSettings.self) private var settings
+    @Environment(AppState.self) private var appState
     @Query(sort: \Expense.date, order: .reverse) private var allExpenses: [Expense]
     @Query(sort: \Loan.date, order: .reverse) private var allLoans: [Loan]
     @Query private var customCategories: [CustomCategory]
     @Query private var budgets: [CategoryBudget]
+    @Query(sort: \SavingsGoal.createdAt) private var goals: [SavingsGoal]
+    @Query private var deposits: [SavingsDeposit]
     @State private var selected: Expense?
     @State private var comparePeriod = ComparisonPeriod.month
+    @State private var showsMap = false
+    @State private var mapFocus: String?
+    @State private var showsGoals = false
+    @State private var openedGoal: SavingsGoal?
 
     let now: Date
 
@@ -24,7 +32,8 @@ struct MonthView: View {
 
     private func makeSnapshot(_ expenses: [Expense]) -> SpendingSnapshot {
         var snapshot = SpendingSnapshot.make(
-            records: expenses.map(\.record), monthlyBudget: settings.monthlyBudget, now: now, calendar: calendar
+            records: expenses.map(\.record), monthlyBudget: settings.budgetSetting.monthlyEquivalent(now: now, calendar: calendar),
+            now: now, calendar: calendar
         )
         snapshot.categoryNames = CategoryCatalog(custom: customCategories).titles
         return snapshot
@@ -33,7 +42,7 @@ struct MonthView: View {
     var body: some View {
         let expenses = expenses
         let status = BudgetCalculator.status(
-            monthlyBudget: settings.monthlyBudget, entries: expenses.map(\.budgetEntry), now: now, calendar: calendar
+            settings.budgetSetting, entries: allExpenses.map(\.budgetEntry), now: now, calendar: calendar
         )
         let snapshot = makeSnapshot(expenses)
         ScrollView {
@@ -41,7 +50,9 @@ struct MonthView: View {
                 header(status)
                 limits(expenses)
                 categories(snapshot)
+                topPlaces(expenses)
                 comparison()
+                savings(status)
                 outside(expenses)
                 AskSection(snapshot: snapshot)
             }
@@ -55,14 +66,42 @@ struct MonthView: View {
         .sheet(item: $selected) { expense in
             ExpenseDetailView(expense: expense)
         }
+        .navigationDestination(isPresented: $showsMap) {
+            PlacesMapView(now: now, initialSelection: mapFocus)
+        }
+        .navigationDestination(isPresented: $showsGoals) {
+            SavingsGoalsView()
+        }
+        .navigationDestination(item: $openedGoal) { goal in
+            SavingsGoalDetailView(goal: goal)
+        }
+        #if DEBUG
+        .task {
+            // Cờ chạy thử `-open map|goals|goal`: mở thẳng một màn con.
+            guard let destination = appState.debugMonthDestination else { return }
+            appState.debugMonthDestination = nil
+            try? await Task.sleep(for: .milliseconds(600))
+            switch destination {
+            case "map": showsMap = true
+            case "goals": showsGoals = true
+            case "goal": openedGoal = goals.first
+            default: break
+            }
+        }
+        #endif
     }
 
     // MARK: - Phần đầu
 
     private func header(_ status: BudgetStatus) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            HighlightedNumber(text: MoneyFormatter.short(status.remainingThisMonth), fraction: status.monthFraction)
-            Text("đã tiêu \(MoneyFormatter.short(status.spentThisMonth)) trên \(MoneyFormatter.short(status.monthlyBudget))")
+            if status.period == .week {
+                Text("Ngân sách tuần")
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(Color.xuTextSecondary)
+            }
+            HighlightedNumber(text: MoneyFormatter.short(status.remainingThisPeriod), fraction: status.periodFraction)
+            Text("đã tiêu \(MoneyFormatter.short(status.spentThisPeriod)) trên \(MoneyFormatter.short(status.budget))")
                 .font(.subheadline)
                 .foregroundStyle(Color.xuTextSecondary)
             Text(forecast(status))
@@ -70,17 +109,32 @@ struct MonthView: View {
                 .padding(.top, 12)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Tháng này còn \(MoneyFormatter.spoken(status.remainingThisMonth)), đã tiêu \(MoneyFormatter.spoken(status.spentThisMonth)) trên \(MoneyFormatter.spoken(status.monthlyBudget)). \(forecast(status))")
+        .accessibilityLabel(headerSpoken(status))
+    }
+
+    private func headerSpoken(_ status: BudgetStatus) -> String {
+        let left = MoneyFormatter.spoken(status.remainingThisPeriod)
+        let spent = MoneyFormatter.spoken(status.spentThisPeriod)
+        let budget = MoneyFormatter.spoken(status.budget)
+        return status.period == .week
+            ? String(localized: "Tuần này còn \(left), đã tiêu \(spent) trên \(budget). \(forecast(status))")
+            : String(localized: "Tháng này còn \(left), đã tiêu \(spent) trên \(budget). \(forecast(status))")
     }
 
     private func forecast(_ status: BudgetStatus) -> String {
-        guard status.spentThisMonth > 0 else { return String(localized: "Tháng này chưa tiêu gì.") }
-        let forecast = BudgetCalculator.forecast(for: status, now: now, calendar: calendar)
-        let pace = MoneyFormatter.short(forecast.pacePerDay)
-        if forecast.projectedLeftover >= 0 {
-            return String(localized: "Giữ nhịp \(pace) mỗi ngày, cuối tháng dư khoảng \(MoneyFormatter.short(forecast.projectedLeftover)).")
+        let isWeek = status.period == .week
+        guard status.spentThisPeriod > 0 else {
+            return isWeek ? String(localized: "Tuần này chưa tiêu gì.") : String(localized: "Tháng này chưa tiêu gì.")
         }
-        return String(localized: "Giữ nhịp \(pace) mỗi ngày, cuối tháng vượt khoảng \(MoneyFormatter.short(-forecast.projectedLeftover)).")
+        let forecast = BudgetCalculator.forecast(for: status)
+        let pace = MoneyFormatter.short(forecast.pacePerDay)
+        let leftover = MoneyFormatter.short(abs(forecast.projectedLeftover))
+        switch (isWeek, forecast.projectedLeftover >= 0) {
+        case (false, true): return String(localized: "Giữ nhịp \(pace) mỗi ngày, cuối tháng dư khoảng \(leftover).")
+        case (false, false): return String(localized: "Giữ nhịp \(pace) mỗi ngày, cuối tháng vượt khoảng \(leftover).")
+        case (true, true): return String(localized: "Giữ nhịp \(pace) mỗi ngày, cuối tuần dư khoảng \(leftover).")
+        case (true, false): return String(localized: "Giữ nhịp \(pace) mỗi ngày, cuối tuần vượt khoảng \(leftover).")
+        }
     }
 
     // MARK: - Hạn mức danh mục
@@ -159,6 +213,105 @@ struct MonthView: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .accessibilityElement(children: .combine)
+                }
+            }
+        }
+    }
+
+    // MARK: - Chi ở đâu nhiều nhất
+
+    @ViewBuilder
+    private func topPlaces(_ expenses: [Expense]) -> some View {
+        let spends = PlaceSpending.totals(expenses.compactMap { expense in
+            guard !expense.isOutsideBudget, let latitude = expense.latitude, let longitude = expense.longitude else { return nil }
+            return PlaceRecord(
+                coordinate: Coordinate(latitude: latitude, longitude: longitude), name: expense.placeName,
+                amount: expense.amount, date: expense.date, categoryKey: expense.categoryKey
+            )
+        })
+        if let largest = spends.first?.total, largest > 0 {
+            VStack(alignment: .leading, spacing: 14) {
+                HStack {
+                    Text("Chi ở đâu nhiều nhất")
+                        .font(.subheadline.weight(.semibold))
+                    Spacer()
+                    Button("Bản đồ") {
+                        mapFocus = nil
+                        showsMap = true
+                    }
+                    .font(.subheadline)
+                }
+                ForEach(spends.prefix(5)) { spend in
+                    Button {
+                        mapFocus = spend.id
+                        showsMap = true
+                    } label: {
+                        VStack(alignment: .leading, spacing: 6) {
+                            HStack {
+                                Label(spend.name ?? String(localized: "Chưa đặt tên"), systemImage: "mappin.and.ellipse")
+                                    .lineLimit(1)
+                                Spacer(minLength: 8)
+                                Text(MoneyFormatter.short(spend.total))
+                                    .fontWeight(.medium)
+                                    .money(spend.total)
+                            }
+                            GeometryReader { proxy in
+                                Capsule()
+                                    .fill(Color.xuHighlight)
+                                    .frame(width: max(6, proxy.size.width * CGFloat(spend.total) / CGFloat(largest)))
+                            }
+                            .frame(height: 6)
+                            .accessibilityHidden(true)
+                            Text("\(spend.count) lần")
+                                .font(.caption)
+                                .foregroundStyle(Color.xuTextSecondary)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(.rect)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityElement(children: .combine)
+                }
+            }
+        }
+    }
+
+    // MARK: - Mục tiêu tiết kiệm
+
+    private func savings(_ status: BudgetStatus) -> some View {
+        let saved = Dictionary(grouping: deposits, by: \.goalID).mapValues { max(0, $0.reduce(0) { $0 + $1.amount }) }
+        func isDone(_ goal: SavingsGoal) -> Bool {
+            goal.targetAmount > 0 && (saved[goal.id] ?? 0) >= goal.targetAmount
+        }
+        // Mục tiêu chưa đủ đứng trước.
+        let shown = goals.sorted { (isDone($0) ? 1 : 0, $0.createdAt) < (isDone($1) ? 1 : 0, $1.createdAt) }
+        let leftover = status.spentThisPeriod > 0 ? BudgetCalculator.forecast(for: status).projectedLeftover : 0
+        return VStack(alignment: .leading, spacing: 14) {
+            HStack {
+                Text("Mục tiêu tiết kiệm")
+                    .font(.subheadline.weight(.semibold))
+                Spacer()
+                Button(goals.isEmpty ? "Đặt mục tiêu" : "Xem tất cả") { showsGoals = true }
+                    .font(.subheadline)
+            }
+            if goals.isEmpty {
+                Text("Chưa có mục tiêu nào. Đặt một mục tiêu để để dành dần, ví dụ du lịch hay mua xe.")
+                    .font(.footnote)
+                    .foregroundStyle(Color.xuTextSecondary)
+            } else {
+                ForEach(shown.prefix(3)) { goal in
+                    Button { openedGoal = goal } label: {
+                        SavingsGoalRow(goal: goal, saved: saved[goal.id] ?? 0, now: now)
+                            .contentShape(.rect)
+                    }
+                    .buttonStyle(.plain)
+                }
+                if leftover > 0 {
+                    Text(status.period == .week
+                         ? String(localized: "Giữ nhịp này thì cuối tuần dư khoảng \(MoneyFormatter.short(leftover)). Chạm một mục tiêu để gửi phần dư vào.")
+                         : String(localized: "Giữ nhịp này thì cuối tháng dư khoảng \(MoneyFormatter.short(leftover)). Chạm một mục tiêu để gửi phần dư vào."))
+                        .font(.footnote)
+                        .foregroundStyle(Color.xuTextSecondary)
                 }
             }
         }

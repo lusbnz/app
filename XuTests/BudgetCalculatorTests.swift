@@ -16,7 +16,7 @@ struct BudgetCalculatorTests {
     private func status(_ today: [BudgetEntry], yesterday: Int = 0) -> BudgetStatus {
         var entries = [BudgetEntry(amount: 1_800_000, date: date(3))] + today
         if yesterday > 0 { entries.append(BudgetEntry(amount: yesterday, date: date(7, hour: 20))) }
-        return BudgetCalculator.status(monthlyBudget: 9_000_000, entries: entries, now: date(8), calendar: calendar)
+        return BudgetCalculator.status(budget: 9_000_000, entries: entries, now: date(8), calendar: calendar)
     }
 
     private func today(_ amount: Int, outside: Bool = false) -> BudgetEntry {
@@ -50,7 +50,7 @@ struct BudgetCalculatorTests {
 
     @Test func lastDayOfMonthHasNoTomorrow() {
         let status = BudgetCalculator.status(
-            monthlyBudget: 9_000_000,
+            budget: 9_000_000,
             entries: [BudgetEntry(amount: 8_500_000, date: date(10)), BudgetEntry(amount: 100_000, date: date(31, hour: 8))],
             now: date(31), calendar: calendar
         )
@@ -61,7 +61,7 @@ struct BudgetCalculatorTests {
     }
 
     @Test func twentyEightDayMonth() {
-        let status = BudgetCalculator.status(monthlyBudget: 2_800_000, entries: [], now: date(1, month: 2), calendar: calendar)
+        let status = BudgetCalculator.status(budget: 2_800_000, entries: [], now: date(1, month: 2), calendar: calendar)
         #expect(status.daysLeft == 28)
         #expect(status.allowanceToday == 100_000)
         #expect(status.allowanceTomorrow == 103_000)
@@ -72,8 +72,8 @@ struct BudgetCalculatorTests {
             BudgetEntry(amount: 500_000, date: date(30, month: 9)),
             BudgetEntry(amount: 500_000, date: date(9)),
         ]
-        let status = BudgetCalculator.status(monthlyBudget: 9_000_000, entries: entries, now: date(8), calendar: calendar)
-        #expect(status.spentThisMonth == 0)
+        let status = BudgetCalculator.status(budget: 9_000_000, entries: entries, now: date(8), calendar: calendar)
+        #expect(status.spentThisPeriod == 0)
     }
 
     @Test func negativeAllowanceRoundsDown() {
@@ -83,13 +83,13 @@ struct BudgetCalculatorTests {
 
     @Test func forecastKeepsThePace() {
         let status = status([today(106_000)])
-        let forecast = BudgetCalculator.forecast(for: status, now: date(8), calendar: calendar)
+        let forecast = BudgetCalculator.forecast(for: status)
         #expect(forecast.pacePerDay == 238_250)
         #expect(forecast.projectedLeftover == 9_000_000 - 1_906_000 - 238_250 * 23)
     }
 
     @Test func dailyAverageForOnboarding() {
-        #expect(BudgetCalculator.dailyAverage(monthlyBudget: 9_000_000, now: date(8), calendar: calendar) == 290_000)
+        #expect(BudgetCalculator.dailyAverage(budget: 9_000_000, now: date(8), calendar: calendar) == 290_000)
     }
 
     @Test func previousDays() {
@@ -112,12 +112,12 @@ struct CategoryReserveTests {
     }
 
     private func status(_ entries: [BudgetEntry], limits: [String: Int]) -> BudgetStatus {
-        BudgetCalculator.status(monthlyBudget: 9_000_000, entries: entries, categoryLimits: limits, now: now, calendar: calendar)
+        BudgetCalculator.status(budget: 9_000_000, entries: entries, categoryLimits: limits, now: now, calendar: calendar)
     }
 
     @Test func noLimitsBehavesLikePlainStatus() {
         let entries = [entry(1_800_000, "food", day: 3)]
-        let plain = BudgetCalculator.status(monthlyBudget: 9_000_000, entries: entries, now: now, calendar: calendar)
+        let plain = BudgetCalculator.status(budget: 9_000_000, entries: entries, now: now, calendar: calendar)
         #expect(status(entries, limits: [:]) == plain)
         #expect(status(entries, limits: ["food": 0]) == plain)
     }
@@ -126,8 +126,8 @@ struct CategoryReserveTests {
         let result = status([entry(1_800_000, "food", day: 3)], limits: ["food": 2_000_000])
         // 7tr tự do chia 24 ngày; 1,8tr đã chi nằm trong hạn mức ăn uống nên không trừ.
         #expect(result.allowanceToday == 291_000)
-        #expect(result.spentThisMonth == 1_800_000)          // số thật của tháng không đổi
-        #expect(result.remainingThisMonth == 7_200_000)
+        #expect(result.spentThisPeriod == 1_800_000)          // số thật của tháng không đổi
+        #expect(result.remainingThisPeriod == 7_200_000)
     }
 
     @Test func spendingInsideLimitDoesNotLowerTodayRemaining() {

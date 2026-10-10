@@ -107,8 +107,8 @@ struct ExpenseRecorder {
     }
 
     /// Tách một dòng chữ rồi lưu. Trả về nil khi không có khoản nào đủ số tiền.
-    func record(text: String, monthlyBudget: Int, now: Date, calendar: Calendar) -> SavedBatch? {
-        let allowance = status(monthlyBudget: monthlyBudget, now: now, calendar: calendar).allowanceToday
+    func record(text: String, budget: BudgetSetting, now: Date, calendar: Calendar) -> SavedBatch? {
+        let allowance = status(budget: budget, now: now, calendar: calendar).allowanceToday
         let items = ExpenseParser(rates: ExchangeRates.load()).parse(text, rules: rules(), dailyAllowance: allowance, now: now, calendar: calendar).compactMap { line -> RecordItem? in
             switch line {
             case .expense(let parsed):
@@ -279,12 +279,10 @@ struct ExpenseRecorder {
         ))) ?? []
     }
 
-    func status(monthlyBudget: Int, now: Date, calendar: Calendar) -> BudgetStatus {
-        let start = calendar.dateInterval(of: .month, for: now)?.start ?? now
+    func status(budget: BudgetSetting, now: Date, calendar: Calendar) -> BudgetStatus {
+        let start = budget.period.interval(containing: now, calendar: calendar)?.start ?? now
         return BudgetCalculator.status(
-            monthlyBudget: monthlyBudget,
-            entries: expenses(since: start).map(\.budgetEntry),
-            now: now, calendar: calendar
+            budget, entries: expenses(since: start).map(\.budgetEntry), now: now, calendar: calendar
         )
     }
 
@@ -304,9 +302,9 @@ struct ExpenseRecorder {
     /// Ghi một khoản biết sẵn tên và số tiền (gợi ý, thông báo).
     @discardableResult
     func recordQuick(
-        name: String, amount: Int, monthlyBudget: Int, now: Date, calendar: Calendar, coordinate: Coordinate? = nil
+        name: String, amount: Int, budget: BudgetSetting, now: Date, calendar: Calendar, coordinate: Coordinate? = nil
     ) -> SavedBatch {
-        let allowance = status(monthlyBudget: monthlyBudget, now: now, calendar: calendar).allowanceToday
+        let allowance = status(budget: budget, now: now, calendar: calendar).allowanceToday
         let draft = ExpenseDraft(
             name: name, amount: amount,
             categoryKey: CategoryClassifier.categoryKey(for: name, rules: rules()),

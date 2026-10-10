@@ -7,9 +7,13 @@ struct SpendingRecord: Equatable, Sendable {
     var categoryKey: String
     var date: Date
     var isOutsideBudget: Bool = false
+    /// Tên nơi ghi, nếu có. Để tìm khoản theo nơi.
+    var placeName: String? = nil
+    /// Mã ngoại tệ gõ vào ("usd"), nil nếu gõ bằng đồng. Để tìm khoản theo ngoại tệ.
+    var foreignCode: String? = nil
 }
 
-/// Số liệu của tháng đã tổng hợp sẵn. Màn hình Tháng và Hỏi Nhẩm đều đọc từ đây, không đọc dữ liệu thô.
+/// Số liệu của tháng đã tổng hợp sẵn. Màn hình Tháng và Hỏi Pennyline đều đọc từ đây, không đọc dữ liệu thô.
 struct SpendingSnapshot: Equatable, Sendable {
     struct Group: Equatable, Sendable, Identifiable {
         /// Khóa danh mục, hoặc tên khoản đã chuẩn hóa.

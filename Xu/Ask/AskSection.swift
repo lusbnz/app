@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Khối Hỏi Nhẩm ở đáy màn hình Tháng: câu hỏi gần nhất, câu trả lời, và ô hỏi câu khác.
+/// Khối Hỏi Pennyline ở đáy màn hình Tháng: câu hỏi gần nhất, câu trả lời, và ô hỏi câu khác.
 struct AskSection: View {
     @Environment(\.calendar) private var calendar
     @Environment(AppSettings.self) private var settings
@@ -15,7 +15,7 @@ struct AskSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Hỏi Nhẩm")
+            Text("Hỏi Pennyline")
                 .font(.subheadline.weight(.semibold))
             if !settings.lastQuestion.isEmpty {
                 VStack(alignment: .leading, spacing: 4) {
@@ -31,7 +31,7 @@ struct AskSection: View {
             }
             if isAvailable {
                 HStack {
-                    TextField("Hỏi Nhẩm câu khác", text: $text)
+                    TextField("Hỏi Pennyline câu khác", text: $text)
                         .submitLabel(.send)
                         .onSubmit { ask(text) }
                 }
@@ -40,7 +40,7 @@ struct AskSection: View {
                 .background(Color.xuSurface, in: .capsule)
                 .disabled(isAsking)
             } else {
-                Text("Máy này chưa hỗ trợ Hỏi Nhẩm")
+                Text("Máy này chưa hỗ trợ Hỏi Pennyline")
                     .foregroundStyle(Color.xuTextSecondary)
             }
         }
@@ -70,7 +70,7 @@ struct AskSection: View {
             do {
                 settings.lastAnswer = try await answerer.answer(question, context: snapshot)
             } catch {
-                settings.lastAnswer = String(localized: "Nhẩm chưa trả lời chắc được câu này. Bạn thử hỏi cách khác nhé.")
+                settings.lastAnswer = String(localized: "Pennyline chưa trả lời chắc được câu này. Bạn thử hỏi cách khác nhé.")
             }
         }
     }

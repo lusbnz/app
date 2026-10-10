@@ -142,8 +142,8 @@ extension ExpenseRecorder {
 // MARK: - Dữ liệu mẫu
 
 extension ExpenseRecorder {
-    /// Thay mọi khoản mẫu cũ bằng bộ mới. Không đi qua `SaveGate` nên không tốn lượt ghi miễn phí.
-    /// Trả về số khoản đã thêm.
+    /// Thay mọi dữ liệu mẫu cũ bằng bộ mới (khoản chi và mục tiêu tiết kiệm). Không đi qua `SaveGate` nên không tốn lượt
+    /// ghi miễn phí. Trả về số khoản chi đã thêm.
     @discardableResult
     func insertSampleData(days: Int, now: Date, calendar: Calendar) -> Int {
         removeSampleData()
@@ -161,17 +161,36 @@ extension ExpenseRecorder {
             expense.placeName = item.place?.name
             context.insert(expense)
         }
+        for sample in SampleData.goals {
+            let deadline = sample.monthsToDeadline.flatMap { calendar.date(byAdding: .month, value: $0, to: now) }
+            let goal = SavingsGoal(name: sample.name, targetAmount: sample.target, deadline: deadline, createdAt: now)
+            context.insert(goal)
+            for deposit in sample.deposits {
+                let date = calendar.date(byAdding: .day, value: -deposit.daysAgo, to: now) ?? now
+                context.insert(SavingsDeposit(goalID: goal.id, amount: deposit.amount, date: date, note: SampleData.marker))
+            }
+        }
         commit()
         return items.count
     }
 
-    /// Xóa các khoản mẫu, giữ nguyên dữ liệu thật. Trả về số khoản đã xóa.
+    /// Xóa dữ liệu mẫu, giữ nguyên dữ liệu thật. Trả về số khoản chi đã xóa.
     @discardableResult
     func removeSampleData() -> Int {
         let marker = SampleData.marker
         let found = (try? context.fetch(FetchDescriptor<Expense>(predicate: #Predicate { $0.rawText == marker }))) ?? []
         found.forEach(context.delete)
-        if !found.isEmpty { commit() }
+        // Mục tiêu mẫu: có tên mẫu và mọi lần gửi đều mang dấu mẫu, để không xóa nhầm mục tiêu thật trùng tên.
+        let names = Set(SampleData.goals.map(\.name))
+        var removedGoals = 0
+        for goal in (try? context.fetch(FetchDescriptor<SavingsGoal>())) ?? [] where names.contains(goal.name) {
+            let deposits = self.deposits(for: goal.id)
+            guard !deposits.isEmpty, deposits.allSatisfy({ $0.note == marker }) else { continue }
+            deposits.forEach(context.delete)
+            context.delete(goal)
+            removedGoals += 1
+        }
+        if !found.isEmpty || removedGoals > 0 { commit() }
         return found.count
     }
 }

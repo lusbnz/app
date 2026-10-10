@@ -2,7 +2,7 @@ import CoreLocation
 import MapKit
 import SwiftData
 
-/// Tìm quán và địa điểm gần một tọa độ. Đây là chỗ duy nhất Nhẩm gửi vị trí ra khỏi máy (cho Apple), nên chỉ được gọi
+/// Tìm quán và địa điểm gần một tọa độ. Đây là chỗ duy nhất Pennyline gửi vị trí ra khỏi máy (cho Apple), nên chỉ được gọi
 /// khi người dùng đã bật "Tự nhận tên nơi ghi" hoặc tự bấm tìm trong màn chọn nơi.
 protocol PlaceSearching: Sendable {
     func candidates(near coordinate: Coordinate) async -> [PlaceCandidate]
@@ -32,9 +32,27 @@ final class PlaceLookup {
     static let shared = PlaceLookup()
 
     var searcher: any PlaceSearching = ApplePlaceSearch()
+    /// Tên đã tra được trong lúc app chạy, theo ô lưới khoảng 10 m, để mở ô gõ nhiều lần ở cùng chỗ không phải hỏi lại.
+    private var cache: [String: (name: String, date: Date)] = [:]
+    private static let cacheLifetime: TimeInterval = 600
 
     static var isEnabled: Bool {
         AppGroup.defaults.bool(forKey: SettingsKey.placeLookup)
+    }
+
+    /// Tên quán gần nhất quanh `coordinate`, hoặc nil khi không tìm thấy. Chỉ nhớ kết quả tìm được, không nhớ lần thất bại
+    /// (mất mạng chẳng hạn) để lần sau còn thử lại.
+    func bestName(near coordinate: Coordinate) async -> String? {
+        let key = String(format: "%.4f,%.4f", coordinate.latitude, coordinate.longitude)
+        if let hit = cache[key], -hit.date.timeIntervalSinceNow < Self.cacheLifetime { return hit.name }
+        let candidates = await searcher.candidates(near: coordinate)
+        guard let name = PlaceNaming.ranked(candidates, near: coordinate, limit: 1).first?.name else { return nil }
+        cache[key] = (name, Date())
+        return name
+    }
+
+    func clearCache() {
+        cache.removeAll()
     }
 
     /// Đặt tên cho các khoản vừa ghi cùng một lần (chung một tọa độ) mà chưa có tên.
@@ -44,10 +62,9 @@ final class PlaceLookup {
         let items = (try? context.fetch(descriptor)) ?? []
         guard let first = items.first, let latitude = first.latitude, let longitude = first.longitude else { return }
         let coordinate = Coordinate(latitude: latitude, longitude: longitude)
-        let candidates = await searcher.candidates(near: coordinate)
-        guard let best = PlaceNaming.ranked(candidates, near: coordinate, limit: 1).first else { return }
+        guard let name = await bestName(near: coordinate) else { return }
         // Trong lúc chờ mạng người dùng có thể đã tự đặt tên, nên chỉ điền chỗ còn trống.
-        for expense in items where expense.placeName == nil { expense.placeName = best.name }
+        for expense in items where expense.placeName == nil { expense.placeName = name }
         try? context.save()
     }
 
@@ -60,10 +77,7 @@ final class PlaceLookup {
         for group in PlaceNaming.unnamedGroups(recorder.locatedItems()).prefix(groupLimit) {
             // Có thể một chỗ gần đó vừa được đặt tên ở vòng trước.
             var name = PlaceNaming.reusableName(near: group.center, in: recorder.namedPlaces())
-            if name == nil {
-                let candidates = await searcher.candidates(near: group.center)
-                name = PlaceNaming.ranked(candidates, near: group.center, limit: 1).first?.name
-            }
+            if name == nil { name = await bestName(near: group.center) }
             guard let name else { continue }
             named += recorder.setPlaceName(name, forExpensesWithIDs: group.ids)
         }

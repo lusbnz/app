@@ -17,7 +17,7 @@ struct CategoryLimitsView: View {
                     }
                 }
             } footer: {
-                Text("Khi một danh mục dùng từ 80% hạn mức hoặc vượt, Nhẩm báo lúc bạn ghi và ở màn Tháng. Hạn mức mỗi ngày vẫn tính từ ngân sách tháng. Để trống nghĩa là không đặt hạn mức.")
+                Text("Khi một danh mục dùng từ 80% hạn mức hoặc vượt, Pennyline báo lúc bạn ghi và ở màn Tháng. Hạn mức mỗi ngày vẫn tính từ ngân sách của bạn. Để trống nghĩa là không đặt hạn mức.")
             }
             .listRowBackground(Color.xuSurface)
         }

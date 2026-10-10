@@ -14,6 +14,7 @@ struct XuApp: App {
         ExpenseRecorder.afterCommit = {
             NotificationManager.shared.refreshDailyReminder()
             NotificationManager.shared.refreshRecurringReminders()
+            NotificationManager.shared.refreshSummaryReminders()
             Task { await PlaceMonitor.shared.refresh() }
         }
         ExpenseRecorder.afterLocatedRecord = { batchID in

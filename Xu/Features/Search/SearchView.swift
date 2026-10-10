@@ -13,6 +13,17 @@ struct SearchView: View {
 
     let now: Date
 
+    /// `initialFilter` để mở sẵn một lượt tìm, ví dụ từ bản đồ: xem các khoản ở một quán.
+    init(now: Date, initialFilter: ExpenseFilter = ExpenseFilter()) {
+        self.now = now
+        _filter = State(initialValue: initialFilter)
+    }
+
+    /// Các ngoại tệ đã dùng, để chỉ hiện những nút lọc có thật.
+    private var usedCurrencies: [Currency] {
+        Set(expenses.compactMap(\.foreignCurrency)).compactMap(Currency.init(rawValue:)).sorted { $0.code < $1.code }
+    }
+
     private var results: [Expense] {
         guard filter.isActive else { return [] }
         return expenses.filter { filter.matches($0.record, calendar: calendar) }
@@ -30,6 +41,7 @@ struct SearchView: View {
             List {
                 Section {
                     categoryChips
+                    currencyChips
                     dateControls
                 }
                 .listRowSeparator(.hidden)
@@ -44,7 +56,7 @@ struct SearchView: View {
             .xuScreen()
             .navigationTitle("Tìm khoản chi")
             .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $filter.text, placement: .navigationBarDrawer(displayMode: .always), prompt: "phở, grab, cf…")
+            .searchable(text: $filter.text, placement: .navigationBarDrawer(displayMode: .always), prompt: "phở, grab, tên quán…")
             .autocorrectionDisabled()
             .textInputAutocapitalization(.never)
             .toolbar {
@@ -83,6 +95,34 @@ struct SearchView: View {
             }
         }
         .scrollClipDisabled()
+    }
+
+    /// Lọc theo ngoại tệ đã gõ ("20 usd"). Chỉ hiện khi đã có khoản gõ bằng ngoại tệ.
+    @ViewBuilder
+    private var currencyChips: some View {
+        let currencies = usedCurrencies
+        if !currencies.isEmpty {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(currencies) { currency in
+                        let isOn = filter.currencies.contains(currency.rawValue)
+                        Button {
+                            if isOn { filter.currencies.remove(currency.rawValue) } else { filter.currencies.insert(currency.rawValue) }
+                        } label: {
+                            Label(currency.code, systemImage: "coloncurrencysign.circle")
+                                .font(.subheadline.weight(.medium))
+                                .foregroundStyle(isOn ? Color.xuOnButton : Color.xuTextPrimary)
+                                .padding(.horizontal, 14)
+                                .frame(minHeight: 44)
+                                .background(isOn ? Color.xuButton : Color.xuSurface, in: .capsule)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityAddTraits(isOn ? .isSelected : [])
+                    }
+                }
+            }
+            .scrollClipDisabled()
+        }
     }
 
     private var dateControls: some View {

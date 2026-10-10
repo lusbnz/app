@@ -15,6 +15,12 @@ final class AppState {
     static let shared = AppState()
 
     var entry: EntryRequest?
+    #if DEBUG
+    /// Chỉ để chạy thử: màn con của màn Tháng cần mở ngay (`-open map|goals|goal`).
+    var debugMonthDestination: String?
+    /// Chỉ để chạy thử (`-open week`): mở ngay màn Chi tiết tuần này.
+    var debugOpensWeek = false
+    #endif
     var showsMonth = false
     var showsSettings = false
     var showsSearch = false
@@ -35,6 +41,16 @@ final class AppState {
 
     func ask(_ question: String) {
         pendingQuestion = question
+        showsMonth = true
+    }
+
+    /// Mở màn Tháng (từ thông báo tổng kết), đóng các màn đang phủ lên.
+    func openMonth() {
+        showsSettings = false
+        showsSearch = false
+        showsPaywall = false
+        showsReceipt = false
+        entry = nil
         showsMonth = true
     }
 

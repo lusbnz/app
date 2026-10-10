@@ -47,7 +47,7 @@ struct ReceiptView: View {
                             if items.count >= 2 { itemsPicker }
                         }
                     } else {
-                        Text("Chụp hoặc chọn một ảnh hóa đơn. Nhẩm sẽ đọc tổng tiền và ngày giờ.")
+                        Text("Chụp hoặc chọn một ảnh hóa đơn. Pennyline sẽ đọc tổng tiền và ngày giờ.")
                             .foregroundStyle(Color.xuTextSecondary)
                     }
                     Text("Ảnh được đọc ngay trên máy và lưu kèm khoản chi để bạn xem lại.")
@@ -112,7 +112,7 @@ struct ReceiptView: View {
             entries.append(BudgetEntry(amount: amount, date: fields.date, isOutsideBudget: fields.isOutsideBudget, categoryKey: fields.categoryKey))
         }
         let status = BudgetCalculator.status(
-            monthlyBudget: settings.monthlyBudget, entries: entries,
+            settings.budgetSetting, entries: entries,
             categoryLimits: settings.dailyLimits(budgets), now: now, calendar: calendar
         )
         return VStack(alignment: .leading, spacing: 2) {
@@ -180,7 +180,7 @@ struct ReceiptView: View {
     private var uncertainTotalNotice: some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
             ButterLabel(text: "kiểm tra lại")
-            Text("Nhẩm không chắc đây là tổng tiền. Bạn xem lại với hóa đơn nhé.")
+            Text("Pennyline không chắc đây là tổng tiền. Bạn xem lại với hóa đơn nhé.")
                 .font(.footnote)
                 .foregroundStyle(Color.xuTextSecondary)
         }
@@ -244,9 +244,8 @@ struct ReceiptView: View {
     }
 
     private var dailyAllowance: Int {
-        BudgetCalculator.status(
-            monthlyBudget: settings.monthlyBudget, entries: expenses.map(\.budgetEntry), now: now, calendar: calendar
-        ).allowanceToday
+        BudgetCalculator.status(settings.budgetSetting, entries: expenses.map(\.budgetEntry), now: now, calendar: calendar)
+            .allowanceToday
     }
 
     private func toggle(_ item: ReceiptItem) {

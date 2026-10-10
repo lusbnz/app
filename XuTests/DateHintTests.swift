@@ -153,7 +153,7 @@ struct PastDateRecordingTests {
         defer { withExtendedLifetime(container) {} }
         let recorder = ExpenseRecorder(context: container.mainContext)
 
-        let batch = recorder.record(text: "phở hôm qua 45k", monthlyBudget: 9_000_000, now: TestClock.now, calendar: TestClock.calendar)
+        let batch = recorder.record(text: "phở hôm qua 45k", budget: .monthly(9_000_000), now: TestClock.now, calendar: TestClock.calendar)
         #expect(batch != nil)
         let saved = try container.mainContext.fetch(FetchDescriptor<Expense>())
         #expect(saved.count == 1)
@@ -168,7 +168,7 @@ struct PastDateRecordingTests {
         defer { withExtendedLifetime(container) {} }
         let recorder = ExpenseRecorder(context: container.mainContext)
 
-        recorder.record(text: "phở 45k", monthlyBudget: 9_000_000, now: TestClock.now, calendar: TestClock.calendar)
+        recorder.record(text: "phở 45k", budget: .monthly(9_000_000), now: TestClock.now, calendar: TestClock.calendar)
         let saved = try container.mainContext.fetch(FetchDescriptor<Expense>())
         #expect(saved.first?.date == TestClock.now)
     }

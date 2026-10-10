@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 
 /// Điều hướng gốc: lần đầu mở app, rồi Hôm nay và các sheet.
@@ -28,6 +29,7 @@ struct RootView: View {
         .sheet(isPresented: $appState.showsPaywall) {
             PaywallView()
         }
+        .tint(Color.xuToggle)
         .sensoryFeedback(.success, trigger: appState.saveCount)
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
@@ -37,6 +39,7 @@ struct RootView: View {
                 // Thử lại các khoản chưa tra được tên nơi (lúc đó mất mạng, chẳng hạn).
                 Task { await PlaceLookup.shared.backfill(context: modelContext, groupLimit: 5) }
                 NotificationManager.shared.refreshRecurringReminders()
+                NotificationManager.shared.refreshSummaryReminders()
             }
         }
         .onAppear { recordAutomaticRecurring() }
