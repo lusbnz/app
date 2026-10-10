@@ -13,6 +13,8 @@ import SwiftData
     var isOutsideBudget: Bool = false     // khoản lớn, không tính vào hạn mức
     var originalAmount: Int?              // 460.000 khi gõ "460k chia 4"
     var splitCount: Int?                  // 4
+    var foreignCurrency: String?          // "usd" khi gõ "20 usd"
+    var foreignMinor: Int?                // 2000 (cent); yên và won tính theo đơn vị
     var latitude: Double?
     var longitude: Double?
     var placeName: String?
@@ -33,10 +35,27 @@ extension Expense {
         name.isEmpty ? String(localized: "khoản chi") : name
     }
 
+    /// "20 USD" khi gõ bằng ngoại tệ; `amount` đã là số quy ra đồng lúc ghi.
+    var foreignNote: String? {
+        foreignAmount?.display(decimalSeparator: Locale.current.decimalSeparator ?? ",", groupingSeparator: Locale.current.groupingSeparator ?? ".")
+    }
+
     /// "460k chia 4" cho khoản chia tiền.
     var splitNote: String? {
         guard let originalAmount, let splitCount else { return nil }
         return String(localized: "\(MoneyFormatter.short(originalAmount)) chia \(splitCount)")
+    }
+
+    /// Số gốc khi gõ bằng ngoại tệ.
+    var foreignAmount: ForeignAmount? {
+        get {
+            guard let foreignCurrency, let foreignMinor, let currency = Currency(rawValue: foreignCurrency) else { return nil }
+            return ForeignAmount(currency: currency, minor: foreignMinor)
+        }
+        set {
+            foreignCurrency = newValue?.currency.rawValue
+            foreignMinor = newValue?.minor
+        }
     }
 
     var budgetEntry: BudgetEntry {

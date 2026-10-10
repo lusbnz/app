@@ -103,6 +103,11 @@ struct ExpenseDetailView: View {
             Text(MoneyFormatter.short(expense.amount))
                 .font(.system(size: 56, weight: .bold, design: .rounded))
                 .money(expense.amount)
+            if let foreignNote = expense.foreignNote {
+                Text(foreignNote)
+                    .font(.subheadline)
+                    .foregroundStyle(Color.xuTextSecondary)
+            }
             if let splitNote = expense.splitNote {
                 Text("phần của bạn · \(splitNote)")
                     .font(.subheadline)
@@ -187,6 +192,7 @@ struct ExpenseDetailView: View {
             expense.amount = amount
             expense.originalAmount = nil
             expense.splitCount = nil
+            expense.foreignAmount = nil
         }
         let changedCategory = fields.categoryKey != expense.categoryKey
         if changedCategory {

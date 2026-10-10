@@ -37,6 +37,9 @@ struct SettingsView: View {
                     NavigationLink("Danh mục và luật") {
                         CategoriesView()
                     }
+                    NavigationLink("Tỷ giá ngoại tệ") {
+                        ExchangeRatesView()
+                    }
                 }
                 .listRowBackground(Color.xuSurface)
                 Section {

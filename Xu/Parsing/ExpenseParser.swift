@@ -15,6 +15,8 @@ struct ParsedExpense: Equatable, Sendable {
     var isOutsideBudget: Bool
     /// Ngày người dùng nói ("hôm qua", "thứ 6"); nil là ghi theo lúc này.
     var date: Date? = nil
+    /// Số gốc khi gõ bằng ngoại tệ ("20 usd"); `amount` là số đã quy ra đồng.
+    var foreign: ForeignAmount? = nil
 }
 
 protocol LineParsing: Sendable {
@@ -23,6 +25,9 @@ protocol LineParsing: Sendable {
 
 /// Bộ tách bằng luật, chạy trên máy.
 struct ExpenseParser: LineParsing {
+    /// Tỷ giá để quy ngoại tệ ra đồng.
+    var rates = ExchangeRates.standard
+
     /// Khoản lớn hơn bấy nhiêu lần hạn mức ngày thì nằm ngoài ngân sách.
     static let outsideBudgetFactor = 3
 
@@ -37,7 +42,7 @@ struct ExpenseParser: LineParsing {
             }
             for segment in Self.segments(of: line) {
                 for tokens in Self.splitOnAnd(Self.tokens(of: segment)) {
-                    if let parsed = Self.parseItem(tokens, rules: rules, dailyAllowance: dailyAllowance, now: now, calendar: calendar) {
+                    if let parsed = Self.parseItem(tokens, rules: rules, dailyAllowance: dailyAllowance, now: now, calendar: calendar, rates: rates) {
                         lines.append(parsed)
                     }
                 }
@@ -115,13 +120,21 @@ struct ExpenseParser: LineParsing {
     // MARK: - Một khoản
 
     private static func parseItem(
-        _ tokens: [String], rules: [String: String], dailyAllowance: Int, now: Date, calendar: Calendar
+        _ tokens: [String], rules: [String: String], dailyAllowance: Int, now: Date, calendar: Calendar, rates: ExchangeRates
     ) -> ParsedLine? {
         let hint = DateHint.extract(from: tokens, now: now, calendar: calendar)
         var (tokens, splitCount) = extractSplit(from: detachSlash(hint.tokens))
         guard !tokens.isEmpty else { return nil }
 
-        let match = AmountParser.find(in: tokens)
+        // Có tên hay ký hiệu ngoại tệ thì quy ra đồng; không thì đọc như tiền đồng.
+        var foreign: ForeignAmount?
+        var match: AmountParser.Match?
+        if let found = ForeignAmountParser.find(in: tokens), let vnd = rates.vnd(for: found.amount) {
+            foreign = found.amount
+            match = AmountParser.Match(range: found.range, value: vnd, hasUnit: true)
+        } else {
+            match = AmountParser.find(in: tokens)
+        }
         if let match { tokens.removeSubrange(match.range) }
 
         if let match, let person = loanPerson(in: tokens) {
@@ -144,7 +157,8 @@ struct ExpenseParser: LineParsing {
             originalAmount: originalAmount,
             splitCount: splitCount,
             isOutsideBudget: amount.map { isOutsideBudget(amount: $0, dailyAllowance: dailyAllowance) } ?? false,
-            date: hint.date
+            date: hint.date,
+            foreign: foreign
         ))
     }
 

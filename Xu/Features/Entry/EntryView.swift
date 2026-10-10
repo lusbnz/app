@@ -22,7 +22,7 @@ struct EntryView: View {
     private let startsListening: Bool
 
     let now: Date
-    private let parser = ExpenseParser()
+    private let parser = ExpenseParser(rates: ExchangeRates.load())
 
     init(request: EntryRequest, now: Date) {
         self.now = now

@@ -34,7 +34,7 @@ struct ExpenseRow: View {
     }
 
     private var rest: String? {
-        let parts = [expense.splitNote, expense.isOutsideBudget ? String(localized: "ngoài ngân sách") : nil].compactMap(\.self)
+        let parts = [expense.foreignNote, expense.splitNote, expense.isOutsideBudget ? String(localized: "ngoài ngân sách") : nil].compactMap(\.self)
         return parts.isEmpty ? nil : parts.joined(separator: " · ")
     }
 

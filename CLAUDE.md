@@ -26,6 +26,7 @@ Xu/
   Suggestions/    gợi ý theo giờ và vị trí
   Search/         điều kiện tìm và lọc khoản chi (ExpenseFilter)
   Export/         xuất CSV (CSVExporter)
+  Currency/       ngoại tệ và tỷ giá (Currency, ForeignAmountParser)
   Recurring/      lịch khoản định kỳ (RecurringPlanner)
   Receipt/        đọc hóa đơn bằng Vision
   Ask/            Hỏi Xu
@@ -38,7 +39,7 @@ Xu/
 XuTests/
 ```
 
-- `Parsing`, `Budget`, `Formatting`, `Suggestions`, `Search`, `Recurring`, `Export` là logic thuần: chỉ `import Foundation`, không phụ thuộc SwiftUI hay SwiftData, phải có unit test đầy đủ.
+- `Parsing`, `Budget`, `Formatting`, `Suggestions`, `Search`, `Recurring`, `Export`, `Currency` là logic thuần: chỉ `import Foundation`, không phụ thuộc SwiftUI hay SwiftData, phải có unit test đầy đủ.
 - View đọc dữ liệu bằng `@Query`, ghi qua `modelContext`. Mỗi View có `#Preview` với dữ liệu mẫu trong bộ nhớ.
 - Mô hình SwiftData tương thích CloudKit: mọi thuộc tính có mặc định hoặc optional, không `@Attribute(.unique)`, quan hệ optional.
 - Khóa của luật danh mục (`CategoryRule.keyword`, tham số `rules` của bộ tách) luôn chuẩn hóa bằng `TextNormalizer.keyword`.
@@ -64,6 +65,7 @@ XuTests/
 - **App Intents:** `LogExpenseIntent` ("Ghi chi tiêu", không mở app) và `OpenEntryIntent`, đều qua `SaveGate.canSave`. `ShortcutsGuideView` trong Cài đặt hướng dẫn gắn vào Siri và Phím tắt. Widget đã bỏ, không làm lại khi chưa được yêu cầu.
 - **Cài đặt và Pro:** `SettingsView` chia nhóm: Ngân sách (ngân sách tháng, `CategoryLimitsView`), Ghi chép (khoản định kỳ, `CategoriesView` kèm chọn biểu tượng), Nhắc và gợi ý, Hiển thị (giao diện sáng, tối, hệ thống; ngôn ngữ), Dữ liệu (xuất CSV), Trợ giúp và Pro. Thêm mục mới thì đặt vào đúng nhóm, đừng thêm nhóm lẻ.
 - **Giao diện và ngôn ngữ:** `AppAppearance` áp bằng `preferredColorScheme` ở `XuApp`. `AppLanguage` ghi `AppleLanguages` trong `UserDefaults.standard` (không phải App Group) và bắt người dùng mở lại app, vì `String(localized:)`, thông báo và Siri đọc ngôn ngữ lúc khởi động (`AppSettings.needsRelaunchForLanguage`). Test dùng `AppSettings(defaults:standardDefaults:)` với suite riêng, không chạm `UserDefaults.standard`. `PaywallView` và `EntitlementStore` dùng StoreKit 2 (`Xu.storekit` để thử).
+- **Đa tiền tệ:** `ForeignAmountParser` nhận `20 usd`, `$20`, `20$`, `usd 20`, `5 euro`, `€5`, `1000 yên`, `10k yên`, `20 đô la` (USD, EUR, JPY, KRW, CNY, GBP, THB, SGD, AUD); phải có tên hoặc ký hiệu tiền, không có thì vẫn là đồng. `ExpenseParser.rates` quy ra đồng (làm tròn 100đ) nên `ParsedExpense.amount` luôn là đồng; số gốc nằm ở `ParsedExpense.foreign` rồi `Expense.foreignCurrency` và `foreignMinor` (đơn vị nhỏ nhất, không dùng số thực; tỷ giá dùng `Decimal`). Sửa số tiền thì xóa số gốc. Không có mạng và không backend nên tỷ giá là giá trị gần đúng có sẵn (`Currency.defaultRate`), người dùng chỉnh ở `ExchangeRatesView`, lưu trong App Group (`ExchangeRates.load`); mọi chỗ gọi bộ tách để ghi phải truyền `ExchangeRates.load()`.
 - **Xuất CSV:** `ExportDataRow` trong Tùy chỉnh chia sẻ mọi khoản chi (không giới hạn 35 ngày, miễn phí) qua `ShareLink`; tệp chỉ được tạo khi chia sẻ. Định dạng do `CSVExporter` (logic thuần, test `CSVExporterTests`) quyết định: cũ đến mới, CRLF, BOM UTF-8 cho Excel, số tiền là số đồng nguyên, ô chữ bắt đầu bằng `= + - @` thêm dấu nháy đơn để không thành công thức.
 - **Biểu tượng app:** `Xu/Assets.xcassets/AppIcon.appiconset` có bản sáng và bản tối, 1024×1024, không kênh alpha. Chữ "xu" tím than trên vệt highlight vàng bơ, cùng bảng màu `XuTextPrimary`, `XuHighlight`, `XuButton`.
 

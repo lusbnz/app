@@ -10,6 +10,7 @@ struct EntryRow: Identifiable, Equatable {
     var categoryKey: String
     var originalAmount: Int?
     var splitCount: Int?
+    var foreign: ForeignAmount?
     var date: Date?
     var isOutsideBudget: Bool
     var teachesCategory = false
@@ -21,7 +22,7 @@ struct EntryRow: Identifiable, Equatable {
         if let loanPerson { return .loan(person: loanPerson, amount: amount) }
         return .expense(ExpenseDraft(
             name: name, amount: amount, categoryKey: categoryKey,
-            originalAmount: originalAmount, splitCount: splitCount,
+            originalAmount: originalAmount, splitCount: splitCount, foreign: foreign,
             isOutsideBudget: isOutsideBudget, teachesCategory: teachesCategory, date: date
         ))
     }
@@ -51,7 +52,7 @@ enum EntryRows {
             case .expense(let parsed):
                 var row = EntryRow(
                     id: id, name: parsed.name, amount: parsed.amount, categoryKey: parsed.categoryKey,
-                    originalAmount: parsed.originalAmount, splitCount: parsed.splitCount, date: parsed.date,
+                    originalAmount: parsed.originalAmount, splitCount: parsed.splitCount, foreign: parsed.foreign, date: parsed.date,
                     isOutsideBudget: parsed.isOutsideBudget
                 )
                 if let edit = overrides[id], edit.name == parsed.name {
@@ -59,6 +60,7 @@ enum EntryRows {
                         row.amount = amount
                         row.originalAmount = nil
                         row.splitCount = nil
+                        row.foreign = nil
                         row.isOutsideBudget = ExpenseParser.isOutsideBudget(amount: amount, dailyAllowance: dailyAllowance)
                     }
                     if let categoryKey = edit.categoryKey, categoryKey != parsed.categoryKey {
@@ -95,6 +97,9 @@ struct EntryRowView: View {
                         }
                         if let originalAmount = row.originalAmount, let splitCount = row.splitCount {
                             Text("· \(MoneyFormatter.short(originalAmount)) chia \(splitCount)")
+                        }
+                        if let foreign = row.foreign {
+                            Text("· \(foreign.display(decimalSeparator: Locale.current.decimalSeparator ?? ",", groupingSeparator: Locale.current.groupingSeparator ?? "."))")
                         }
                         if row.isOutsideBudget {
                             ButterLabel(text: "ngoài ngân sách")

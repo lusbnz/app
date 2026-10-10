@@ -54,3 +54,20 @@ enum AppLanguage: String, CaseIterable, Identifiable, Sendable {
         }
     }
 }
+
+extension ExchangeRates {
+    private static let key = "exchangeRates"
+
+    /// Tỷ giá người dùng đã chỉnh, lưu trong App Group để intent và app dùng chung.
+    static func load(from defaults: UserDefaults = AppGroup.defaults) -> ExchangeRates {
+        ExchangeRates(stored: defaults.dictionary(forKey: key) as? [String: String] ?? [:])
+    }
+
+    func save(to defaults: UserDefaults = AppGroup.defaults) {
+        if overrides.isEmpty {
+            defaults.removeObject(forKey: Self.key)
+        } else {
+            defaults.set(stored, forKey: Self.key)
+        }
+    }
+}

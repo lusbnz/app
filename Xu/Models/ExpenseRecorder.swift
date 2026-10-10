@@ -7,6 +7,7 @@ struct ExpenseDraft: Equatable, Sendable {
     var categoryKey: String
     var originalAmount: Int?
     var splitCount: Int?
+    var foreign: ForeignAmount?
     var isOutsideBudget: Bool = false
     /// Người dùng đã sửa danh mục, cần lưu thành luật.
     var teachesCategory: Bool = false
@@ -71,6 +72,7 @@ struct ExpenseRecorder {
                 expense.isOutsideBudget = draft.isOutsideBudget
                 expense.originalAmount = draft.originalAmount
                 expense.splitCount = draft.splitCount
+                expense.foreignAmount = draft.foreign
                 expense.latitude = info.latitude
                 expense.longitude = info.longitude
                 expense.placeName = info.placeName
@@ -94,13 +96,13 @@ struct ExpenseRecorder {
     /// Tách một dòng chữ rồi lưu. Trả về nil khi không có khoản nào đủ số tiền.
     func record(text: String, monthlyBudget: Int, now: Date, calendar: Calendar) -> SavedBatch? {
         let allowance = status(monthlyBudget: monthlyBudget, now: now, calendar: calendar).allowanceToday
-        let items = ExpenseParser().parse(text, rules: rules(), dailyAllowance: allowance, now: now, calendar: calendar).compactMap { line -> RecordItem? in
+        let items = ExpenseParser(rates: ExchangeRates.load()).parse(text, rules: rules(), dailyAllowance: allowance, now: now, calendar: calendar).compactMap { line -> RecordItem? in
             switch line {
             case .expense(let parsed):
                 guard let amount = parsed.amount else { return nil }
                 return .expense(ExpenseDraft(
                     name: parsed.name, amount: amount, categoryKey: parsed.categoryKey,
-                    originalAmount: parsed.originalAmount, splitCount: parsed.splitCount,
+                    originalAmount: parsed.originalAmount, splitCount: parsed.splitCount, foreign: parsed.foreign,
                     isOutsideBudget: parsed.isOutsideBudget, date: parsed.date
                 ))
             case .loan(let person, let amount):
@@ -151,7 +153,7 @@ struct ExpenseRecorder {
     func repeatExpense(_ expense: Expense, now: Date) -> SavedBatch {
         let draft = ExpenseDraft(
             name: expense.name, amount: expense.amount, categoryKey: expense.categoryKey,
-            originalAmount: expense.originalAmount, splitCount: expense.splitCount,
+            originalAmount: expense.originalAmount, splitCount: expense.splitCount, foreign: expense.foreignAmount,
             isOutsideBudget: expense.isOutsideBudget
         )
         return record([.expense(draft)], in: RecordContext(rawText: expense.rawText, date: now))
