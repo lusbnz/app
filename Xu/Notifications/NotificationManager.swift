@@ -85,13 +85,16 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
                 guard let item = byID[id] else { continue }
                 let content = UNMutableNotificationContent()
                 content.title = String(localized: "Đến hạn: \(item.name)")
-                content.body = String(localized: "\(MoneyFormatter.short(item.amount)). Chạm Ghi để ghi, hoặc Bỏ qua tháng này.")
+                content.body = item.autoRecord
+                    ? String(localized: "\(MoneyFormatter.short(item.amount)). Mở Xu để tự ghi, hoặc chạm Bỏ qua kỳ này.")
+                    : String(localized: "\(MoneyFormatter.short(item.amount)). Chạm Ghi để ghi, hoặc Bỏ qua kỳ này.")
                 content.sound = .default
                 content.categoryIdentifier = Self.recurringCategory
                 content.userInfo = ["recurringID": id.uuidString]
                 let parts = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
                 let trigger = UNCalendarNotificationTrigger(dateMatching: parts, repeats: false)
-                let key = RecurringPlanner.monthKey(date, calendar: calendar)
+                // Khoản theo tuần có nhiều lần trong một tháng, nên mã theo ngày nhắc.
+                let key = RecurringPlanner.dayKey(date, calendar: calendar)
                 try? await center.add(UNNotificationRequest(
                     identifier: "\(Self.recurringPrefix)\(id.uuidString).\(key)", content: content, trigger: trigger
                 ))

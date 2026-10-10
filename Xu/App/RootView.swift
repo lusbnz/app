@@ -5,6 +5,7 @@ struct RootView: View {
     @Environment(AppSettings.self) private var settings
     @Environment(AppState.self) private var appState
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.modelContext) private var modelContext
     @State private var now = Date()
 
     var body: some View {
@@ -32,9 +33,21 @@ struct RootView: View {
             if phase == .active {
                 now = Date()
                 NotificationManager.shared.refreshDailyReminder()
+                recordAutomaticRecurring()
                 NotificationManager.shared.refreshRecurringReminders()
             }
         }
+        .onAppear { recordAutomaticRecurring() }
+    }
+}
+
+extension RootView {
+    /// Khoản định kỳ đặt "tự ghi" đã đến hạn thì ghi khi mở app; lần ghi cuối hiện ở thanh Hoàn tác.
+    @MainActor
+    fileprivate func recordAutomaticRecurring() {
+        guard settings.monthlyBudget > 0 else { return }
+        let batches = ExpenseRecorder(context: modelContext).recordAutomaticRecurring(now: Date(), calendar: .current)
+        if let last = batches.last { appState.didSave(last) }
     }
 }
 

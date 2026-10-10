@@ -6,10 +6,14 @@ extension ExpenseRecorder {
     // MARK: - Khoản định kỳ
 
     @discardableResult
-    func addRecurring(name: String, amount: Int, categoryKey: String, dayOfMonth: Int, isOutsideBudget: Bool, now: Date) -> RecurringExpense {
+    func addRecurring(
+        name: String, amount: Int, categoryKey: String, dayOfMonth: Int, isOutsideBudget: Bool, now: Date,
+        frequency: RecurringFrequency = .monthly, weekday: Int = 2, monthOfYear: Int = 1, autoRecord: Bool = false
+    ) -> RecurringExpense {
         let item = RecurringExpense(
             name: name, amount: amount, categoryKey: categoryKey, dayOfMonth: dayOfMonth,
-            isOutsideBudget: isOutsideBudget, createdAt: now
+            isOutsideBudget: isOutsideBudget, createdAt: now,
+            frequency: frequency, weekday: weekday, monthOfYear: monthOfYear, autoRecord: autoRecord
         )
         context.insert(item)
         commit()
@@ -17,8 +21,15 @@ extension ExpenseRecorder {
     }
 
     func updateRecurring(
-        _ item: RecurringExpense, name: String, amount: Int, categoryKey: String, dayOfMonth: Int, isOutsideBudget: Bool
+        _ item: RecurringExpense, name: String, amount: Int, categoryKey: String, dayOfMonth: Int, isOutsideBudget: Bool,
+        frequency: RecurringFrequency = .monthly, weekday: Int = 2, monthOfYear: Int = 1, autoRecord: Bool = false
     ) {
+        // Đổi lịch thì kỳ đã xử lý không còn đúng nghĩa, nên bắt đầu lại.
+        if item.frequency != frequency { item.handledMonth = "" }
+        item.frequency = frequency
+        item.weekday = weekday
+        item.monthOfYear = monthOfYear
+        item.autoRecord = autoRecord
         item.name = name
         item.amount = amount
         item.categoryKey = categoryKey
@@ -42,7 +53,7 @@ extension ExpenseRecorder {
     func recordRecurring(_ item: RecurringExpense, now: Date, calendar: Calendar) -> SavedBatch? {
         guard RecurringPlanner.isDue(item.item, now: now, calendar: calendar) else { return nil }
         let date = RecurringPlanner.expenseDate(for: item.item, now: now, calendar: calendar)
-        item.handledMonth = RecurringPlanner.monthKey(now, calendar: calendar)
+        item.handledMonth = RecurringPlanner.periodKey(now, frequency: item.frequency, calendar: calendar)
         let draft = ExpenseDraft(
             name: item.name, amount: item.amount, categoryKey: item.categoryKey, isOutsideBudget: item.isOutsideBudget
         )
@@ -50,8 +61,23 @@ extension ExpenseRecorder {
     }
 
     func skipRecurring(_ item: RecurringExpense, now: Date, calendar: Calendar) {
-        item.handledMonth = RecurringPlanner.monthKey(now, calendar: calendar)
+        item.handledMonth = RecurringPlanner.periodKey(now, frequency: item.frequency, calendar: calendar)
         commit()
+    }
+
+    /// Tự ghi các khoản đặt "tự ghi" đã đến hạn, theo thứ tự tạo. Dừng khi hết lượt ghi miễn phí trong ngày
+    /// (khoản còn lại hiện ở màn Hôm nay như khoản thường). Trả về các lần ghi đã làm.
+    @discardableResult
+    func recordAutomaticRecurring(now: Date, calendar: Calendar) -> [SavedBatch] {
+        let items = ((try? context.fetch(FetchDescriptor<RecurringExpense>(sortBy: [SortDescriptor(\.createdAt)]))) ?? [])
+            .filter { $0.autoRecord && RecurringPlanner.isDue($0.item, now: now, calendar: calendar) }
+        var batches: [SavedBatch] = []
+        for item in items {
+            guard SaveGate.canSave(now: now, calendar: calendar),
+                  let batch = recordRecurring(item, now: now, calendar: calendar) else { break }
+            batches.append(batch)
+        }
+        return batches
     }
 
     // MARK: - Hạn mức danh mục

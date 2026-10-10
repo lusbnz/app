@@ -1,7 +1,8 @@
 import SwiftUI
 
-/// Một khoản định kỳ đã đến hạn: chạm "Ghi" để ghi, hoặc "Bỏ qua" tháng này.
+/// Một khoản định kỳ đã đến hạn: chạm "Ghi" để ghi, hoặc "Bỏ qua" kỳ này.
 struct DueRecurringRow: View {
+    @Environment(\.calendar) private var calendar
     let item: RecurringExpense
     let record: () -> Void
     let skip: () -> Void
@@ -11,7 +12,7 @@ struct DueRecurringRow: View {
             HStack(alignment: .firstTextBaseline) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(item.name)
-                    Text("đến hạn ngày \(item.dayOfMonth) · mỗi tháng")
+                    Text("đến hạn \(item.scheduleText(calendar: calendar))")
                         .font(.caption)
                         .foregroundStyle(Color.xuTextSecondary)
                 }
@@ -29,7 +30,7 @@ struct DueRecurringRow: View {
                     .foregroundStyle(Color.xuTextSecondary)
                     .frame(minHeight: 44)
                     .padding(.horizontal, 8)
-                    .accessibilityLabel("Bỏ qua \(item.name) tháng này")
+                    .accessibilityLabel("Bỏ qua \(item.name) kỳ này")
             }
         }
         .padding(14)

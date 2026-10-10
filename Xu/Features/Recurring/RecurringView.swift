@@ -18,7 +18,7 @@ struct RecurringView: View {
                         HStack {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(item.name).foregroundStyle(Color.xuTextPrimary)
-                                Text("ngày \(item.dayOfMonth) · \(catalog.info(for: item.categoryKey).title)\(item.isOutsideBudget ? " · ngoài ngân sách" : "")")
+                                Text("\(item.scheduleText(calendar: calendar)) · \(catalog.info(for: item.categoryKey).title)\(item.isOutsideBudget ? " · ngoài ngân sách" : "")\(item.autoRecord ? " · tự ghi" : "")")
                                     .font(.caption)
                                     .foregroundStyle(Color.xuTextSecondary)
                             }
@@ -34,7 +34,7 @@ struct RecurringView: View {
                 }
                 Button("Thêm khoản định kỳ") { form = RecurringForm(editing: nil) }
             } footer: {
-                Text("Đến ngày, Xu nhắc lúc 9:00 và hiện khoản đó ở màn Hôm nay. Bạn chạm Ghi thì mới ghi, Xu không tự trừ tiền.")
+                Text("Đến hạn, Xu nhắc lúc 9:00 và hiện khoản đó ở màn Hôm nay. Mặc định bạn chạm Ghi thì mới ghi; khoản nào bật “Tự ghi” thì Xu ghi khi bạn mở app.")
             }
             .listRowBackground(Color.xuSurface)
         }
@@ -61,6 +61,10 @@ struct RecurringEditor: View {
     let form: RecurringForm
     @State private var fields = ExpenseFields(categoryKey: SpendingCategory.bills.rawValue)
     @State private var day = 1
+    @State private var frequency = RecurringFrequency.monthly
+    @State private var weekday = 2
+    @State private var month = 1
+    @State private var autoRecord = false
 
     private var amount: Int? { fields.amount.flatMap { $0 > 0 ? $0 : nil } }
     private var name: String { fields.name.trimmingCharacters(in: .whitespacesAndNewlines) }
@@ -70,16 +74,38 @@ struct RecurringEditor: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 8) {
                     ExpenseFieldsEditor(fields: $fields, showsDate: false)
-                    HStack {
-                        Text("Ngày trong tháng")
-                        Spacer()
-                        Picker("Ngày trong tháng", selection: $day) {
-                            ForEach(1...31, id: \.self) { Text("\($0)").tag($0) }
-                        }
-                        .labelsHidden()
+                    Picker("Lặp lại", selection: $frequency) {
+                        ForEach(RecurringFrequency.allCases) { Text($0.title).tag($0) }
                     }
-                    .frame(minHeight: 52)
-                    Text("Tháng nào không có ngày này thì tính vào ngày cuối tháng. Xu nhắc lúc 9:00.")
+                    .pickerStyle(.segmented)
+                    .padding(.vertical, 8)
+                    switch frequency {
+                    case .weekly:
+                        scheduleRow("Thứ") {
+                            Picker("Thứ", selection: $weekday) {
+                                // Bắt đầu từ thứ Hai cho người dùng Việt; giá trị vẫn theo Calendar.weekday.
+                                ForEach([2, 3, 4, 5, 6, 7, 1], id: \.self) { value in
+                                    Text(calendar.weekdaySymbols[value - 1]).tag(value)
+                                }
+                            }
+                            .labelsHidden()
+                        }
+                    case .monthly:
+                        scheduleRow("Ngày trong tháng") { dayPicker }
+                    case .yearly:
+                        scheduleRow("Tháng") {
+                            Picker("Tháng", selection: $month) {
+                                ForEach(1...12, id: \.self) { Text("Tháng \($0)").tag($0) }
+                            }
+                            .labelsHidden()
+                        }
+                        scheduleRow("Ngày") { dayPicker }
+                    }
+                    Toggle("Tự ghi khi đến hạn", isOn: $autoRecord)
+                        .frame(minHeight: 52)
+                    Text(autoRecord
+                         ? "Xu ghi khi bạn mở app sau ngày đến hạn, vẫn tính vào 5 lần ghi mỗi ngày của bản miễn phí. Ghi nhầm thì xóa hoặc sửa như khoản thường."
+                         : "Tháng nào không có ngày này thì tính vào ngày cuối tháng. Xu nhắc lúc 9:00 và bạn chạm Ghi.")
                         .font(.footnote)
                         .foregroundStyle(Color.xuTextSecondary)
                 }
@@ -101,9 +127,29 @@ struct RecurringEditor: View {
                     categoryKey: item.categoryKey, isOutsideBudget: item.isOutsideBudget
                 )
                 day = item.dayOfMonth
+                frequency = item.frequency
+                weekday = item.weekday
+                month = item.monthOfYear
+                autoRecord = item.autoRecord
             }
         }
         .fontDesign(.rounded)
+    }
+
+    private var dayPicker: some View {
+        Picker("Ngày", selection: $day) {
+            ForEach(1...31, id: \.self) { Text("\($0)").tag($0) }
+        }
+        .labelsHidden()
+    }
+
+    private func scheduleRow(_ title: LocalizedStringKey, @ViewBuilder content: () -> some View) -> some View {
+        HStack {
+            Text(title)
+            Spacer()
+            content()
+        }
+        .frame(minHeight: 52)
     }
 
     private func save() {
@@ -112,12 +158,14 @@ struct RecurringEditor: View {
         if let item = form.editing {
             recorder.updateRecurring(
                 item, name: name, amount: amount, categoryKey: fields.categoryKey, dayOfMonth: day,
-                isOutsideBudget: fields.isOutsideBudget
+                isOutsideBudget: fields.isOutsideBudget,
+                frequency: frequency, weekday: weekday, monthOfYear: month, autoRecord: autoRecord
             )
         } else {
             recorder.addRecurring(
                 name: name, amount: amount, categoryKey: fields.categoryKey, dayOfMonth: day,
-                isOutsideBudget: fields.isOutsideBudget, now: Date()
+                isOutsideBudget: fields.isOutsideBudget, now: Date(),
+                frequency: frequency, weekday: weekday, monthOfYear: month, autoRecord: autoRecord
             )
         }
         // Chỉ xin quyền thông báo khi người dùng thật sự đặt một khoản cần nhắc.
