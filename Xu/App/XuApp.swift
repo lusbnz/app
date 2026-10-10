@@ -5,6 +5,8 @@ import SwiftUI
 struct XuApp: App {
     @State private var settings = AppSettings()
     @State private var appState = AppState.shared
+    @State private var lock = AppLock()
+    @Environment(\.scenePhase) private var scenePhase
 
     init() {
         EntitlementStore.shared.start()
@@ -24,6 +26,13 @@ struct XuApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+                .environment(lock)
+                .onChange(of: scenePhase, initial: true) { _, phase in
+                    lock.scenePhaseChanged(phase)
+                }
+                .onChange(of: lock.shouldCover, initial: true) { _, covering in
+                    LockWindowPresenter.shared.update(covering: covering, lock: lock, appearance: settings.appearance)
+                }
                 .environment(settings)
                 .environment(appState)
                 .environment(LocationProvider.shared)

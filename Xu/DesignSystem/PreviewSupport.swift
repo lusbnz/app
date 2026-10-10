@@ -51,6 +51,7 @@ extension View {
         modelContainer(PreviewData.container)
             .environment(PreviewData.settings(budget: budget))
             .environment(AppState())
+            .environment(AppLock(defaults: UserDefaults(suiteName: "preview") ?? .standard))
             .environment(LocationProvider.shared)
             .environment(EntitlementStore.shared)
             .fontDesign(.rounded)

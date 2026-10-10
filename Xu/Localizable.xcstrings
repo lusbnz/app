@@ -37,6 +37,16 @@
         }
       }
     },
+    "%@ · %@%@%@" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · %2$@%3$@%4$@"
+          }
+        }
+      }
+    },
     "%@ / %@" : {
       "localizations" : {
         "vi" : {
@@ -67,6 +77,26 @@
         }
       }
     },
+    "%@ so với %@ cùng ngày tháng trước" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ so với %2$@ cùng ngày tháng trước"
+          }
+        }
+      }
+    },
+    "%@ so với %@ cùng ngày tuần trước" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ so với %2$@ cùng ngày tuần trước"
+          }
+        }
+      }
+    },
     "%@ vượt hạn mức %@" : {
       "localizations" : {
         "vi" : {
@@ -87,7 +117,7 @@
         }
       }
     },
-    "%@. Chạm Ghi để ghi, hoặc Bỏ qua tháng này." : {
+    "%@. Chạm Ghi để ghi, hoặc Bỏ qua kỳ này." : {
 
     },
     "%@. Hôm nay còn %@.%@" : {
@@ -99,6 +129,9 @@
           }
         }
       }
+    },
+    "%@. Mở Xu để tự ghi, hoặc chạm Bỏ qua kỳ này." : {
+
     },
     "%@/năm" : {
 
@@ -181,6 +214,12 @@
     "Bạn vừa tiêu gì?" : {
 
     },
+    "bằng kỳ trước" : {
+
+    },
+    "Bảo mật" : {
+
+    },
     "Bắt đầu" : {
 
     },
@@ -190,7 +229,7 @@
     "Bỏ qua" : {
 
     },
-    "Bỏ qua %@ tháng này" : {
+    "Bỏ qua %@ kỳ này" : {
 
     },
     "Cả hai đều tùy chọn, mặc định tắt. Bật hay tắt lúc nào cũng được trong Tùy chỉnh." : {
@@ -248,6 +287,9 @@
     "Chưa đọc được tổng tiền, chạm để điền" : {
 
     },
+    "Chưa khóa được app" : {
+
+    },
     "Chưa mua được. Bạn thử lại sau nhé." : {
 
     },
@@ -301,6 +343,9 @@
 
     },
     "Cũng nói được bằng micro, và chụp hóa đơn để chọn món của bạn." : {
+
+    },
+    "đ" : {
 
     },
     "Đã có danh mục tên này." : {
@@ -385,13 +430,13 @@
     "đến" : {
 
     },
-    "đến hạn ngày %lld · mỗi tháng" : {
+    "đến hạn %@" : {
+
+    },
+    "Đến hạn, Xu nhắc lúc 9:00 và hiện khoản đó ở màn Hôm nay. Mặc định bạn chạm Ghi thì mới ghi; khoản nào bật “Tự ghi” thì Xu ghi khi bạn mở app." : {
 
     },
     "Đến hạn: %@" : {
-
-    },
-    "Đến ngày, Xu nhắc lúc 9:00 và hiện khoản đó ở màn Hôm nay. Bạn chạm Ghi thì mới ghi, Xu không tự trừ tiền." : {
 
     },
     "đi lại" : {
@@ -406,10 +451,22 @@
     "Đóng" : {
 
     },
+    "Đồng cho một đơn vị" : {
+
+    },
+    "Đóng hẳn rồi mở lại app để đổi ngôn ngữ." : {
+
+    },
+    "Dữ liệu" : {
+
+    },
     "Dừng nói" : {
 
     },
     "Dùng thử 7 ngày miễn phí" : {
+
+    },
+    "English" : {
 
     },
     "gần chạm hạn mức, còn %@" : {
@@ -430,6 +487,9 @@
           }
         }
       }
+    },
+    "Ghi chép" : {
+
     },
     "Ghi chi tiêu" : {
 
@@ -455,6 +515,19 @@
     "giải trí" : {
 
     },
+    "giảm %@%@" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "giảm %1$@%2$@"
+          }
+        }
+      }
+    },
+    "Giao diện" : {
+
+    },
     "Giữ nhịp %@ mỗi ngày, cuối tháng dư khoảng %@." : {
       "localizations" : {
         "vi" : {
@@ -474,6 +547,9 @@
           }
         }
       }
+    },
+    "Gõ “20 usd”, “$20”, “5 euro” hay “1000 yên”, Xu quy ra đồng theo tỷ giá này và ghi kèm số gốc. Tỷ giá để trống là giá trị gần đúng có sẵn, nên hãy chỉnh cho sát." : {
+
     },
     "Gõ không giới hạn" : {
 
@@ -502,10 +578,25 @@
     "Hạn mức danh mục" : {
 
     },
+    "Hạn mức danh mục tính vào hạn mức ngày" : {
+
+    },
+    "Hàng năm" : {
+
+    },
+    "Hàng tháng" : {
+
+    },
+    "Hàng tuần" : {
+
+    },
     "Hãy nhập tên danh mục." : {
 
     },
     "Hãy nhập từ khóa." : {
+
+    },
+    "Hiển thị" : {
 
     },
     "hóa đơn" : {
@@ -563,7 +654,13 @@
     "khác" : {
 
     },
+    "Khi bật, tiền trong hạn mức của từng danh mục được giữ riêng: hạn mức ngày chỉ tính trên phần ngân sách còn lại, và khoản chi trong hạn mức danh mục không làm nó tụt. Chi vượt hạn mức danh mục thì trừ vào hạn mức ngày." : {
+
+    },
     "Khi một danh mục dùng từ 80% hạn mức hoặc vượt, Xu báo lúc bạn ghi và ở màn Tháng. Hạn mức mỗi ngày vẫn tính từ ngân sách tháng. Để trống nghĩa là không đặt hạn mức." : {
+
+    },
+    "Khóa app bằng %@" : {
 
     },
     "khoản chi" : {
@@ -614,6 +711,12 @@
     "kiểm tra lại" : {
 
     },
+    "Kỳ so sánh" : {
+
+    },
+    "Lặp lại" : {
+
+    },
     "Luật đã học" : {
 
     },
@@ -621,6 +724,12 @@
 
     },
     "Lưu" : {
+
+    },
+    "mật mã" : {
+
+    },
+    "Máy chưa đặt mật mã hoặc Face ID. Bạn đặt trong Cài đặt của iPhone rồi bật lại." : {
 
     },
     "Máy này chưa hỗ trợ Hỏi Xu" : {
@@ -632,6 +741,12 @@
     "Mở app Phím tắt, tìm Xu. Có sẵn “Ghi chi tiêu”, “Ghi nhanh một khoản” và “Mở ô gõ” để bạn ghép vào phím tắt riêng." : {
 
     },
+    "Mở khóa bằng %@" : {
+
+    },
+    "Mở khóa để xem chi tiêu của bạn." : {
+
+    },
     "Mở màn hình Tháng" : {
 
     },
@@ -639,6 +754,9 @@
 
     },
     "Mở Xu ngay ở ô gõ để ghi khoản chi." : {
+
+    },
+    "mỗi %@" : {
 
     },
     "Mọi lúc" : {
@@ -650,18 +768,27 @@
     "mua sắm" : {
 
     },
+    "Ngân sách" : {
+
+    },
     "Ngân sách mỗi tháng" : {
 
     },
     "Ngân sách tháng" : {
 
     },
-    "ngày %lld · %@%@" : {
+    "Ngày" : {
+
+    },
+    "ngày %lld hàng tháng" : {
+
+    },
+    "ngày %lld/%lld hàng năm" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "ngày %1$lld · %2$@%3$@"
+            "value" : "ngày %1$lld/%2$lld hàng năm"
           }
         }
       }
@@ -676,6 +803,9 @@
 
     },
     "Ngoài ngân sách" : {
+
+    },
+    "Ngôn ngữ" : {
 
     },
     "Nhắc ghi lúc 21:00" : {
@@ -741,6 +871,9 @@
     "sáng" : {
 
     },
+    "Sáng" : {
+
+    },
     "Siri" : {
 
     },
@@ -748,6 +881,9 @@
 
     },
     "Số tiền" : {
+
+    },
+    "So với kỳ trước" : {
 
     },
     "Sửa" : {
@@ -765,16 +901,29 @@
     "sức khỏe" : {
 
     },
+    "tăng %@%@" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "tăng %1$@%2$@"
+          }
+        }
+      }
+    },
     "Tên" : {
 
     },
     "Tên tối đa %lld ký tự." : {
 
     },
+    "Tháng" : {
+
+    },
     "Tháng %lld" : {
 
     },
-    "Tháng nào không có ngày này thì tính vào ngày cuối tháng. Xu nhắc lúc 9:00." : {
+    "Tháng nào không có ngày này thì tính vào ngày cuối tháng. Xu nhắc lúc 9:00 và bạn chạm Ghi." : {
 
     },
     "Tháng này" : {
@@ -808,6 +957,9 @@
     "Thêm luật" : {
 
     },
+    "Theo hệ thống" : {
+
+    },
     "thiếu số tiền" : {
 
     },
@@ -815,6 +967,9 @@
 
     },
     "Thời gian: %@" : {
+
+    },
+    "Thứ" : {
 
     },
     "thứ %lld" : {
@@ -827,6 +982,9 @@
 
     },
     "Tiền nhà và các khoản cố định thì thêm ở Tùy chỉnh, mục Khoản định kỳ: Xu nhắc đến hạn và bạn chạm để ghi. Đổi ngân sách lúc nào cũng được, không cần tài khoản." : {
+
+    },
+    "Tiếng Việt" : {
 
     },
     "Tiếp" : {
@@ -844,7 +1002,13 @@
     "tối" : {
 
     },
+    "Tối" : {
+
+    },
     "trà sữa" : {
+
+    },
+    "Trợ giúp và Xu Pro" : {
 
     },
     "trưa" : {
@@ -853,16 +1017,25 @@
     "Từ" : {
 
     },
+    "Tự ghi khi đến hạn" : {
+
+    },
     "Từ khóa" : {
 
     },
     "Tuần này" : {
 
     },
+    "Tuần trước" : {
+
+    },
     "Tức khoảng %@ mỗi ngày." : {
 
     },
     "Tùy chỉnh" : {
+
+    },
+    "Tỷ giá ngoại tệ" : {
 
     },
     "ứng cho %@" : {
@@ -897,6 +1070,9 @@
     "Vào Cài đặt, Nút Tác vụ, chọn Phím tắt rồi chọn “Mở ô gõ” của Xu. Bấm giữ nút là gõ được ngay." : {
 
     },
+    "Về tỷ giá có sẵn" : {
+
+    },
     "Vị trí và ảnh hóa đơn được xử lý trên máy, không gửi đi đâu." : {
 
     },
@@ -913,6 +1089,9 @@
         }
       }
     },
+    "Vuốt để tiếp tục" : {
+
+    },
     "vượt hạn mức %@" : {
 
     },
@@ -920,6 +1099,12 @@
 
     },
     "vượt hôm nay · mai vẫn còn %@" : {
+
+    },
+    "Xác nhận để bật khóa app." : {
+
+    },
+    "Xác nhận để tắt khóa app." : {
 
     },
     "Xem toàn màn hình" : {
@@ -953,6 +1138,15 @@
 
     },
     "Xu chưa trả lời chắc được câu này. Bạn thử hỏi cách khác nhé." : {
+
+    },
+    "Xu đang khóa" : {
+
+    },
+    "Xu ghi khi bạn mở app sau ngày đến hạn, vẫn tính vào 5 lần ghi mỗi ngày của bản miễn phí. Ghi nhầm thì xóa hoặc sửa như khoản thường." : {
+
+    },
+    "Xu khóa khi mở app và khi ra ngoài app. Quên Face ID thì nhập mật mã máy. Ghi nhanh từ Siri và Phím tắt vẫn ghi được khi app khóa, nhưng không đọc được số liệu." : {
 
     },
     "Xu không chắc đây là tổng tiền. Bạn xem lại với hóa đơn nhé." : {

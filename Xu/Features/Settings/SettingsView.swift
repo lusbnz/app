@@ -6,9 +6,11 @@ struct SettingsView: View {
     @Environment(AppSettings.self) private var settings
     @Environment(AppState.self) private var appState
     @Environment(LocationProvider.self) private var location
+    @Environment(AppLock.self) private var lock
     @State private var budgetText = ""
     @State private var showsPaywall = false
     @State private var explainsAlwaysLocation = false
+    @State private var lockUnavailable = false
     @FocusState private var budgetFocused: Bool
 
     var body: some View {
@@ -77,6 +79,21 @@ struct SettingsView: View {
                     }
                 }
                 .listRowBackground(Color.xuSurface)
+                Section {
+                    Toggle("Khóa app bằng \(lock.method.title)", isOn: Binding {
+                        lock.isEnabled
+                    } set: { isOn in
+                        Task {
+                            let changed = await lock.setEnabled(isOn)
+                            if !changed, isOn, !lock.canEnable { lockUnavailable = true }
+                        }
+                    })
+                } header: {
+                    Text("Bảo mật")
+                } footer: {
+                    Text("Xu khóa khi mở app và khi ra ngoài app. Quên Face ID thì nhập mật mã máy. Ghi nhanh từ Siri và Phím tắt vẫn ghi được khi app khóa, nhưng không đọc được số liệu.")
+                }
+                .listRowBackground(Color.xuSurface)
                 Section("Dữ liệu") {
                     ExportDataRow()
                 }
@@ -108,6 +125,11 @@ struct SettingsView: View {
                         dismiss()
                     }
                 }
+            }
+            .alert("Chưa khóa được app", isPresented: $lockUnavailable) {
+                Button("Đóng", role: .cancel) {}
+            } message: {
+                Text("Máy chưa đặt mật mã hoặc Face ID. Bạn đặt trong Cài đặt của iPhone rồi bật lại.")
             }
             .alert("Nhắc khi rời quán quen", isPresented: $explainsAlwaysLocation) {
                 Button("Tiếp tục") { setLeaveReminder(true) }

@@ -20,6 +20,7 @@ enum SettingsKey {
     static let lastQuestion = "lastQuestion"
     static let lastAnswer = "lastAnswer"
     static let appearance = "appearance"
+    static let lockEnabled = "lockEnabled"
     static let limitsShapeDaily = "limitsShapeDaily"
     /// Nằm trong `UserDefaults.standard` (không phải App Group) vì hệ thống đọc `AppleLanguages` ở đó.
     static let appLanguage = "appLanguage"
