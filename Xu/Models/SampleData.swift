@@ -6,6 +6,14 @@ struct SampleExpense: Equatable, Sendable {
     var amount: Int
     var date: Date
     var isOutsideBudget: Bool
+    var place: SamplePlace?
+}
+
+/// Một chỗ quen có tên và tọa độ (quanh trung tâm TP.HCM) để thử hiển thị nơi ghi.
+struct SamplePlace: Equatable, Sendable {
+    var name: String
+    var latitude: Double
+    var longitude: Double
 }
 
 enum SampleData {
@@ -16,17 +24,18 @@ enum SampleData {
         var name: String
         var range: ClosedRange<Int>
         var step: Int
+        var place: SamplePlace?
     }
 
     private static let everyday: [Template] = [
-        Template(name: "phở", range: 40...60, step: 5),
-        Template(name: "cơm tấm", range: 45...65, step: 5),
-        Template(name: "cf", range: 25...45, step: 5),
+        Template(name: "phở", range: 40...60, step: 5, place: SamplePlace(name: "Phở Thìn", latitude: 10.7765, longitude: 106.7010)),
+        Template(name: "cơm tấm", range: 45...65, step: 5, place: SamplePlace(name: "Cơm tấm Ba Ghiền", latitude: 10.7788, longitude: 106.6968)),
+        Template(name: "cf", range: 25...45, step: 5, place: SamplePlace(name: "The Coffee House", latitude: 10.7790, longitude: 106.6990)),
         Template(name: "trà sữa", range: 35...55, step: 5),
-        Template(name: "bún chả", range: 50...70, step: 5),
+        Template(name: "bún chả", range: 50...70, step: 5, place: SamplePlace(name: "Bún chả Hương Liên", latitude: 10.7742, longitude: 106.7034)),
         Template(name: "grab", range: 25...95, step: 5),
-        Template(name: "đổ xăng", range: 60...150, step: 10),
-        Template(name: "siêu thị", range: 120...450, step: 10),
+        Template(name: "đổ xăng", range: 60...150, step: 10, place: SamplePlace(name: "Petrolimex", latitude: 10.7712, longitude: 106.7051)),
+        Template(name: "siêu thị", range: 120...450, step: 10, place: SamplePlace(name: "Co.opmart", latitude: 10.7801, longitude: 106.6932)),
         Template(name: "ăn trưa", range: 45...85, step: 5),
         Template(name: "thuốc", range: 60...220, step: 10),
         Template(name: "xem phim", range: 90...200, step: 10),
@@ -65,7 +74,9 @@ enum SampleData {
                 let hour = 7 + random.next(below: 15)
                 let minute = random.next(below: 60)
                 let date = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: day) ?? day
-                result.append(SampleExpense(name: template.name, amount: thousands * 1_000, date: date, isOutsideBudget: isOutside))
+                result.append(SampleExpense(
+                    name: template.name, amount: thousands * 1_000, date: date, isOutsideBudget: isOutside, place: template.place
+                ))
             }
         }
         return result

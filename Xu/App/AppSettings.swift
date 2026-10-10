@@ -16,6 +16,8 @@ final class AppSettings {
 
     /// Hạn mức danh mục giữ riêng phần tiền của nó, hạn mức ngày chỉ tính trên phần còn lại.
     var limitsShapeDaily: Bool { didSet { defaults.set(limitsShapeDaily, forKey: SettingsKey.limitsShapeDaily) } }
+    /// Tự tra tên quán ở chỗ ghi bằng dịch vụ của Apple (gửi vị trí cho Apple). Mặc định tắt.
+    var placeLookupEnabled: Bool { didSet { defaults.set(placeLookupEnabled, forKey: SettingsKey.placeLookup) } }
     var appearance: AppAppearance { didSet { defaults.set(appearance.rawValue, forKey: SettingsKey.appearance) } }
     var language: AppLanguage { didSet { AppLanguage.apply(language, to: standardDefaults) } }
     /// Ngôn ngữ lúc app khởi động; khác `language` nghĩa là cần mở lại app.
@@ -32,6 +34,7 @@ final class AppSettings {
     init(defaults: UserDefaults = AppGroup.defaults, standardDefaults: UserDefaults = .standard) {
         self.defaults = defaults
         self.standardDefaults = standardDefaults
+        placeLookupEnabled = defaults.bool(forKey: SettingsKey.placeLookup)
         limitsShapeDaily = defaults.bool(forKey: SettingsKey.limitsShapeDaily)
         appearance = AppAppearance(rawValue: defaults.string(forKey: SettingsKey.appearance) ?? "") ?? .system
         let language = AppLanguage(rawValue: standardDefaults.string(forKey: SettingsKey.appLanguage) ?? "") ?? .system

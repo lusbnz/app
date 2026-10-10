@@ -20,6 +20,7 @@ struct TodayView: View {
     @State private var scroll = TodayScrollTracker()
 
     let now: Date
+    private static let topID = "today.top"
 
     init(now: Date) {
         self.now = now
@@ -50,9 +51,10 @@ struct TodayView: View {
         @Bindable var appState = appState
         let status = status
         let catalog = CategoryCatalog(custom: customCategories)
+        ScrollViewReader { proxy in
         List {
             Group {
-                header(status)
+                header(status).id(Self.topID)
                 ForEach(dueRecurring) { item in
                     DueRecurringRow(item: item) { recordRecurring(item) } skip: { skipRecurring(item) }
                 }
@@ -82,7 +84,8 @@ struct TodayView: View {
                 amountText: MoneyFormatter.short(status.remainingToday), fraction: status.todayFraction,
                 accessibilityText: accessibilitySummary(status),
                 openSearch: { appState.showsSearch = true },
-                openSettings: { appState.showsSettings = true }
+                openSettings: { appState.showsSettings = true },
+                scrollToToday: { withAnimation(.smooth) { proxy.scrollTo(Self.topID, anchor: .top) } }
             )
         }
         .sensoryFeedback(.selection, trigger: hapticDay)
@@ -101,6 +104,7 @@ struct TodayView: View {
         }
         .sheet(isPresented: $appState.showsSearch) {
             SearchView(now: now)
+        }
         }
     }
 

@@ -62,21 +62,28 @@ struct CompactTodayBar: View {
     let accessibilityText: String
     let openSearch: () -> Void
     let openSettings: () -> Void
+    let scrollToToday: () -> Void
 
     var body: some View {
         HStack(spacing: 0) {
-            HStack(alignment: .firstTextBaseline) {
-                Text(dayTitle)
-                    .font(.subheadline.weight(.medium))
-                    .foregroundStyle(Color.xuTextSecondary)
-                    .lineLimit(1)
-                    .contentTransition(.opacity)
-                    .animation(.default, value: dayTitle)
-                Spacer(minLength: 8)
-                HighlightedNumber(text: amountText, fraction: fraction, size: 26)
+            // Chạm vào ngày và số để về hôm nay, thay cho một nút nổi che dòng ở góc.
+            Button(action: scrollToToday) {
+                HStack(alignment: .firstTextBaseline) {
+                    Text(dayTitle)
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(Color.xuTextSecondary)
+                        .lineLimit(1)
+                        .contentTransition(.opacity)
+                        .animation(.default, value: dayTitle)
+                    Spacer(minLength: 8)
+                    HighlightedNumber(text: amountText, fraction: fraction, size: 26)
+                }
+                .contentShape(.rect)
             }
+            .buttonStyle(.plain)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(accessibilityText)
+            .accessibilityHint("Về hôm nay")
             // Cuộn xa rồi vẫn tìm và mở Tùy chỉnh được, không phải cuộn ngược lên đầu.
             Button(action: openSearch) {
                 Image(systemName: "magnifyingglass")
@@ -156,6 +163,7 @@ struct ScrollingBarHost: View {
     let accessibilityText: String
     let openSearch: () -> Void
     let openSettings: () -> Void
+    let scrollToToday: () -> Void
 
     var body: some View {
         let collapse = tracker.collapse
@@ -165,7 +173,8 @@ struct ScrollingBarHost: View {
             fraction: fraction,
             accessibilityText: accessibilityText,
             openSearch: openSearch,
-            openSettings: openSettings
+            openSettings: openSettings,
+            scrollToToday: scrollToToday
         )
         .opacity(collapse)
         .offset(y: (1 - collapse) * -10)

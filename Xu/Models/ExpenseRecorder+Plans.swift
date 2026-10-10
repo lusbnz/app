@@ -156,6 +156,9 @@ extension ExpenseRecorder {
             )
             expense.rawText = SampleData.marker
             expense.isOutsideBudget = item.isOutsideBudget
+            expense.latitude = item.place?.latitude
+            expense.longitude = item.place?.longitude
+            expense.placeName = item.place?.name
             context.insert(expense)
         }
         commit()

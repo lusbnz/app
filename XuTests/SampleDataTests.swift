@@ -20,6 +20,14 @@ struct SampleDataTests {
         #expect(items.allSatisfy { $0.amount >= 5_000 && $0.amount % 1_000 == 0 })
     }
 
+    @Test func someItemsCarryANamedPlaceWithCoordinates() {
+        let items = SampleData.expenses(days: 90, now: now, calendar: calendar)
+        let located = items.compactMap(\.place)
+        #expect(located.count > 20)
+        #expect(Set(located.map(\.name)).count >= 4)
+        #expect(located.allSatisfy { abs($0.latitude - 10.77) < 0.05 && abs($0.longitude - 106.70) < 0.05 })
+    }
+
     @Test func hasQuietDaysHeavyDaysAndOutsideBudgetItems() {
         let items = SampleData.expenses(days: 90, now: now, calendar: calendar)
         let days = Set(items.map { calendar.startOfDay(for: $0.date) })

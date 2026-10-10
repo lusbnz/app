@@ -1,12 +1,32 @@
 {
   "sourceLanguage" : "vi",
   "strings" : {
+    "" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
+    },
     " " : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : " "
+          }
+        }
+      }
+    },
+    "·" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "·"
           }
         }
       }
@@ -23,29 +43,29 @@
     },
     "· %@ chia %lld" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "· %1$@ chia %2$lld"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "· %1$@ split %2$lld ways"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "· %1$@ chia %2$lld"
           }
         }
       }
     },
     "“%@” %@ %@." : {
       "localizations" : {
-        "vi" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "“%1$@” %2$@ %3$@."
           }
         },
-        "en" : {
+        "vi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "“%1$@” %2$@ %3$@."
@@ -55,29 +75,29 @@
     },
     "%@ · %@ %@ bạn hay ghi" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@ · %2$@ %3$@ bạn hay ghi"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ · %2$@ %3$@ you often log"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@ %3$@ bạn hay ghi"
           }
         }
       }
     },
     "%@ · %@%@%@" : {
       "localizations" : {
-        "vi" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ · %2$@%3$@%4$@"
           }
         },
-        "en" : {
+        "vi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ · %2$@%3$@%4$@"
@@ -87,13 +107,13 @@
     },
     "%@ / %@" : {
       "localizations" : {
-        "vi" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ / %2$@"
           }
         },
-        "en" : {
+        "vi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ / %2$@"
@@ -103,96 +123,96 @@
     },
     "%@ chia %lld" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@ chia %2$lld"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ split %2$lld ways"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ chia %2$lld"
           }
         }
       }
     },
     "%@ đã dùng %lld%% hạn mức" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@ đã dùng %2$lld%% hạn mức"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ has used %2$lld%% of its limit"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ đã dùng %2$lld%% hạn mức"
           }
         }
       }
     },
     "%@ so với %@ cùng ngày tháng trước" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@ so với %2$@ cùng ngày tháng trước"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ vs %2$@ over the same days last month"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ so với %2$@ cùng ngày tháng trước"
           }
         }
       }
     },
     "%@ so với %@ cùng ngày tuần trước" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@ so với %2$@ cùng ngày tuần trước"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ vs %2$@ over the same days last week"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ so với %2$@ cùng ngày tuần trước"
           }
         }
       }
     },
     "%@ vượt hạn mức %@" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@ vượt hạn mức %2$@"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ is over its limit by %2$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ vượt hạn mức %2$@"
           }
         }
       }
     },
     "%@, %lld tháng %lld" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@, %2$lld tháng %3$lld"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@, %2$lld/%3$lld"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$lld tháng %3$lld"
           }
         }
       }
@@ -209,16 +229,16 @@
     },
     "%@. Hôm nay còn %@.%@" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@. Hôm nay còn %2$@.%3$@"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@. %2$@ left today.%3$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@. Hôm nay còn %2$@.%3$@"
           }
         }
       }
@@ -287,12 +307,6 @@
     },
     "%lld khoản · %@" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld khoản · %2$@"
-          }
-        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -310,17 +324,17 @@
               }
             }
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld khoản · %2$@"
+          }
         }
       }
     },
     "%lld khoản, tổng %@" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld khoản, tổng %2$@"
-          }
-        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -338,21 +352,27 @@
               }
             }
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld khoản, tổng %2$@"
+          }
         }
       }
     },
     "%lld tháng %lld" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld tháng %2$lld"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$lld/%2$lld"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld tháng %2$lld"
           }
         }
       }
@@ -437,6 +457,38 @@
         }
       }
     },
+    "Ảnh hóa đơn được xử lý trên máy. Vị trí chỉ gửi cho Apple để tìm tên quán gần chỗ ghi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Receipt photos are processed on your device. Your location is sent to Apple only to find the name of a place near where you log."
+          }
+        }
+      }
+    },
+    "Áp cho %lld khoản khác ở cùng chỗ" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Apply to %lld other expense at the same place"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Apply to %lld other expenses at the same place"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Bạn đang dùng Nhẩm Pro. Cảm ơn bạn." : {
       "localizations" : {
         "en" : {
@@ -507,6 +559,16 @@
         }
       }
     },
+    "Bật" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn on"
+          }
+        }
+      }
+    },
     "Bắt đầu" : {
       "localizations" : {
         "en" : {
@@ -547,6 +609,16 @@
         }
       }
     },
+    "Bỏ tên nơi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove place name"
+          }
+        }
+      }
+    },
     "Cả hai đều tùy chọn, mặc định tắt. Bật hay tắt lúc nào cũng được trong Tùy chỉnh." : {
       "localizations" : {
         "en" : {
@@ -559,16 +631,16 @@
     },
     "Các khoản có tên “%@” sẽ chuyển sang %@." : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Các khoản có tên “%1$@” sẽ chuyển sang %2$@."
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Expenses named “%1$@” will move to %2$@."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Các khoản có tên “%1$@” sẽ chuyển sang %2$@."
           }
         }
       }
@@ -579,6 +651,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Expenses and rules using this category will move to “other”."
+          }
+        }
+      }
+    },
+    "Chạm để đặt hoặc đổi tên nơi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to set or change the place name"
           }
         }
       }
@@ -847,16 +929,16 @@
     },
     "Còn được tiêu hôm nay %@, đã tiêu %@" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Còn được tiêu hôm nay %1$@, đã tiêu %2$@"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ left to spend today, %2$@ spent"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Còn được tiêu hôm nay %1$@, đã tiêu %2$@"
           }
         }
       }
@@ -921,30 +1003,34 @@
         }
       }
     },
-    "Đã ghi %@ %@" : {
+    "Đã dùng quanh đây" : {
       "localizations" : {
-        "vi" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Đã ghi %1$@ %2$@"
+            "value" : "Used nearby"
           }
-        },
+        }
+      }
+    },
+    "Đã ghi %@ %@" : {
+      "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Logged %1$@ %2$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã ghi %1$@ %2$@"
           }
         }
       }
     },
     "Đã ghi %lld khoản %@" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Đã ghi %1$lld khoản %2$@"
-          }
-        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -961,6 +1047,12 @@
                 }
               }
             }
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã ghi %1$lld khoản %2$@"
           }
         }
       }
@@ -989,16 +1081,16 @@
     },
     "Đã ghi ứng cho %@ %@" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Đã ghi ứng cho %1$@ %2$@"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Logged a loan to %1$@ %2$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã ghi ứng cho %1$@ %2$@"
           }
         }
       }
@@ -1015,16 +1107,16 @@
     },
     "đã tiêu %@ trên %@" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "đã tiêu %1$@ trên %2$@"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "spent %1$@ of %2$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "đã tiêu %1$@ trên %2$@"
           }
         }
       }
@@ -1065,6 +1157,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Loading prices"
+          }
+        }
+      }
+    },
+    "Đang tìm quán gần đây" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Looking for nearby places"
           }
         }
       }
@@ -1115,6 +1217,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "To know when you leave a place you've logged at least 3 times, Nhẩm needs “Always” location access and permission to send notifications. Nhẩm tracks at most 20 such places, processes everything on your device and never sends your location anywhere."
+          }
+        }
+      }
+    },
+    "Để hiện tên quán ở mỗi khoản, Nhẩm gửi vị trí chỗ bạn ghi cho Apple để tìm quán gần đó. Nhẩm không gửi gì khác, chỉ tìm một lần cho mỗi chỗ mới, và dùng lại tên cho những khoản ở cùng chỗ. Bạn vẫn tự đặt hoặc đổi tên được ở màn Chi tiết, và tắt công tắc bất cứ lúc nào." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To show a place name on each expense, Nhẩm sends the location where you log to Apple to look up nearby places. Nothing else is sent, it looks up each new place only once, and it reuses the name for other expenses at the same place. You can still set or change a name on the Detail screen, and turn this off any time."
           }
         }
       }
@@ -1301,16 +1413,16 @@
     },
     "Ghi %@ %@" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ghi %1$@ %2$@"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Log %1$@ %2$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ghi %1$@ %2$@"
           }
         }
       }
@@ -1407,16 +1519,16 @@
     },
     "giảm %@%@" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "giảm %1$@%2$@"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "down %1$@%2$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "giảm %1$@%2$@"
           }
         }
       }
@@ -1433,32 +1545,32 @@
     },
     "Giữ nhịp %@ mỗi ngày, cuối tháng dư khoảng %@." : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Giữ nhịp %1$@ mỗi ngày, cuối tháng dư khoảng %2$@."
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "At %1$@ a day, you'll end the month about %2$@ under."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giữ nhịp %1$@ mỗi ngày, cuối tháng dư khoảng %2$@."
           }
         }
       }
     },
     "Giữ nhịp %@ mỗi ngày, cuối tháng vượt khoảng %@." : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Giữ nhịp %1$@ mỗi ngày, cuối tháng vượt khoảng %2$@."
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "At %1$@ a day, you'll end the month about %2$@ over."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giữ nhịp %1$@ mỗi ngày, cuối tháng vượt khoảng %2$@."
           }
         }
       }
@@ -1539,6 +1651,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Suggestions by place and time"
+          }
+        }
+      }
+    },
+    "Gửi vị trí cho Apple?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send your location to Apple?"
           }
         }
       }
@@ -1745,16 +1867,16 @@
     },
     "Hôm nay vượt %@, mai vẫn còn %@" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hôm nay vượt %1$@, mai vẫn còn %2$@"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Over by %1$@ today, still %2$@ for tomorrow"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hôm nay vượt %1$@, mai vẫn còn %2$@"
           }
         }
       }
@@ -1879,6 +2001,16 @@
         }
       }
     },
+    "Khoản này không có vị trí nên chỉ đặt tên tay được." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This expense has no location, so you can only name it by hand."
+          }
+        }
+      }
+    },
     "Khoảng ngày" : {
       "localizations" : {
         "en" : {
@@ -1955,6 +2087,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No Nhẩm Pro purchases found to restore."
+          }
+        }
+      }
+    },
+    "Không tìm thấy quán nào ở gần đây." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No places found nearby."
           }
         }
       }
@@ -2119,22 +2261,22 @@
         }
       }
     },
-    "Mở ô gõ" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open entry"
-          }
-        }
-      }
-    },
     "Mở Nhẩm ngay ở ô gõ để ghi khoản chi." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open Nhẩm right at the entry field to log an expense."
+          }
+        }
+      }
+    },
+    "Mở ô gõ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open entry"
           }
         }
       }
@@ -2231,16 +2373,16 @@
     },
     "ngày %lld/%lld hàng năm" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ngày %1$lld/%2$lld hàng năm"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%2$lld/%1$lld every year"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ngày %1$lld/%2$lld hàng năm"
           }
         }
       }
@@ -2331,6 +2473,96 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reminders and suggestions"
+          }
+        }
+      }
+    },
+    "Nhẩm chưa đọc được số tiền trong “%@”." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhẩm couldn't read an amount in “%@”."
+          }
+        }
+      }
+    },
+    "Nhẩm chưa được dùng micro hoặc nhận dạng giọng nói. Bạn bật lại trong Cài đặt của iPhone." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhẩm isn't allowed to use the microphone or speech recognition. Turn them back on in iPhone Settings."
+          }
+        }
+      }
+    },
+    "Nhẩm chưa trả lời chắc được câu này. Bạn thử hỏi cách khác nhé." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhẩm isn't sure how to answer that. Try asking another way."
+          }
+        }
+      }
+    },
+    "Nhẩm đang khóa" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhẩm is locked"
+          }
+        }
+      }
+    },
+    "Nhẩm ghi khi bạn mở app sau ngày đến hạn, vẫn tính vào 5 lần ghi mỗi ngày của bản miễn phí. Ghi nhầm thì xóa hoặc sửa như khoản thường." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhẩm logs it when you open the app after the due date and it still counts toward the free version's 5 logs a day. If it's wrong, delete or edit it like any other expense."
+          }
+        }
+      }
+    },
+    "Nhẩm khóa khi mở app và khi ra ngoài app. Quên Face ID thì nhập mật mã máy. Ghi nhanh từ Siri và Phím tắt vẫn ghi được khi app khóa, nhưng không đọc được số liệu." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhẩm locks when you open the app and whenever you leave it. If Face ID doesn't work, enter your device passcode. Quick logging from Siri and Shortcuts still works while the app is locked, but can't read your data."
+          }
+        }
+      }
+    },
+    "Nhẩm không chắc đây là tổng tiền. Bạn xem lại với hóa đơn nhé." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhẩm isn't sure this is the total. Please check it against the receipt."
+          }
+        }
+      }
+    },
+    "Nhẩm nhắc khi bạn quên" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhẩm reminds you when you forget"
+          }
+        }
+      }
+    },
+    "Nhẩm Pro" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhẩm Pro"
           }
         }
       }
@@ -2475,6 +2707,26 @@
         }
       }
     },
+    "Quán gần đây" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nearby places"
+          }
+        }
+      }
+    },
+    "Quán phở Thìn" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phở Thìn"
+          }
+        }
+      }
+    },
     "Quán quen hiện sẵn một chạm là ghi. Vị trí chỉ xử lý trên máy, không gửi đi đâu." : {
       "localizations" : {
         "en" : {
@@ -2607,16 +2859,16 @@
     },
     "tăng %@%@" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "tăng %1$@%2$@"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "up %1$@%2$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "tăng %1$@%2$@"
           }
         }
       }
@@ -2627,6 +2879,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Name"
+          }
+        }
+      }
+    },
+    "Tên nơi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Place name"
           }
         }
       }
@@ -2693,16 +2955,16 @@
     },
     "Tháng này còn %@, đã tiêu %@ trên %@. %@" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tháng này còn %1$@, đã tiêu %2$@ trên %3$@. %4$@"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ left this month, %2$@ spent of %3$@. %4$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tháng này còn %1$@, đã tiêu %2$@ trên %3$@. %4$@"
           }
         }
       }
@@ -2887,6 +3149,26 @@
         }
       }
     },
+    "Tìm quán gần đây" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find nearby places"
+          }
+        }
+      }
+    },
+    "Tìm quán sẽ gửi vị trí của khoản này cho Apple." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finding places sends this expense's location to Apple."
+          }
+        }
+      }
+    },
     "Tính vào ngân sách" : {
       "localizations" : {
         "en" : {
@@ -2977,6 +3259,16 @@
         }
       }
     },
+    "Tự nhận tên nơi ghi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detect place names"
+          }
+        }
+      }
+    },
     "Tuần này" : {
       "localizations" : {
         "en" : {
@@ -3039,32 +3331,32 @@
     },
     "ứng cho %@ · chưa trả %@" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ứng cho %1$@ · chưa trả %2$@"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "loan to %1$@ · %2$@ unpaid"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ứng cho %1$@ · chưa trả %2$@"
           }
         }
       }
     },
     "ứng cho %@, chưa trả %@" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ứng cho %1$@, chưa trả %2$@"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "loan to %1$@, %2$@ unpaid"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ứng cho %1$@, chưa trả %2$@"
           }
         }
       }
@@ -3099,6 +3391,16 @@
         }
       }
     },
+    "Về hôm nay" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back to today"
+          }
+        }
+      }
+    },
     "Về tỷ giá có sẵn" : {
       "localizations" : {
         "en" : {
@@ -3110,11 +3412,22 @@
       }
     },
     "Vị trí và ảnh hóa đơn được xử lý trên máy, không gửi đi đâu." : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Location and receipt photos are processed on your device and never sent anywhere."
+          }
+        }
+      }
+    },
+    "Vị trí và ảnh hóa đơn được xử lý trên máy, không gửi đi đâu. “Tự nhận tên nơi ghi” cần bật “Gợi ý theo vị trí và giờ”." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location and receipt photos are processed on your device and never sent anywhere. “Detect place names” needs “Suggestions by place and time” turned on."
           }
         }
       }
@@ -3131,16 +3444,16 @@
     },
     "Vừa rời %@. Ghi %@ %@ như mọi lần?" : {
       "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vừa rời %1$@. Ghi %2$@ %3$@ như mọi lần?"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "You just left %1$@. Log %2$@ %3$@ as usual?"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vừa rời %1$@. Ghi %2$@ %3$@ như mọi lần?"
           }
         }
       }
@@ -3161,6 +3474,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "over the limit by %@"
+          }
+        }
+      }
+    },
+    "vượt hạn mức ngày" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "over the daily limit"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vượt hạn mức ngày"
           }
         }
       }
@@ -3285,118 +3614,12 @@
         }
       }
     },
-    "Nhẩm chưa đọc được số tiền trong “%@”." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nhẩm couldn't read an amount in “%@”."
-          }
-        }
-      }
-    },
-    "Nhẩm chưa được dùng micro hoặc nhận dạng giọng nói. Bạn bật lại trong Cài đặt của iPhone." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nhẩm isn't allowed to use the microphone or speech recognition. Turn them back on in iPhone Settings."
-          }
-        }
-      }
-    },
-    "Nhẩm chưa trả lời chắc được câu này. Bạn thử hỏi cách khác nhé." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nhẩm isn't sure how to answer that. Try asking another way."
-          }
-        }
-      }
-    },
-    "Nhẩm đang khóa" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nhẩm is locked"
-          }
-        }
-      }
-    },
-    "Nhẩm ghi khi bạn mở app sau ngày đến hạn, vẫn tính vào 5 lần ghi mỗi ngày của bản miễn phí. Ghi nhầm thì xóa hoặc sửa như khoản thường." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nhẩm logs it when you open the app after the due date and it still counts toward the free version's 5 logs a day. If it's wrong, delete or edit it like any other expense."
-          }
-        }
-      }
-    },
-    "Nhẩm khóa khi mở app và khi ra ngoài app. Quên Face ID thì nhập mật mã máy. Ghi nhanh từ Siri và Phím tắt vẫn ghi được khi app khóa, nhưng không đọc được số liệu." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nhẩm locks when you open the app and whenever you leave it. If Face ID doesn't work, enter your device passcode. Quick logging from Siri and Shortcuts still works while the app is locked, but can't read your data."
-          }
-        }
-      }
-    },
-    "Nhẩm không chắc đây là tổng tiền. Bạn xem lại với hóa đơn nhé." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nhẩm isn't sure this is the total. Please check it against the receipt."
-          }
-        }
-      }
-    },
-    "Nhẩm nhắc khi bạn quên" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nhẩm reminds you when you forget"
-          }
-        }
-      }
-    },
-    "Nhẩm Pro" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nhẩm Pro"
-          }
-        }
-      }
-    },
     "Xuất dữ liệu ra CSV" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Export data as CSV"
-          }
-        }
-      }
-    },
-    "vượt hạn mức ngày" : {
-      "localizations" : {
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "vượt hạn mức ngày"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "over the daily limit"
           }
         }
       }

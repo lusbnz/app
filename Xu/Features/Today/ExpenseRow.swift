@@ -33,6 +33,10 @@ struct ExpenseRow: View {
         .accessibilityElement(children: .combine)
     }
 
+    private var place: String? {
+        PlaceNaming.clean(expense.placeName)
+    }
+
     private var rest: String? {
         let parts = [expense.foreignNote, expense.splitNote, expense.isOutsideBudget ? String(localized: "ngoài ngân sách") : nil].compactMap(\.self)
         return parts.isEmpty ? nil : parts.joined(separator: " · ")
@@ -40,14 +44,20 @@ struct ExpenseRow: View {
 
     @ViewBuilder
     private var note: some View {
-        if category != nil || rest != nil {
+        if category != nil || rest != nil || place != nil {
             HStack(spacing: 4) {
                 if let category {
                     Image(systemName: category.symbol).accessibilityHidden(true)
-                    Text(category.title)
+                    Text(category.title).layoutPriority(1)
+                }
+                if let place {
+                    // Tên nơi dài thì cắt bớt, nhường chỗ cho danh mục và ghi chú.
+                    Text(category == nil ? "" : "·")
+                    Image(systemName: "mappin.and.ellipse").accessibilityHidden(true)
+                    Text(place).lineLimit(1)
                 }
                 if let rest {
-                    Text(category == nil ? rest : "· \(rest)")
+                    Text(category == nil && place == nil ? rest : "· \(rest)").layoutPriority(1)
                 }
             }
             .font(.caption)

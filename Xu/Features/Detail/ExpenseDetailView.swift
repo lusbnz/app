@@ -16,6 +16,7 @@ struct ExpenseDetailView: View {
     @State private var pickedPhoto: PhotosPickerItem?
     @State private var showsCamera = false
     @State private var reapply: ReapplyOffer?
+    @State private var showsPlacePicker = false
 
     private var recorder: ExpenseRecorder { ExpenseRecorder(context: modelContext) }
     private var image: UIImage? { expense.photo.flatMap(UIImage.init(data:)) }
@@ -67,6 +68,9 @@ struct ExpenseDetailView: View {
             }
         }
         .fontDesign(.rounded)
+        .sheet(isPresented: $showsPlacePicker) {
+            PlacePickerView(expense: expense)
+        }
         .fullScreenCover(isPresented: $showsPhoto) {
             if let image { PhotoViewer(image: image) }
         }
@@ -120,9 +124,13 @@ struct ExpenseDetailView: View {
         VStack(spacing: 0) {
             row("Danh mục", value: CategoryCatalog(custom: customCategories).info(for: expense.categoryKey).title)
             row("Thời gian", value: VietnameseDate.dayAndTime(expense.date, now: Date(), calendar: calendar))
-            row("Nơi ghi", value: expense.placeName ?? (expense.latitude == nil
-                ? String(localized: "không lưu")
-                : String(localized: "đã lưu vị trí")))
+            Button { showsPlacePicker = true } label: {
+                row("Nơi ghi", value: expense.placeName ?? (expense.latitude == nil
+                    ? String(localized: "không lưu")
+                    : String(localized: "đã lưu vị trí")))
+            }
+            .buttonStyle(.plain)
+            .accessibilityHint("Chạm để đặt hoặc đổi tên nơi")
             Toggle("Ngoài ngân sách", isOn: Binding {
                 expense.isOutsideBudget
             } set: {

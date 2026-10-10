@@ -14,6 +14,7 @@ struct SettingsView: View {
     @State private var showsPaywall = false
     @State private var explainsAlwaysLocation = false
     @State private var lockUnavailable = false
+    @State private var explainsPlaceLookup = false
     @FocusState private var budgetFocused: Bool
 
     var body: some View {
@@ -61,10 +62,19 @@ struct SettingsView: View {
                         // Giải thích trước, rồi mới xin quyền vị trí "Luôn luôn".
                         if isOn { explainsAlwaysLocation = true } else { setLeaveReminder(false) }
                     })
+                    Toggle("Tự nhận tên nơi ghi", isOn: Binding {
+                        settings.placeLookupEnabled
+                    } set: { isOn in
+                        // Giải thích trước, vì bật cái này là gửi vị trí cho Apple.
+                        if isOn { explainsPlaceLookup = true } else { settings.placeLookupEnabled = false }
+                    })
+                    .disabled(!settings.suggestionsEnabled)
                 } header: {
                     Text("Nhắc và gợi ý")
                 } footer: {
-                    Text("Vị trí và ảnh hóa đơn được xử lý trên máy, không gửi đi đâu.")
+                    Text(settings.placeLookupEnabled
+                         ? "Ảnh hóa đơn được xử lý trên máy. Vị trí chỉ gửi cho Apple để tìm tên quán gần chỗ ghi."
+                         : "Vị trí và ảnh hóa đơn được xử lý trên máy, không gửi đi đâu. “Tự nhận tên nơi ghi” cần bật “Gợi ý theo vị trí và giờ”.")
                 }
                 .listRowBackground(Color.xuSurface)
                 Section {
@@ -136,6 +146,15 @@ struct SettingsView: View {
                 Button("Đóng", role: .cancel) {}
             } message: {
                 Text("Máy chưa đặt mật mã hoặc Face ID. Bạn đặt trong Cài đặt của iPhone rồi bật lại.")
+            }
+            .alert("Gửi vị trí cho Apple?", isPresented: $explainsPlaceLookup) {
+                Button("Bật") {
+                    settings.placeLookupEnabled = true
+                    Task { await PlaceLookup.shared.backfill(context: modelContext, groupLimit: 20) }
+                }
+                Button("Để sau", role: .cancel) {}
+            } message: {
+                Text("Để hiện tên quán ở mỗi khoản, Nhẩm gửi vị trí chỗ bạn ghi cho Apple để tìm quán gần đó. Nhẩm không gửi gì khác, chỉ tìm một lần cho mỗi chỗ mới, và dùng lại tên cho những khoản ở cùng chỗ. Bạn vẫn tự đặt hoặc đổi tên được ở màn Chi tiết, và tắt công tắc bất cứ lúc nào.")
             }
             .alert("Nhắc khi rời quán quen", isPresented: $explainsAlwaysLocation) {
                 Button("Tiếp tục") { setLeaveReminder(true) }

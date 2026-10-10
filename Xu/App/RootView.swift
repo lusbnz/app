@@ -34,6 +34,8 @@ struct RootView: View {
                 now = Date()
                 NotificationManager.shared.refreshDailyReminder()
                 recordAutomaticRecurring()
+                // Thử lại các khoản chưa tra được tên nơi (lúc đó mất mạng, chẳng hạn).
+                Task { await PlaceLookup.shared.backfill(context: modelContext, groupLimit: 5) }
                 NotificationManager.shared.refreshRecurringReminders()
             }
         }

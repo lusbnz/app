@@ -16,6 +16,9 @@ struct XuApp: App {
             NotificationManager.shared.refreshRecurringReminders()
             Task { await PlaceMonitor.shared.refresh() }
         }
+        ExpenseRecorder.afterLocatedRecord = { batchID in
+            Task { await PlaceLookup.shared.nameBatch(batchID, context: XuStore.shared.mainContext) }
+        }
         // Dựng lại CLMonitor mỗi lần app chạy, kể cả khi hệ thống mở app ngầm vì một vùng theo dõi.
         Task { await PlaceMonitor.shared.refresh() }
         #if DEBUG

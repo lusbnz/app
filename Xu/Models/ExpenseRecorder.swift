@@ -62,6 +62,7 @@ struct ExpenseRecorder {
     func record(_ items: [RecordItem], in info: RecordContext = RecordContext()) -> SavedBatch {
         let batchID = UUID()
         var loanIDs: [UUID] = []
+        var inserted: [Expense] = []
         for item in items {
             switch item {
             case .expense(let draft):
@@ -78,6 +79,7 @@ struct ExpenseRecorder {
                 expense.placeName = info.placeName
                 expense.photo = info.photo
                 context.insert(expense)
+                inserted.append(expense)
                 if draft.teachesCategory { teach(name: draft.name, categoryKey: draft.categoryKey) }
             case .loan(let person, let amount):
                 let loan = Loan(person: person, amount: amount, date: info.date)
@@ -85,8 +87,19 @@ struct ExpenseRecorder {
                 context.insert(loan)
             }
         }
+        // Cùng chỗ với một khoản đã có tên thì dùng lại tên đó, không cần mạng; không thì để dịch vụ tra tên sau khi lưu.
+        var needsPlaceLookup = false
+        if info.placeName == nil, let latitude = info.latitude, let longitude = info.longitude, !inserted.isEmpty {
+            let here = Coordinate(latitude: latitude, longitude: longitude)
+            if let name = PlaceNaming.reusableName(near: here, in: namedPlaces()) {
+                inserted.forEach { $0.placeName = name }
+            } else {
+                needsPlaceLookup = true
+            }
+        }
         SaveGate.didSave(now: Date(), calendar: .current)
         commit()
+        if needsPlaceLookup { Self.afterLocatedRecord?(batchID) }
         return SavedBatch(
             batchID: batchID, loanIDs: loanIDs, summary: Self.summary(of: items),
             warning: limitWarning(for: items, defaultDate: info.date, now: Date(), calendar: .current)
