@@ -6,6 +6,17 @@ Những thứ nằm ngoài tài liệu yêu cầu, chưa làm.
 
 (Không có.)
 
+## Việc sau khi publish
+
+Người dùng muốn để sau khi app đã lên App Store mới làm. Cho tới lúc đó gói Pennyline AI vẫn ẩn (`AIConfig.productionURL` là nil).
+
+- Bật Pennyline AI:
+  1. Triển khai Worker theo `Backend/README.md`: cần tài khoản Cloudflare, khóa API Anthropic và khóa In-App Purchase của App Store Connect.
+  2. Điền địa chỉ Worker vào `AIConfig.productionURL` trong `Xu/App/AIClient.swift`.
+  3. Tạo hai sản phẩm trong App Store Connect: `xu.ai.monthly` (gói tự gia hạn, nhóm riêng) và `xu.ai.topup` (tiêu hao). Giá trong tệp thử (39k và 19k) là giá tạm, chỉnh theo ý.
+  4. Cập nhật nhãn quyền riêng tư của app trên App Store, vì số liệu gộp sẽ được gửi tới máy chủ riêng và Anthropic.
+  5. Chạy thử trọn đường với tài khoản sandbox: phần gọi Apple và Anthropic thật chưa chạy lần nào.
+
 ## Đã đề xuất, chưa được chọn
 
 - Tìm khoản chi thêm theo: khoảng số tiền, trong hoặc ngoài ngân sách, chọn theo tên nơi, chỉ khoản chia tiền, và sắp xếp (mới nhất, cũ nhất, lớn nhất).
