@@ -8,6 +8,7 @@ struct ExpenseDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.calendar) private var calendar
     @Query private var customCategories: [CustomCategory]
+    @Query(sort: \Wallet.createdAt) private var wallets: [Wallet]
     @Bindable var expense: Expense
     @State private var isEditing = false
     @State private var fields = ExpenseFields()
@@ -39,7 +40,7 @@ struct ExpenseDetailView: View {
                         .accessibilityHint("Xem toàn màn hình")
                     }
                     if isEditing {
-                        ExpenseFieldsEditor(fields: $fields, onPickPlace: { showsPlacePicker = true })
+                        ExpenseFieldsEditor(fields: $fields, onPickPlace: { showsPlacePicker = true }, wallets: wallets)
                     } else {
                         summary
                         rows
@@ -127,6 +128,9 @@ struct ExpenseDetailView: View {
             row("Nơi ghi", value: expense.placeName ?? (expense.latitude == nil
                 ? String(localized: "không lưu")
                 : String(localized: "đã lưu vị trí")))
+            if !wallets.isEmpty {
+                row("Ví", value: wallets.first { $0.id == expense.walletID }?.name ?? String(localized: "không chọn"))
+            }
             Toggle("Ngoài ngân sách", isOn: Binding {
                 expense.isOutsideBudget
             } set: {
@@ -185,7 +189,7 @@ struct ExpenseDetailView: View {
         fields = ExpenseFields(
             name: expense.name, amountText: ExpenseFields.amountText(for: expense.amount),
             categoryKey: expense.categoryKey, isOutsideBudget: expense.isOutsideBudget, date: expense.date,
-            placeName: expense.placeName ?? ""
+            placeName: expense.placeName ?? "", walletID: expense.walletID
         )
         isEditing = true
     }
@@ -206,6 +210,7 @@ struct ExpenseDetailView: View {
         }
         expense.isOutsideBudget = fields.isOutsideBudget
         expense.date = fields.date
+        expense.walletID = fields.walletID
         // Tên nơi sửa cùng lúc với các trường khác, và có thể đổi theo cho các khoản khác ở cùng chỗ.
         let newPlace = PlaceNaming.clean(fields.placeName)
         if newPlace != PlaceNaming.clean(expense.placeName) {

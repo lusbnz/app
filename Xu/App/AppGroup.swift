@@ -29,6 +29,10 @@ enum SettingsKey {
     static let placeLookup = "placeLookup"
     static let limitsShapeDaily = "limitsShapeDaily"
     static let autoBackup = "autoBackup"
+    /// Mã ví dùng gần nhất, để ô gõ và intent chọn sẵn.
+    static let lastWallet = "lastWallet"
+    /// Dấu vân tay các tin nhắn ngân hàng đã ghi, để không ghi trùng.
+    static let bankMessages = "bankMessages"
     /// Nằm trong `UserDefaults.standard` (không phải App Group) vì hệ thống đọc `AppleLanguages` ở đó.
     static let appLanguage = "appLanguage"
 }

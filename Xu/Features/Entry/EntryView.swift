@@ -20,6 +20,8 @@ struct EntryView: View {
     @Query private var rules: [CategoryRule]
     @Query private var budgets: [CategoryBudget]
     @Query private var customCategories: [CustomCategory]
+    @Query(sort: \Wallet.createdAt) private var wallets: [Wallet]
+    @State private var walletID: UUID?
     @State private var text: String
     @State private var overrides: [Int: EntryOverride] = [:]
     @State private var editing: EntryRow?
@@ -28,6 +30,9 @@ struct EntryView: View {
     @State private var voice = VoiceInput()
     @State private var voiceBase = ""
     @State private var placeState = EntryPlaceState.none
+    @State private var ai = AIStore.shared
+    @State private var isNormalizing = false
+    @State private var aiNote: String?
     @State private var asked: AskedQuestion?
     @State private var isAsking = false
     @FocusState private var isFocused: Bool
@@ -86,6 +91,7 @@ struct EntryView: View {
                         remove: { placeState = .removed },
                         restore: { placeState = .none; Task { await resolvePlace() } }
                     )
+                    if !wallets.isEmpty { walletChip }
                     if isEmpty {
                         if askAvailable { askBlock }
                         if settings.suggestionsEnabled {
@@ -94,6 +100,7 @@ struct EntryView: View {
                     } else if let question {
                         questionRow(question)
                     } else {
+                        if ai.isActive, rows.isEmpty || rows.contains(where: { $0.amount == nil }) { normalizeRow }
                         VStack(spacing: 0) {
                             ForEach(rows) { row in
                                 Button { if !row.isLoan { editing = row } } label: { EntryRowView(row: row) }
@@ -149,6 +156,7 @@ struct EntryView: View {
                 isFocused = true
             }
             if settings.suggestionsEnabled { location.refresh() }
+            walletID = ExpenseRecorder(context: modelContext).defaultWalletID()
         }
         .confirmationDialog(
             "Ghi trùng?", isPresented: Binding { duplicate != nil } set: { if !$0 { duplicate = nil } },
@@ -165,6 +173,73 @@ struct EntryView: View {
         .sheet(item: $editing) { row in
             EntryRowEditor(row: row) { overrides[row.id] = $0 }
         }
+    }
+
+    // MARK: - Nhờ AI hiểu
+
+    /// Gói AI: khi bộ tách chưa đọc ra số tiền, nhờ AI viết lại câu thành dòng bộ tách đọc được. Con số cuối cùng vẫn do bộ tách đọc.
+    private var normalizeRow: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Button { normalize() } label: {
+                HStack(spacing: 8) {
+                    if isNormalizing { ProgressView() } else { Image(systemName: "wand.and.stars") }
+                    Text("Nhờ AI hiểu câu này")
+                }
+                .font(.subheadline)
+                .padding(.horizontal, 14)
+                .frame(minHeight: 40)
+                .background(Color.xuSurface, in: .capsule)
+            }
+            .buttonStyle(.plain)
+            .disabled(isNormalizing)
+            if let aiNote {
+                Text(verbatim: aiNote)
+                    .font(.footnote)
+                    .foregroundStyle(Color.xuTextSecondary)
+            }
+        }
+    }
+
+    private func normalize() {
+        let original = text
+        isNormalizing = true
+        aiNote = nil
+        Task {
+            defer { isNormalizing = false }
+            do {
+                let answer = try await ai.run(AIRunRequest(task: .normalize, text: original))
+                // Chỉ nhận khi bộ tách đọc được số tiền cho mọi khoản trong dòng AI viết lại, và người dùng chưa gõ gì khác.
+                guard text == original, let line = AIProtocol.cleanedLine(answer), EntryRows.isReadable(line, parser: parser, now: now, calendar: calendar) else {
+                    aiNote = String(localized: "AI chưa viết lại được câu này. Bạn gõ lại kiểu “tên khoản, số tiền” nhé.")
+                    return
+                }
+                overrides = [:]
+                text = line
+            } catch {
+                aiNote = AIText.message(for: error as? AIError ?? .network)
+            }
+        }
+    }
+
+    // MARK: - Ví
+
+    /// Ví sẽ trả cho lần ghi này; chỉ hiện khi người dùng có ví. Mặc định là ví dùng gần nhất.
+    private var walletChip: some View {
+        Menu {
+            Picker("Ví", selection: $walletID) {
+                ForEach(wallets) { Label($0.name, systemImage: $0.kind.symbol).tag(UUID?.some($0.id)) }
+                Text("không chọn").tag(UUID?.none)
+            }
+        } label: {
+            let wallet = wallets.first { $0.id == walletID }
+            Label(wallet?.name ?? String(localized: "không chọn ví"), systemImage: wallet?.kind.symbol ?? "wallet.bifold")
+                .font(.subheadline)
+                .foregroundStyle(Color.xuTextSecondary)
+                .padding(.horizontal, 12)
+                .frame(minHeight: 36)
+                .background(Color.xuSurface, in: .capsule)
+        }
+        .accessibilityLabel("Ví trả tiền")
     }
 
     // MARK: - Hỏi Pennyline
@@ -455,6 +530,10 @@ struct EntryView: View {
             info.latitude = coordinate.latitude
             info.longitude = coordinate.longitude
             info.placeName = placeState.name
+        }
+        if !wallets.isEmpty {
+            info.walletID = walletID
+            ExpenseRecorder.lastWalletID = walletID
         }
         let batch = ExpenseRecorder(context: modelContext).record(items, in: info)
         appState.didSave(batch)

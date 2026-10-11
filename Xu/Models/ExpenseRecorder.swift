@@ -39,6 +39,8 @@ struct RecordContext: Sendable {
     var longitude: Double?
     var placeName: String?
     var photo: Data?
+    /// Ví trả cho lần ghi này; nil khi không dùng ví.
+    var walletID: UUID?
 }
 
 /// Kết quả một lần lưu, đủ để Hoàn tác.
@@ -78,11 +80,13 @@ struct ExpenseRecorder {
                 expense.longitude = info.longitude
                 expense.placeName = info.placeName
                 expense.photo = info.photo
+                expense.walletID = info.walletID
                 context.insert(expense)
                 inserted.append(expense)
                 if draft.teachesCategory { teach(name: draft.name, categoryKey: draft.categoryKey) }
             case .loan(let person, let amount):
                 let loan = Loan(person: person, amount: amount, date: info.date)
+                loan.walletID = info.walletID
                 loanIDs.append(loan.id)
                 context.insert(loan)
             }

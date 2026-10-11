@@ -40,6 +40,16 @@ struct StoreTests {
         #expect(monthly.subscription?.subscriptionGroupID == yearly.subscription?.subscriptionGroupID)
     }
 
+    @Test func theAIPlanAndTopUpExistAndAreSeparateFromPro() async throws {
+        _ = try session()
+        let products = try await Product.products(for: [AIStore.monthlyID, AIStore.topUpID])
+        #expect(Set(products.map(\.id)) == [AIStore.monthlyID, AIStore.topUpID])
+        let monthly = try #require(products.first { $0.id == AIStore.monthlyID })
+        #expect(monthly.subscription?.subscriptionPeriod.unit == .month)
+        #expect(products.first { $0.id == AIStore.topUpID }?.type == .consumable)
+        #expect(!EntitlementStore.productIDs.contains(AIStore.monthlyID))
+    }
+
     @Test func buyingUnlocksProAndClearingRevokesIt() async throws {
         let session = try session()
         let store = EntitlementStore()

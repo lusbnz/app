@@ -196,6 +196,16 @@
         }
       }
     },
+    "%@ tăng từ %@ lên %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ went up from %@ to %@"
+          }
+        }
+      }
+    },
     "%@ tháng này mấy lần?" : {
       "localizations" : {
         "en" : {
@@ -266,6 +276,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@, để dành %2$@ trên %3$@. %4$@"
+          }
+        }
+      }
+    },
+    "%@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@."
           }
         }
       }
@@ -424,6 +444,28 @@
         }
       }
     },
+    "%lld khoản, trung bình %@ mỗi tháng." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld expense, averaging %@ a month."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld expenses, averaging %@ a month."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld lần" : {
       "localizations" : {
         "en" : {
@@ -439,6 +481,28 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld times"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld lượt" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld use"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld uses"
                 }
               }
             }
@@ -564,6 +628,36 @@
         }
       }
     },
+    "AI chưa trả lời chắc được lần này, lượt đã được trả lại. Bạn thử lại sau nhé." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI couldn't give a reliable answer this time, and the use was refunded. Please try again later."
+          }
+        }
+      }
+    },
+    "AI chưa viết lại được câu này. Bạn gõ lại kiểu “tên khoản, số tiền” nhé." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI couldn't rewrite this. Try typing it as “name, amount”."
+          }
+        }
+      }
+    },
+    "AI làm gì" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What AI does"
+          }
+        }
+      }
+    },
     "ăn uống" : {
       "localizations" : {
         "en" : {
@@ -642,6 +736,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mint"
+          }
+        }
+      }
+    },
+    "Bạn đã ghi vào %lld ngày trong năm." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You logged on %lld day this year."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You logged on %lld days this year."
+                }
+              }
+            }
           }
         }
       }
@@ -776,6 +892,26 @@
         }
       }
     },
+    "Báo cáo năm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Year report"
+          }
+        }
+      }
+    },
+    "Báo cáo năm %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Year report %@"
+          }
+        }
+      }
+    },
     "Bảo mật" : {
       "localizations" : {
         "en" : {
@@ -796,12 +932,32 @@
         }
       }
     },
+    "Bật công tắc ở trên để bắt đầu dùng." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn on the switch above to start."
+          }
+        }
+      }
+    },
     "Bắt đầu" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Get started"
+          }
+        }
+      }
+    },
+    "bên ngoài" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "outside"
           }
         }
       }
@@ -983,6 +1139,16 @@
         }
       }
     },
+    "chi qua ngân hàng" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bank payment"
+          }
+        }
+      }
+    },
     "Chỉ rút được tối đa %@." : {
       "localizations" : {
         "en" : {
@@ -1039,6 +1205,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "a loan, not counted in your budget"
+          }
+        }
+      }
+    },
+    "Cho phép gửi số liệu tới Claude" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow sending figures to Claude"
+          }
+        }
+      }
+    },
+    "Chọn “bên ngoài” ở ô Từ để ghi tiền vào ví (lương, nạp tiền), ở ô Đến để ghi tiền rút ra không phải chi tiêu. Chuyển tiền không tính vào ngân sách." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose “outside” under From to record money coming in (salary, top-up), or under To for money taken out that isn't spending. Transfers never count against the budget."
           }
         }
       }
@@ -1153,6 +1339,16 @@
         }
       }
     },
+    "Chưa lấy được số lượt. Kiểm tra mạng rồi thử lại." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load your uses. Check your connection and try again."
+          }
+        }
+      }
+    },
     "Chưa mua được. Bạn thử lại sau nhé." : {
       "localizations" : {
         "en" : {
@@ -1169,6 +1365,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Couldn't load prices from the App Store."
+          }
+        }
+      }
+    },
+    "Chưa tải được gói. Kiểm tra mạng rồi thử lại." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load the plan. Check your connection and try again."
           }
         }
       }
@@ -1245,12 +1451,52 @@
         }
       }
     },
+    "Chuyển hoặc nạp tiền" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transfer or add money"
+          }
+        }
+      }
+    },
+    "Chuyển tiền" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transfer"
+          }
+        }
+      }
+    },
+    "Chuyển tiền gần đây" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recent transfers"
+          }
+        }
+      }
+    },
     "có ảnh" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "has photo"
+          }
+        }
+      }
+    },
+    "Có thể là khoản đăng ký" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Possible subscriptions"
           }
         }
       }
@@ -1353,6 +1599,26 @@
         }
       }
     },
+    "Còn lại tháng này" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Left this month"
+          }
+        }
+      }
+    },
+    "Con số luôn do Pennyline tính. AI chỉ diễn đạt, và câu trả lời có con số lạ sẽ bị bỏ." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pennyline always computes the numbers. AI only words them, and an answer with an unknown number is discarded."
+          }
+        }
+      }
+    },
     "Còn thiếu %@" : {
       "localizations" : {
         "en" : {
@@ -1423,6 +1689,22 @@
         }
       }
     },
+    "Đã cộng %@ vào ví %@." : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã cộng %1$@ vào ví %2$@."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Added %@ to wallet %@."
+          }
+        }
+      }
+    },
     "đã để dành, trên %@" : {
       "localizations" : {
         "en" : {
@@ -1439,6 +1721,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Goal reached"
+          }
+        }
+      }
+    },
+    "Đã dùng" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Used"
           }
         }
       }
@@ -1719,6 +2011,36 @@
         }
       }
     },
+    "Đăng ký Pennyline AI" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscribe to Pennyline AI"
+          }
+        }
+      }
+    },
+    "Đang lấy số lượt…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading your uses…"
+          }
+        }
+      }
+    },
+    "Đáng nhớ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Highlights"
+          }
+        }
+      }
+    },
     "Đang tải giá" : {
       "localizations" : {
         "en" : {
@@ -1889,6 +2211,16 @@
         }
       }
     },
+    "Đến" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To"
+          }
+        }
+      }
+    },
     "đến hạn %@" : {
       "localizations" : {
         "en" : {
@@ -1935,6 +2267,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reads files exported from Pennyline and bank statements that have a date column and an amount column. Expenses already on this device (same time, name and amount) are skipped, and an import can still be undone."
+          }
+        }
+      }
+    },
+    "Đọc tin báo biến động số dư rồi ghi: tiền ra thành khoản chi, tiền vào cộng vào ví. Cùng một tin nhắn chỉ ghi một lần." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reads a balance alert and logs it: money out becomes an expense, money in is added to a wallet. The same message is only logged once."
           }
         }
       }
@@ -2089,6 +2431,26 @@
         }
       }
     },
+    "Gần bằng cùng kỳ năm trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About the same as this period last year."
+          }
+        }
+      }
+    },
+    "Gần bằng năm trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About the same as the year before."
+          }
+        }
+      }
+    },
     "gần chạm hạn mức, còn %@" : {
       "localizations" : {
         "en" : {
@@ -2185,6 +2547,16 @@
         }
       }
     },
+    "Ghi chú (không bắt buộc)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Note (optional)"
+          }
+        }
+      }
+    },
     "Ghi khoản chi" : {
       "localizations" : {
         "en" : {
@@ -2231,6 +2603,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Log a duplicate?"
+          }
+        }
+      }
+    },
+    "Ghi từ tin nhắn ngân hàng" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log from a bank message"
+          }
+        }
+      }
+    },
+    "Ghi từ tin nhắn ngân hàng là tính năng của Pennyline Pro. Mở Pennyline để xem." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logging from bank messages is a Pennyline Pro feature. Open Pennyline to see it."
           }
         }
       }
@@ -2297,6 +2689,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "giảm %1$@%2$@"
+          }
+        }
+      }
+    },
+    "Giảm %lld%% so với cùng kỳ năm trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Down %lld%% from the same period last year."
+          }
+        }
+      }
+    },
+    "Giảm %lld%% so với năm trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Down %lld%% from the year before."
           }
         }
       }
@@ -2445,12 +2857,32 @@
         }
       }
     },
+    "Gói Pennyline AI chưa dùng được. Xem trong Tùy chỉnh, Pennyline AI." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pennyline AI isn't ready yet. See Settings, Pennyline AI."
+          }
+        }
+      }
+    },
     "Gói tháng" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Monthly plan"
+          }
+        }
+      }
+    },
+    "Gói và lượt dùng" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan and uses"
           }
         }
       }
@@ -2635,12 +3067,32 @@
         }
       }
     },
+    "Hết lượt AI của tháng này. Nạp thêm trong Tùy chỉnh, Pennyline AI." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're out of AI uses this month. Add more in Settings, Pennyline AI."
+          }
+        }
+      }
+    },
     "Hiển thị" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Display"
+          }
+        }
+      }
+    },
+    "Hiểu câu gõ tự nhiên ở ô gõ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Understands natural sentences in the entry box"
           }
         }
       }
@@ -2702,6 +3154,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ask Pennyline something else"
+          }
+        }
+      }
+    },
+    "Hỏi Pennyline trên máy chưa có mô hình của Apple" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask Pennyline on devices without Apple's model"
           }
         }
       }
@@ -2822,6 +3284,16 @@
         }
       }
     },
+    "Khi bạn dùng một việc AI, Pennyline gửi bảng số liệu tháng đã gộp sẵn (tổng theo danh mục, theo tên khoản, theo ngày) hoặc đúng dòng chữ bạn nhờ AI hiểu tới máy chủ của Pennyline, rồi tới Claude của Anthropic để lấy câu trả lời. Không gửi ảnh, vị trí hay từng khoản chi riêng lẻ, và máy chủ không lưu nội dung. Tắt công tắc này thì không có gì được gửi, kể cả khi đã mua gói." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When you use an AI feature, Pennyline sends this month's aggregated figures (totals by category, by name, by day), or just the line you asked AI to understand, to Pennyline's server and then to Anthropic's Claude to get the answer. No photos, locations or individual expenses are sent, and the server doesn't store the content. With this switch off nothing is sent, even if you've bought the plan."
+          }
+        }
+      }
+    },
     "Khi bật, tiền trong hạn mức của từng danh mục được giữ riêng: hạn mức ngày chỉ tính trên phần ngân sách còn lại, và khoản chi trong hạn mức danh mục không làm nó tụt. Chi vượt hạn mức danh mục thì trừ vào hạn mức ngày." : {
       "localizations" : {
         "en" : {
@@ -2919,6 +3391,16 @@
         }
       }
     },
+    "Khoản lớn nhất: %@, %@ (ngày %lld/%lld)." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Largest expense: %@, %@ (on %lld/%lld)."
+          }
+        }
+      }
+    },
     "Khoản này không có vị trí nên chỉ đặt tên tay được." : {
       "localizations" : {
         "en" : {
@@ -3009,6 +3491,26 @@
         }
       }
     },
+    "không chọn" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "none"
+          }
+        }
+      }
+    },
+    "không chọn ví" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no wallet"
+          }
+        }
+      }
+    },
     "Không có gì mới" : {
       "localizations" : {
         "en" : {
@@ -3065,6 +3567,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Don't log"
+          }
+        }
+      }
+    },
+    "Không kết nối được tới AI. Kiểm tra mạng rồi thử lại." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't reach AI. Check your connection and try again."
           }
         }
       }
@@ -3209,6 +3721,16 @@
         }
       }
     },
+    "Làm mới" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Renews"
+          }
+        }
+      }
+    },
     "Lần gửi này đã được rút một phần. Hãy xóa lần rút trước." : {
       "localizations" : {
         "en" : {
@@ -3249,6 +3771,16 @@
         }
       }
     },
+    "Loại" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        }
+      }
+    },
     "Luật đã học" : {
       "localizations" : {
         "en" : {
@@ -3265,6 +3797,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "New rule"
+          }
+        }
+      }
+    },
+    "Lượt nạp thêm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extra uses"
           }
         }
       }
@@ -3439,6 +3981,16 @@
         }
       }
     },
+    "Mỗi lần hỏi, mỗi lần nhận xét tháng và mỗi lần nhờ AI hiểu một câu tính một lượt. Lượt của gói làm mới đầu mỗi tháng; lượt nạp thêm không hết hạn. Gói AI tách khỏi Pennyline Pro." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Each question, each monthly review and each sentence AI rewrites counts as one use. Plan uses renew at the start of each month; extra uses never expire. The AI plan is separate from Pennyline Pro."
+          }
+        }
+      }
+    },
     "Mọi lúc" : {
       "localizations" : {
         "en" : {
@@ -3505,6 +4057,56 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Savings goals"
+          }
+        }
+      }
+    },
+    "Năm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Year"
+          }
+        }
+      }
+    },
+    "Năm %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Year %@"
+          }
+        }
+      }
+    },
+    "Năm này chưa có khoản chi nào." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No expenses in this year yet."
+          }
+        }
+      }
+    },
+    "Nạp thêm lượt" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add more uses"
+          }
+        }
+      }
+    },
+    "Ngân hàng" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bank"
           }
         }
       }
@@ -3751,6 +4353,26 @@
         }
       }
     },
+    "Nhận xét tháng này" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This month's review"
+          }
+        }
+      }
+    },
+    "Nhận xét tháng ở màn Tháng" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A monthly review on the Month screen"
+          }
+        }
+      }
+    },
     "Nhập %lld khoản" : {
       "localizations" : {
         "en" : {
@@ -3829,6 +4451,16 @@
         }
       }
     },
+    "Nhờ AI hiểu câu này" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask AI to understand this"
+          }
+        }
+      }
+    },
     "Nói “Ghi chi tiêu trong Pennyline”, Siri sẽ hỏi bạn tiêu gì. Trả lời như khi gõ: “phở 45k”." : {
       "localizations" : {
         "en" : {
@@ -3869,12 +4501,32 @@
         }
       }
     },
+    "Pennyline AI" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pennyline AI"
+          }
+        }
+      }
+    },
     "Pennyline chưa đọc được số tiền trong “%@”." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pennyline couldn't read an amount in “%@”."
+          }
+        }
+      }
+    },
+    "Pennyline chưa đọc được tin nhắn này." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pennyline couldn't read this message."
           }
         }
       }
@@ -3965,6 +4617,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pennyline Pro"
+          }
+        }
+      }
+    },
+    "Pennyline thấy các khoản này lặp đều trong lịch sử bạn ghi, tổng khoảng %@ mỗi tháng. Chạm để thêm vào khoản định kỳ và được nhắc trước một ngày." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pennyline sees these repeating regularly in your history, about %@ a month in total. Tap one to add it to recurring expenses and get a reminder the day before."
           }
         }
       }
@@ -4096,6 +4758,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Back"
+          }
+        }
+      }
+    },
+    "Quyền riêng tư" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy"
           }
         }
       }
@@ -4284,6 +4956,36 @@
         }
       }
     },
+    "Số dư ban đầu là số tiền ví đang có lúc này. Dư nợ thẻ thì gõ số âm, ví dụ -200k." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The opening balance is what the wallet holds right now. For a card balance owed, type a negative number, like -200k."
+          }
+        }
+      }
+    },
+    "Số dư ban đầu, ví dụ 5tr" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opening balance, e.g. 5tr"
+          }
+        }
+      }
+    },
+    "Số dư các ví" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wallet balances"
+          }
+        }
+      }
+    },
     "Số tiền" : {
       "localizations" : {
         "en" : {
@@ -4310,6 +5012,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "unreadable amount"
+          }
+        }
+      }
+    },
+    "Số tiền, ví dụ 500k" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amount, e.g. 500k"
           }
         }
       }
@@ -4374,12 +5086,32 @@
         }
       }
     },
+    "Sửa ví" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit wallet"
+          }
+        }
+      }
+    },
     "sức khỏe" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "health"
+          }
+        }
+      }
+    },
+    "tăng %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "up %@"
           }
         }
       }
@@ -4440,12 +5172,42 @@
         }
       }
     },
+    "Tăng %lld%% so với cùng kỳ năm trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Up %lld%% from the same period last year."
+          }
+        }
+      }
+    },
+    "Tăng %lld%% so với năm trước." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Up %lld%% from the year before."
+          }
+        }
+      }
+    },
     "Tạo bản sao lưu" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Create a backup"
+          }
+        }
+      }
+    },
+    "Tạo bằng Pennyline. Số liệu gồm mọi khoản chi đã ghi, kể cả khoản ngoài ngân sách." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Made with Pennyline. Figures include every logged expense, including those outside the budget."
           }
         }
       }
@@ -4496,6 +5258,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Names can be up to %lld characters."
+          }
+        }
+      }
+    },
+    "Tên ví" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wallet name"
           }
         }
       }
@@ -4580,6 +5352,26 @@
         }
       }
     },
+    "Tháng %lld tiêu nhiều nhất: %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Month %lld was the highest: %@."
+          }
+        }
+      }
+    },
+    "Tháng %lld: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Month %lld: %@"
+          }
+        }
+      }
+    },
     "Tháng nào không có ngày này thì tính vào ngày cuối tháng. Pennyline nhắc lúc 9:00 và bạn chạm Ghi." : {
       "localizations" : {
         "en" : {
@@ -4656,12 +5448,32 @@
         }
       }
     },
+    "Tháng tiêu ít nhất: tháng %lld, %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lowest month: month %lld, %@."
+          }
+        }
+      }
+    },
     "Tháng trước" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Last month"
+          }
+        }
+      }
+    },
+    "Thẻ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Card"
           }
         }
       }
@@ -4712,6 +5524,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add a goal"
+          }
+        }
+      }
+    },
+    "Thêm vào khoản định kỳ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add to recurring expenses"
+          }
+        }
+      }
+    },
+    "Thêm ví" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add wallet"
           }
         }
       }
@@ -4816,12 +5648,32 @@
         }
       }
     },
+    "Tiền mặt" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cash"
+          }
+        }
+      }
+    },
     "Tiền nhà và các khoản cố định thì thêm ở Tùy chỉnh, mục Khoản định kỳ: Pennyline nhắc đến hạn và bạn chạm để ghi. Đổi ngân sách lúc nào cũng được, không cần tài khoản." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add rent and other fixed costs in Settings under Recurring expenses: Pennyline reminds you when they're due and you tap to log. You can change your budget any time, no account needed."
+          }
+        }
+      }
+    },
+    "Tiền vào %@, không phải khoản chi nên Pennyline không ghi. Đặt từ khóa cho một ví để cộng vào ví đó." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ came in. It isn't an expense, so Pennyline didn't log it. Set keywords on a wallet to add it there."
           }
         }
       }
@@ -4906,6 +5758,56 @@
         }
       }
     },
+    "Tin nhắn" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Message"
+          }
+        }
+      }
+    },
+    "Tin nhắn nào có một trong các từ này (tên ngân hàng, vài số cuối tài khoản) thì thuộc ví này. Ngăn cách bằng dấu phẩy. Bỏ trống nếu không dùng phím tắt đọc tin nhắn." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A message containing any of these words (bank name, last digits of the account) belongs to this wallet. Separate with commas. Leave empty if you don't use the message shortcut."
+          }
+        }
+      }
+    },
+    "Tin nhắn này đã ghi rồi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This message was already logged."
+          }
+        }
+      }
+    },
+    "Tin nhắn ngân hàng (Pennyline Pro)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bank messages (Pennyline Pro)"
+          }
+        }
+      }
+    },
+    "Tin nhắn ngân hàng nói gì?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What does the bank message say?"
+          }
+        }
+      }
+    },
     "Tính ngân sách theo" : {
       "localizations" : {
         "en" : {
@@ -4956,12 +5858,32 @@
         }
       }
     },
+    "Tốn nhiều nhất" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biggest spending"
+          }
+        }
+      }
+    },
     "Tổng" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Total"
+          }
+        }
+      }
+    },
+    "Tổng %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total %@"
           }
         }
       }
@@ -5036,6 +5958,26 @@
         }
       }
     },
+    "Trong app Phím tắt, vào Tự động hóa, tạo mới “Tin nhắn”, chọn người gửi là ngân hàng của bạn và “Chạy ngay”. Thêm tác vụ “Ghi từ tin nhắn ngân hàng” của Pennyline, đưa “Nội dung tin nhắn” vào ô Tin nhắn. Từ đó mỗi tin báo trừ tiền thành một khoản chi; tin báo tiền vào được cộng vào ví có từ khóa khớp (đặt ở Tùy chỉnh, Ví). Cùng một tin nhắn không bao giờ bị ghi hai lần." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In the Shortcuts app, go to Automation, create a new “Message” automation, choose your bank as the sender and “Run Immediately”. Add Pennyline's “Log from a bank message” action and pass “Message Content” into Message. From then on each debit alert becomes an expense, and each credit alert is added to the wallet whose keywords match (set in Settings, Wallets). The same message is never logged twice."
+          }
+        }
+      }
+    },
+    "Trong đó %@ ngoài ngân sách." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Of which %@ is outside the budget."
+          }
+        }
+      }
+    },
     "trưa" : {
       "localizations" : {
         "en" : {
@@ -5082,6 +6024,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Keyword"
+          }
+        }
+      }
+    },
+    "Từ khóa tin nhắn ngân hàng" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bank message keywords"
           }
         }
       }
@@ -5178,6 +6130,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Day by day"
+          }
+        }
+      }
+    },
+    "Từng tháng" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "By month"
           }
         }
       }
@@ -5318,6 +6280,16 @@
         }
       }
     },
+    "vcb, vietcombank, 0011" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vcb, vietcombank, 0011"
+          }
+        }
+      }
+    },
     "Về hôm nay" : {
       "localizations" : {
         "en" : {
@@ -5334,6 +6306,66 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reset to built-in rates"
+          }
+        }
+      }
+    },
+    "Ví" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wallets"
+          }
+        }
+      }
+    },
+    "Ví chỉ để biết tiền đang nằm ở đâu, không ảnh hưởng ngân sách: ngân sách tính mọi khoản chi của mọi ví. Số dư là số ban đầu cộng mọi khoản chi, khoản ứng và lần chuyển tiền từ ngày tạo ví. Xóa ví không xóa khoản chi của nó." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wallets only show where your money sits; they don't affect the budget, which counts every expense from every wallet. A balance is the opening amount plus every expense, loan and transfer since the wallet was created. Deleting a wallet doesn't delete its expenses."
+          }
+        }
+      }
+    },
+    "ví đã xóa" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "deleted wallet"
+          }
+        }
+      }
+    },
+    "Ví điện tử" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-wallet"
+          }
+        }
+      }
+    },
+    "Ví mới" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New wallet"
+          }
+        }
+      }
+    },
+    "Ví trả tiền" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paying wallet"
           }
         }
       }
@@ -5355,6 +6387,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Location and receipt photos are processed on your device and never sent anywhere. “Detect place names” needs “Suggestions by place and time” turned on."
+          }
+        }
+      }
+    },
+    "Viết lại" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write again"
+          }
+        }
+      }
+    },
+    "Viết nhận xét" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write a review"
           }
         }
       }
@@ -5621,280 +6673,6 @@
         }
       }
     },
-    "%@ tăng từ %@ lên %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ went up from %@ to %@"
-          }
-        }
-      }
-    },
-    "%lld khoản, trung bình %@ mỗi tháng." : {
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld expense, averaging %@ a month."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld expenses, averaging %@ a month."
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "Báo cáo năm" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Year report"
-          }
-        }
-      }
-    },
-    "Báo cáo năm %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Year report %@"
-          }
-        }
-      }
-    },
-    "Bạn đã ghi vào %lld ngày trong năm." : {
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "You logged on %lld day this year."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "You logged on %lld days this year."
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "Có thể là khoản đăng ký" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Possible subscriptions"
-          }
-        }
-      }
-    },
-    "Giảm %lld%% so với cùng kỳ năm trước." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Down %lld%% from the same period last year."
-          }
-        }
-      }
-    },
-    "Giảm %lld%% so với năm trước." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Down %lld%% from the year before."
-          }
-        }
-      }
-    },
-    "Gần bằng cùng kỳ năm trước." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "About the same as this period last year."
-          }
-        }
-      }
-    },
-    "Gần bằng năm trước." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "About the same as the year before."
-          }
-        }
-      }
-    },
-    "Khoản lớn nhất: %@, %@ (ngày %lld/%lld)." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Largest expense: %@, %@ (on %lld/%lld)."
-          }
-        }
-      }
-    },
-    "Năm" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Year"
-          }
-        }
-      }
-    },
-    "Năm %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Year %@"
-          }
-        }
-      }
-    },
-    "Năm này chưa có khoản chi nào." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No expenses in this year yet."
-          }
-        }
-      }
-    },
-    "Pennyline thấy các khoản này lặp đều trong lịch sử bạn ghi, tổng khoảng %@ mỗi tháng. Chạm để thêm vào khoản định kỳ và được nhắc trước một ngày." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pennyline sees these repeating regularly in your history, about %@ a month in total. Tap one to add it to recurring expenses and get a reminder the day before."
-          }
-        }
-      }
-    },
-    "Tháng %lld tiêu nhiều nhất: %@." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Month %lld was the highest: %@."
-          }
-        }
-      }
-    },
-    "Tháng %lld: %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Month %lld: %@"
-          }
-        }
-      }
-    },
-    "Tháng tiêu ít nhất: tháng %lld, %@." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lowest month: month %lld, %@."
-          }
-        }
-      }
-    },
-    "Thêm vào khoản định kỳ" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add to recurring expenses"
-          }
-        }
-      }
-    },
-    "Trong đó %@ ngoài ngân sách." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Of which %@ is outside the budget."
-          }
-        }
-      }
-    },
-    "Tăng %lld%% so với cùng kỳ năm trước." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Up %lld%% from the same period last year."
-          }
-        }
-      }
-    },
-    "Tăng %lld%% so với năm trước." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Up %lld%% from the year before."
-          }
-        }
-      }
-    },
-    "Tạo bằng Pennyline. Số liệu gồm mọi khoản chi đã ghi, kể cả khoản ngoài ngân sách." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Made with Pennyline. Figures include every logged expense, including those outside the budget."
-          }
-        }
-      }
-    },
-    "Tốn nhiều nhất" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Biggest spending"
-          }
-        }
-      }
-    },
-    "Từng tháng" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "By month"
-          }
-        }
-      }
-    },
     "Xuất PDF" : {
       "localizations" : {
         "en" : {
@@ -5905,22 +6683,22 @@
         }
       }
     },
-    "tăng %@" : {
+    "Báo cáo năm và khoản đăng ký" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "up %@"
+            "value" : "Year report and subscription detection"
           }
         }
       }
     },
-    "Đáng nhớ" : {
+    "Nhiều ví và tự ghi từ tin nhắn ngân hàng" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Highlights"
+            "value" : "Wallets and logging from bank messages"
           }
         }
       }

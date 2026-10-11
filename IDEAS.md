@@ -4,11 +4,7 @@ Những thứ nằm ngoài tài liệu yêu cầu, chưa làm.
 
 ## Người dùng đã yêu cầu, đang chờ
 
-Người dùng đã chọn làm các mục dưới đây (và đồng ý nới "không backend" riêng cho phần AI), nhưng chưa làm xong.
-
-- **Tự ghi từ tin nhắn ngân hàng** qua Phím tắt, dùng lại intent ghi nhanh. Đã có: `BankMessageParser` (logic thuần, có test). Còn thiếu: `LogBankMessageIntent` (qua `SaveGate.canSave`), chống ghi trùng bằng mã băm tin nhắn, khớp ví theo từ khóa, mục hướng dẫn trong `ShortcutsGuideView`, nút dán tin nhắn ở ô gõ.
-- **Nhiều ví** với số dư và chuyển tiền giữa các ví. Đã có: `WalletBalances` (logic thuần, có test). Còn thiếu: mô hình `Wallet` và `WalletTransfer`, `Expense.walletID`, màn hình ví và chuyển tiền, chọn ví ở ô gõ và khi sửa, mục "Số dư các ví" ở màn Tháng, lọc theo ví ở tìm kiếm.
-- **Gói AI tách riêng**, tính theo lượt dùng mỗi tháng (Pennyline AI, có thể nạp thêm lượt): proxy Cloudflare Worker trong `Backend/` (xác thực bằng App Store Server API, hạn mức tháng bằng Durable Object, gọi Claude), phía app có `AIConfig` (chưa đặt địa chỉ thì ẩn hết giao diện AI), `AIClient`, hộp đồng ý gửi dữ liệu, mục AI trong Tùy chỉnh kèm số lượt còn lại; dùng cho nhận xét tháng, hỗ trợ tách khoản chi khó hiểu và trả lời Hỏi Pennyline bằng mô hình đám mây. Sản phẩm StoreKit riêng. Người dùng phải tự triển khai Worker và đặt khóa.
+(Không có.)
 
 ## Đã đề xuất, chưa được chọn
 
@@ -25,3 +21,5 @@ Người dùng đã chọn làm các mục dưới đây (và đồng ý nới "
 - Hỏi Pennyline nhớ ngữ cảnh qua nhiều câu và giữ lịch sử câu hỏi.
 - Khoản đăng ký: mục tổng hợp ở màn Tháng, nhận cả chu kỳ hai tuần và mỗi quý.
 - Báo cáo năm: so từng danh mục với năm trước, thêm mục tiêu tiết kiệm và sổ ứng vào bản PDF.
+- Ví: lọc theo ví ở tìm kiếm, nút dán tin nhắn ngân hàng ở ô gõ, khoản định kỳ gắn ví, điều chỉnh số dư cho khớp thực tế.
+- Pennyline AI: kiểm chữ ký JWS của Apple ở Worker thay vì chỉ tra mã giao dịch, nhớ kết quả kiểm gói vài phút, cho mô hình gọi công cụ cục bộ thay vì nhận cả bảng số liệu, đọc ảnh hóa đơn khó (cần đổi cam kết không gửi ảnh).

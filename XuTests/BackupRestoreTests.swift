@@ -49,6 +49,11 @@ struct BackupRestoreTests {
         let goal = SavingsGoal(name: "Đà Lạt", targetAmount: 10_000_000, deadline: TestClock.date(2027, 1, 1), createdAt: TestClock.date(2026, 9, 1))
         context.insert(goal)
         context.insert(SavingsDeposit(goalID: goal.id, amount: 500_000, date: TestClock.date(2026, 10, 2), note: "tháng 10"))
+        let wallet = Wallet(name: "VCB", kind: .bank, openingBalance: 5_000_000, keywords: "vcb, 0011", createdAt: TestClock.date(2026, 9, 1))
+        context.insert(wallet)
+        expense.walletID = wallet.id
+        loan.walletID = wallet.id
+        context.insert(WalletTransfer(fromID: nil, toID: wallet.id, amount: 15_000_000, date: TestClock.date(2026, 10, 1), note: "lương"))
         try? context.save()
         return expense.id
     }
@@ -59,13 +64,13 @@ struct BackupRestoreTests {
         _ = seed(sourceContext)
         let settings = BackupSettings(monthlyBudget: 9_000_000, weeklyBudget: 0, budgetPeriod: "month", exchangeRates: ["usd": "25400"])
         let written = try BackupCodec.decode(BackupCodec.encode(source.backupFile(settings: settings, includesPhotos: true, now: TestClock.now)))
-        #expect(written.itemCount == 9)
+        #expect(written.itemCount == 11)
 
         let (target, _, targetContainer) = makeRecorder()
         defer { withExtendedLifetime(targetContainer) {} }
         let plan = BackupMerger.plan(written, existing: target.backupExisting(), settings: BackupSettings())
-        #expect(plan.newItemCount == 9 && plan.alreadyPresent == 0)
-        #expect(target.restore(plan) == 9)
+        #expect(plan.newItemCount == 11 && plan.alreadyPresent == 0)
+        #expect(target.restore(plan) == 11)
 
         let again = target.backupFile(settings: settings, includesPhotos: true, now: TestClock.now)
         #expect(again == written)
@@ -82,7 +87,7 @@ struct BackupRestoreTests {
         target.restore(BackupMerger.plan(file, existing: target.backupExisting(), settings: BackupSettings()))
         let second = BackupMerger.plan(file, existing: target.backupExisting(), settings: BackupSettings())
         #expect(second.newItemCount == 0)
-        #expect(second.alreadyPresent == 9)
+        #expect(second.alreadyPresent == 11)
         #expect(try targetContext.fetchCount(FetchDescriptor<Expense>()) == 2)
     }
 

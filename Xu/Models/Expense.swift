@@ -20,6 +20,7 @@ import SwiftData
     var placeName: String?
     @Attribute(.externalStorage) var photo: Data?   // JPEG đã nén
     var authorName: String?               // để dành cho dùng chung, bản này luôn nil
+    var walletID: UUID?                   // ví đã trả khoản này; nil khi người dùng không dùng ví
 
     init(name: String, amount: Int, categoryKey: String = "other", date: Date = Date()) {
         self.name = name

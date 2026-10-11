@@ -34,5 +34,11 @@ struct XuShortcuts: AppShortcutsProvider {
             shortTitle: "Mở ô gõ",
             systemImageName: "keyboard"
         )
+        AppShortcut(
+            intent: LogBankMessageIntent(),
+            phrases: ["Ghi tin nhắn ngân hàng vào \(.applicationName)"],
+            shortTitle: "Ghi từ tin nhắn ngân hàng",
+            systemImageName: "building.columns"
+        )
     }
 }

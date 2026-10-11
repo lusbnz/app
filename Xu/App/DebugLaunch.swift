@@ -3,7 +3,7 @@ import Foundation
 import SwiftData
 
 /// Tham số khởi chạy chỉ có ở bản Debug, để xem nhanh các màn hình trên máy ảo:
-/// `-reset` xóa sạch, `-demo` nạp dữ liệu mẫu, `-sample` thêm 90 ngày dữ liệu mẫu, `-week` tính ngân sách theo tuần, `-scrub N` nhảy tới ngày thứ N của dải ngày, `-pro` mở Pro, `-theme mint|peach|sky|coffee|graphite` (cần `-pro`), `-open entry|month|week|map|goals|goal|year|recurring|backup|csv|restore|settings|paywall|receipt|search`, `-recurring N` (cùng `-open recurring`: sửa khoản định kỳ thứ N), `-text "phở 45k"`, `-entryask "câu hỏi"`.
+/// `-reset` xóa sạch, `-demo` nạp dữ liệu mẫu, `-sample` thêm 90 ngày dữ liệu mẫu, `-week` tính ngân sách theo tuần, `-scrub N` nhảy tới ngày thứ N của dải ngày, `-pro` mở Pro, `-theme mint|peach|sky|coffee|graphite` (cần `-pro`), `-open entry|month|week|map|goals|goal|year|recurring|wallets|ai|backup|csv|restore|settings|paywall|receipt|search`, `-recurring N` (cùng `-open recurring`: sửa khoản định kỳ thứ N), `-text "phở 45k"`, `-entryask "câu hỏi"`.
 /// `-open receipt` đưa sẵn một hóa đơn mẫu vào bộ đọc. `-pro` mở Pennyline Pro, `-ask "câu hỏi"` hỏi Pennyline, `-budget 3tr` đặt ngân sách.
 @MainActor
 enum DebugLaunch {
@@ -20,6 +20,9 @@ enum DebugLaunch {
             try? context.delete(model: CategoryRule.self)
             try? context.delete(model: RecurringExpense.self)
             try? context.delete(model: CategoryBudget.self)
+            try? context.delete(model: Wallet.self)
+            try? context.delete(model: WalletTransfer.self)
+            AppGroup.defaults.removeObject(forKey: SettingsKey.lastWallet)
             settings.monthlyBudget = 0
             settings.suggestionsEnabled = false
             settings.remindsAtNine = false
@@ -55,6 +58,9 @@ enum DebugLaunch {
         if arguments.contains("-week") {
             settings.setBudgetPeriod(.week)
         }
+        if arguments.contains("-ai") {
+            AIStore.shared.enableDebugStub(DebugAIStub())
+        }
         if arguments.contains("-pro") {
             EntitlementStore.shared.grantForDebug()
         }
@@ -81,6 +87,13 @@ enum DebugLaunch {
                 seedRecurring(context)
                 seedSubscriptions(context)
                 appState.debugSettingsDestination = "recurring"
+                appState.showsSettings = true
+            case "ai":
+                appState.debugSettingsDestination = "ai"
+                appState.showsSettings = true
+            case "wallets":
+                seedWallets(context)
+                appState.debugSettingsDestination = "wallets"
                 appState.showsSettings = true
             case "backup":
                 appState.debugSettingsDestination = "backup"
@@ -162,6 +175,22 @@ enum DebugLaunch {
         try? context.save()
     }
 
+    /// Hai ví mẫu, vài khoản chi gắn ví và một lần nạp lương; chỉ thêm khi chưa có ví nào.
+    private static func seedWallets(_ context: ModelContext) {
+        let recorder = ExpenseRecorder(context: context)
+        guard recorder.wallets().isEmpty else { return }
+        let now = Date()
+        let start = Calendar.current.date(byAdding: .day, value: -10, to: now) ?? now
+        let cash = recorder.addWallet(name: "Tiền mặt", kind: .cash, openingBalance: 1_200_000, keywords: "", now: start)
+        let bank = recorder.addWallet(name: "VCB", kind: .bank, openingBalance: 8_500_000, keywords: "vcb, vietcombank", now: start)
+        for (index, expense) in ((try? context.fetch(FetchDescriptor<Expense>())) ?? []).enumerated() where expense.date >= start {
+            expense.walletID = index.isMultiple(of: 3) ? bank.id : cash.id
+        }
+        recorder.addTransfer(from: nil, to: bank.id, amount: 15_000_000, date: now.addingTimeInterval(-86_400 * 4), note: "lương")
+        recorder.addTransfer(from: bank.id, to: cash.id, amount: 1_000_000, date: now.addingTimeInterval(-86_400 * 2))
+        ExpenseRecorder.lastWalletID = cash.id
+    }
+
     /// Mỗi tần suất một khoản mẫu, để xem danh sách và màn sửa; chỉ thêm khi chưa có khoản nào.
     private static func seedRecurring(_ context: ModelContext) {
         guard ((try? context.fetchCount(FetchDescriptor<RecurringExpense>())) ?? 0) == 0 else { return }
@@ -212,5 +241,25 @@ enum DebugLaunch {
         }
         context.insert(Loan(person: "Minh", amount: 200_000))
     }
+}
+/// Bản giả của gói AI cho cờ `-ai`: không gọi mạng, trả lời cố định.
+struct DebugAIStub: AIServing {
+    private var sample: AIQuota {
+        AIQuota(used: 42, limit: 300, credits: 100, remaining: 358, resetsAt: Date().addingTimeInterval(86_400 * 20))
+    }
+
+    func run(_ request: AIRunRequest) async throws -> AIRunResponse {
+        try? await Task.sleep(for: .milliseconds(400))
+        let text = switch request.task {
+        case .ask: "Pennyline chưa có số liệu cho câu này."
+        case .insight: "Tháng này ăn uống là khoản lớn nhất. Bạn vẫn đang trong ngân sách. Thử gom cà phê về một quán quen để dễ theo dõi hơn."
+        case .normalize: "ăn với Minh 450k chia 3 hôm qua"
+        }
+        return AIRunResponse(text: text, quota: sample)
+    }
+
+    func quota() async throws -> AIQuota { sample }
+
+    func topUp(transactionID: String) async throws -> AIQuota { sample }
 }
 #endif

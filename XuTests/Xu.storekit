@@ -1,7 +1,23 @@
 {
   "identifier": "58A7C3E1",
   "nonRenewingSubscriptions": [],
-  "products": [],
+  "products": [
+    {
+      "displayPrice": "19000",
+      "familyShareable": false,
+      "internalID": "6700000022",
+      "localizations": [
+        {
+          "description": "Thêm 100 lượt AI, không hết hạn.",
+          "displayName": "Nạp 100 lượt AI",
+          "locale": "vi"
+        }
+      ],
+      "productID": "xu.ai.topup",
+      "referenceName": "Nạp 100 lượt AI",
+      "type": "Consumable"
+    }
+  ],
   "settings": {
     "_failTransactionsEnabled": false,
     "_locale": "vi",
@@ -65,6 +81,40 @@
           "recurringSubscriptionPeriod": "P1M",
           "referenceName": "Pennyline Pro tháng",
           "subscriptionGroupID": "21600001",
+          "type": "RecurringSubscription"
+        }
+      ]
+    },
+    {
+      "id": "21600002",
+      "localizations": [
+        {
+          "description": "Hỏi đáp, nhận xét tháng và hiểu câu gõ tự nhiên bằng Claude.",
+          "displayName": "Pennyline AI",
+          "locale": "vi"
+        }
+      ],
+      "name": "Pennyline AI",
+      "subscriptions": [
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "39000",
+          "familyShareable": false,
+          "groupNumber": 1,
+          "internalID": "6700000021",
+          "introductoryOffer": null,
+          "localizations": [
+            {
+              "description": "300 lượt AI mỗi tháng.",
+              "displayName": "Pennyline AI gói tháng",
+              "locale": "vi"
+            }
+          ],
+          "productID": "xu.ai.monthly",
+          "recurringSubscriptionPeriod": "P1M",
+          "referenceName": "Pennyline AI tháng",
+          "subscriptionGroupID": "21600002",
           "type": "RecurringSubscription"
         }
       ]

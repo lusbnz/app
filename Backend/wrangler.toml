@@ -1,0 +1,28 @@
+name = "pennyline-ai"
+main = "src/index.ts"
+compatibility_date = "2026-01-01"
+
+[vars]
+# Bundle ID của app và mã sản phẩm StoreKit.
+BUNDLE_ID = "com.quocviet.Xu"
+AI_PRODUCT_ID = "xu.ai.monthly"
+TOPUP_PRODUCT_ID = "xu.ai.topup"
+# "sandbox" khi thử bằng TestFlight hoặc Xcode, "production" khi lên App Store.
+APPLE_ENVIRONMENT = "sandbox"
+# Số lượt mỗi tháng của gói, và số lượt mỗi lần nạp thêm.
+MONTHLY_LIMIT = "300"
+TOPUP_CREDITS = "100"
+
+# Khóa bí mật đặt bằng `wrangler secret put`, không ghi vào tệp này:
+#   ANTHROPIC_API_KEY   khóa API của Anthropic
+#   APPLE_ISSUER_ID     Issuer ID ở App Store Connect > Users and Access > Integrations > In-App Purchase
+#   APPLE_KEY_ID        Key ID của khóa In-App Purchase
+#   APPLE_PRIVATE_KEY   nội dung tệp .p8 (cả dòng BEGIN/END)
+
+[[durable_objects.bindings]]
+name = "QUOTA"
+class_name = "QuotaObject"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["QuotaObject"]

@@ -154,6 +154,8 @@ enum PaywallBenefit {
             String(localized: "Gõ không giới hạn"),
             String(localized: "Màu chủ đề và biểu tượng app đổi được"),
             String(localized: "Sao lưu tự động mỗi ngày"),
+            String(localized: "Báo cáo năm và khoản đăng ký"),
+            String(localized: "Nhiều ví và tự ghi từ tin nhắn ngân hàng"),
         ]
     }
 }

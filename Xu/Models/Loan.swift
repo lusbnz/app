@@ -8,6 +8,8 @@ import SwiftData
     var amount: Int = 0
     var date: Date = Date()
     var isRepaid: Bool = false
+    /// Ví đã đưa tiền; nil khi người dùng không dùng ví.
+    var walletID: UUID?
 
     init(person: String, amount: Int, date: Date = Date()) {
         self.person = person

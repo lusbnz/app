@@ -37,6 +37,19 @@ struct EntryOverride: Equatable {
 }
 
 enum EntryRows {
+    /// Dòng (do AI viết lại) có ít nhất một khoản và bộ tách đọc được số tiền của mọi khoản. Câu hỏi không tính là khoản.
+    static func isReadable(_ line: String, parser: ExpenseParser, now: Date, calendar: Calendar) -> Bool {
+        let lines = parser.parse(line, rules: [:], dailyAllowance: 0, now: now, calendar: calendar)
+        guard !lines.isEmpty else { return false }
+        return lines.allSatisfy { line in
+            switch line {
+            case .expense(let parsed): parsed.amount != nil
+            case .loan: true
+            case .question: false
+            }
+        }
+    }
+
     static func resolve(_ lines: [ParsedLine], overrides: [Int: EntryOverride], dailyAllowance: Int) -> [EntryRow] {
         var rows: [EntryRow] = []
         for line in lines {

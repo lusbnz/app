@@ -13,12 +13,15 @@ enum AskError: Error {
     case emptyAnswer
 }
 
-/// Chọn cách trả lời. Bản này chỉ có mô hình trên máy của Apple; không gọi dịch vụ ngoài.
+/// Chọn cách trả lời: mô hình trên máy của Apple nếu có, không thì gói Pennyline AI (Claude) khi người dùng đã mua và đồng ý.
 enum AskEngine {
     private static let vietnamese = Locale(identifier: "vi_VN")
 
+    /// Có cách nào trả lời được không: mô hình trên máy, hoặc gói AI đang dùng được.
+    static var isAvailable: Bool { isOnDeviceAvailable || AIStore.isActiveAnywhere }
+
     /// Mô hình trên máy có sẵn và hỗ trợ tiếng Việt.
-    static var isAvailable: Bool {
+    static var isOnDeviceAvailable: Bool {
         #if canImport(FoundationModels)
         if #available(iOS 26.0, *) {
             let model = SystemLanguageModel.default
@@ -28,13 +31,16 @@ enum AskEngine {
         return false
     }
 
+    /// Ưu tiên mô hình trên máy (miễn phí, không gửi gì đi); không có thì dùng gói AI.
+    @MainActor
     static func makeAnswerer(calendar: Calendar) -> (any SpendingAnswering)? {
         #if canImport(FoundationModels)
-        if #available(iOS 26.0, *), isAvailable {
+        if #available(iOS 26.0, *), isOnDeviceAvailable {
             return OnDeviceAnswerer(calendar: calendar)
         }
         #endif
-        return nil
+        guard AIStore.shared.isActive else { return nil }
+        return CloudAnswerer(calendar: calendar) { request in try await AIStore.shared.run(request) }
     }
 }
 

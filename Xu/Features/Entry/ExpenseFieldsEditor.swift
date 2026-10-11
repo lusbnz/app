@@ -11,6 +11,8 @@ struct ExpenseFields: Equatable {
     /// Chỉ màn Chi tiết dùng: tên nơi ghi đang sửa, và có đổi theo cho các khoản khác ở cùng chỗ không.
     var placeName = ""
     var appliesPlaceToSiblings = true
+    /// Chỉ màn Chi tiết dùng: ví đã trả khoản này.
+    var walletID: UUID?
 
     var amount: Int? { AmountParser.amount(from: amountText) }
 
@@ -25,6 +27,8 @@ struct ExpenseFieldsEditor: View {
     var showsDate = true
     /// Có thì hiện dòng "Nơi ghi" và gọi hàm này khi chạm (màn Chi tiết mở bảng chọn nơi).
     var onPickPlace: (() -> Void)?
+    /// Có ví thì hiện dòng "Ví" để chọn (màn Chi tiết).
+    var wallets: [Wallet] = []
 
     var body: some View {
         VStack(spacing: 0) {
@@ -62,6 +66,15 @@ struct ExpenseFieldsEditor: View {
                             .lineLimit(1)
                     }
                     .buttonStyle(.plain)
+                }
+            }
+            if !wallets.isEmpty {
+                row("Ví") {
+                    Picker("Ví", selection: $fields.walletID) {
+                        Text("không chọn").tag(UUID?.none)
+                        ForEach(wallets) { Text($0.name).tag(UUID?.some($0.id)) }
+                    }
+                    .labelsHidden()
                 }
             }
             Toggle("Ngoài ngân sách", isOn: $fields.isOutsideBudget)

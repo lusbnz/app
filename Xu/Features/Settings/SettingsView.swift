@@ -22,7 +22,7 @@ struct SettingsView: View {
     /// Màn con mở thẳng bằng cờ chạy thử. Dùng một `navigationDestination(item:)` duy nhất: hai cái `isPresented` trên
     /// cùng một màn thì chỉ cái gắn sau chạy.
     private enum DebugDestination: String, Hashable, Identifiable {
-        case recurring, backup
+        case recurring, backup, wallets, ai
 
         var id: String { rawValue }
     }
@@ -79,6 +79,14 @@ struct SettingsView: View {
                     }
                     NavigationLink("Tỷ giá ngoại tệ") {
                         ExchangeRatesView()
+                    }
+                    NavigationLink {
+                        WalletsView()
+                    } label: {
+                        HStack {
+                            Text("Ví")
+                            if !entitlements.isPro { ButterLabel(text: "PRO") }
+                        }
                     }
                 }
                 .listRowBackground(Color.xuSurface)
@@ -153,6 +161,11 @@ struct SettingsView: View {
                     NavigationLink("Siri, Phím tắt và Nút Tác vụ") {
                         ShortcutsGuideView()
                     }
+                    if AIStore.shared.isConfigured {
+                        NavigationLink("Pennyline AI") {
+                            AISettingsView()
+                        }
+                    }
                     Button {
                         showsPaywall = true
                     } label: {
@@ -225,6 +238,8 @@ struct SettingsView: View {
                 switch destination {
                 case .recurring: RecurringView()
                 case .backup: BackupView()
+                case .wallets: WalletsView()
+                case .ai: AISettingsView()
                 }
             }
             .task {

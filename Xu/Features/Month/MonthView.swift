@@ -21,6 +21,8 @@ struct MonthView: View {
     @State private var showsGoals = false
     @State private var openedGoal: SavingsGoal?
     @State private var showsYearReport = false
+    @Query(sort: \Wallet.createdAt) private var wallets: [Wallet]
+    @Query private var transfers: [WalletTransfer]
     @Environment(EntitlementStore.self) private var store
 
     let now: Date
@@ -53,7 +55,9 @@ struct MonthView: View {
                 comparison()
                 savings(status)
                 outside(expenses)
+                walletBalances
                 yearReportRow
+                AIInsightCard(snapshot: snapshot)
                 AskSection(snapshot: snapshot)
             }
             .padding(.horizontal, 24)
@@ -93,6 +97,36 @@ struct MonthView: View {
             }
         }
         #endif
+    }
+
+    // MARK: - Số dư các ví
+
+    /// Chỉ hiện khi người dùng có ví. Đọc `allExpenses`, `allLoans`, `transfers` để tính lại khi chúng đổi.
+    @ViewBuilder
+    private var walletBalances: some View {
+        if !wallets.isEmpty {
+            let _ = (allExpenses.count, allLoans.count, transfers.count)
+            let balances = ExpenseRecorder(context: modelContext).walletBalances()
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Text("Số dư các ví")
+                        .font(.subheadline.weight(.semibold))
+                    Spacer()
+                    Text(MoneyFormatter.short(wallets.reduce(0) { $0 + (balances[$1.id] ?? 0) }))
+                        .foregroundStyle(Color.xuTextSecondary)
+                }
+                ForEach(wallets) { wallet in
+                    HStack {
+                        Label(wallet.name, systemImage: wallet.kind.symbol)
+                        Spacer()
+                        Text(MoneyFormatter.short(balances[wallet.id] ?? 0))
+                            .fontWeight(.medium)
+                            .foregroundStyle((balances[wallet.id] ?? 0) < 0 ? Color.red : Color.xuTextPrimary)
+                    }
+                    .accessibilityElement(children: .combine)
+                }
+            }
+        }
     }
 
     // MARK: - Báo cáo năm

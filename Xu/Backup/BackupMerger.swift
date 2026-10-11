@@ -10,6 +10,8 @@ struct BackupExisting: Equatable, Sendable {
     var recurringIDs: Set<UUID> = []
     var goalIDs: Set<UUID> = []
     var depositIDs: Set<UUID> = []
+    var walletIDs: Set<UUID> = []
+    var transferIDs: Set<UUID> = []
 }
 
 /// Phần của bản sao lưu sẽ được thêm vào máy.
@@ -22,6 +24,8 @@ struct BackupPlan: Equatable, Sendable {
     var recurring: [BackupRecurring] = []
     var goals: [BackupGoal] = []
     var deposits: [BackupDeposit] = []
+    var wallets: [BackupWallet] = []
+    var transfers: [BackupTransfer] = []
     /// Số mục trong tệp mà máy đã có; giữ bản trên máy, không ghi đè.
     var alreadyPresent = 0
     /// Cài đặt sau khi hợp nhất; nil khi không có gì đổi.
@@ -29,7 +33,7 @@ struct BackupPlan: Equatable, Sendable {
 
     var newItemCount: Int {
         expenses.count + loans.count + rules.count + customCategories.count + limits.count
-            + recurring.count + goals.count + deposits.count
+            + recurring.count + goals.count + deposits.count + wallets.count + transfers.count
     }
 
     var isEmpty: Bool { newItemCount == 0 && settings == nil }
@@ -54,6 +58,8 @@ enum BackupMerger {
         let attached = file.deposits.filter { goalIDs.contains($0.goalID) }
         skipped += file.deposits.count - attached.count
         plan.deposits = fresh(attached, known: existing.depositIDs, id: \.id, skipped: &skipped)
+        plan.wallets = fresh(file.wallets, known: existing.walletIDs, id: \.id, skipped: &skipped)
+        plan.transfers = fresh(file.transfers, known: existing.transferIDs, id: \.id, skipped: &skipped)
         plan.alreadyPresent = skipped
 
         let merged = merge(file.settings, into: current)

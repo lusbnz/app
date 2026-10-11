@@ -22,6 +22,7 @@ struct BackupExpense: Codable, Equatable, Sendable {
     var placeName: String?
     /// JPEG đã nén, viết bằng base64. Nil khi bản sao lưu không kèm ảnh.
     var photo: Data?
+    var walletID: UUID?
 }
 
 struct BackupLoan: Codable, Equatable, Sendable {
@@ -30,6 +31,27 @@ struct BackupLoan: Codable, Equatable, Sendable {
     var amount: Int
     var date: Date
     var isRepaid: Bool
+    var walletID: UUID?
+}
+
+struct BackupWallet: Codable, Equatable, Sendable {
+    var id: UUID
+    var name: String
+    /// `WalletKind.rawValue`.
+    var kind: String
+    var openingBalance: Int
+    var startDate: Date
+    var keywords: String
+    var createdAt: Date
+}
+
+struct BackupTransfer: Codable, Equatable, Sendable {
+    var id: UUID
+    var fromID: UUID?
+    var toID: UUID?
+    var amount: Int
+    var date: Date
+    var note: String
 }
 
 struct BackupRule: Codable, Equatable, Sendable {
@@ -110,12 +132,17 @@ struct BackupFile: Codable, Equatable, Sendable {
     var recurring: [BackupRecurring] = []
     var goals: [BackupGoal] = []
     var deposits: [BackupDeposit] = []
+    var wallets: [BackupWallet] = []
+    var transfers: [BackupTransfer] = []
 
     init(
         createdAt: Date, settings: BackupSettings = BackupSettings(), expenses: [BackupExpense] = [], loans: [BackupLoan] = [],
         rules: [BackupRule] = [], customCategories: [BackupCategory] = [], categoryLimits: [BackupLimit] = [],
-        recurring: [BackupRecurring] = [], goals: [BackupGoal] = [], deposits: [BackupDeposit] = []
+        recurring: [BackupRecurring] = [], goals: [BackupGoal] = [], deposits: [BackupDeposit] = [],
+        wallets: [BackupWallet] = [], transfers: [BackupTransfer] = []
     ) {
+        self.wallets = wallets
+        self.transfers = transfers
         self.createdAt = createdAt
         self.settings = settings
         self.expenses = expenses
@@ -143,11 +170,13 @@ struct BackupFile: Codable, Equatable, Sendable {
         recurring = try container.decodeIfPresent([BackupRecurring].self, forKey: .recurring) ?? []
         goals = try container.decodeIfPresent([BackupGoal].self, forKey: .goals) ?? []
         deposits = try container.decodeIfPresent([BackupDeposit].self, forKey: .deposits) ?? []
+        wallets = try container.decodeIfPresent([BackupWallet].self, forKey: .wallets) ?? []
+        transfers = try container.decodeIfPresent([BackupTransfer].self, forKey: .transfers) ?? []
     }
 
     var itemCount: Int {
         expenses.count + loans.count + rules.count + customCategories.count + categoryLimits.count
-            + recurring.count + goals.count + deposits.count
+            + recurring.count + goals.count + deposits.count + wallets.count + transfers.count
     }
 }
 

@@ -10,6 +10,7 @@ struct XuApp: App {
 
     init() {
         EntitlementStore.shared.start()
+        Task { await AIStore.shared.refresh() }
         NotificationManager.shared.start()
         ExpenseRecorder.afterCommit = {
             NotificationManager.shared.refreshDailyReminder()

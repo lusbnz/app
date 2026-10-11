@@ -21,11 +21,11 @@ extension ExpenseRecorder {
                     isOutsideBudget: expense.isOutsideBudget, originalAmount: expense.originalAmount, splitCount: expense.splitCount,
                     foreignCurrency: expense.foreignCurrency, foreignMinor: expense.foreignMinor,
                     latitude: expense.latitude, longitude: expense.longitude, placeName: expense.placeName,
-                    photo: includesPhotos ? expense.photo : nil
+                    photo: includesPhotos ? expense.photo : nil, walletID: expense.walletID
                 )
             },
             loans: all(Loan.self, sortedBy: [SortDescriptor(\.date)]).map {
-                BackupLoan(id: $0.id, person: $0.person, amount: $0.amount, date: $0.date, isRepaid: $0.isRepaid)
+                BackupLoan(id: $0.id, person: $0.person, amount: $0.amount, date: $0.date, isRepaid: $0.isRepaid, walletID: $0.walletID)
             },
             rules: all(CategoryRule.self, sortedBy: [SortDescriptor(\.keyword)]).map {
                 BackupRule(keyword: $0.keyword, categoryKey: $0.categoryKey, updatedAt: $0.updatedAt)
@@ -49,6 +49,15 @@ extension ExpenseRecorder {
             },
             deposits: all(SavingsDeposit.self, sortedBy: [SortDescriptor(\.date)]).map {
                 BackupDeposit(id: $0.id, goalID: $0.goalID, amount: $0.amount, date: $0.date, note: $0.note)
+            },
+            wallets: all(Wallet.self, sortedBy: [SortDescriptor(\.createdAt)]).map {
+                BackupWallet(
+                    id: $0.id, name: $0.name, kind: $0.kindRaw, openingBalance: $0.openingBalance, startDate: $0.startDate,
+                    keywords: $0.keywords, createdAt: $0.createdAt
+                )
+            },
+            transfers: all(WalletTransfer.self, sortedBy: [SortDescriptor(\.date)]).map {
+                BackupTransfer(id: $0.id, fromID: $0.fromID, toID: $0.toID, amount: $0.amount, date: $0.date, note: $0.note)
             }
         )
     }
@@ -64,7 +73,9 @@ extension ExpenseRecorder {
             limitKeys: Set(all(CategoryBudget.self).map(\.categoryKey)),
             recurringIDs: Set(all(RecurringExpense.self).map(\.id)),
             goalIDs: Set(all(SavingsGoal.self).map(\.id)),
-            depositIDs: Set(all(SavingsDeposit.self).map(\.id))
+            depositIDs: Set(all(SavingsDeposit.self).map(\.id)),
+            walletIDs: Set(all(Wallet.self).map(\.id)),
+            transferIDs: Set(all(WalletTransfer.self).map(\.id))
         )
     }
 
@@ -102,12 +113,14 @@ extension ExpenseRecorder {
             expense.longitude = dto.longitude
             expense.placeName = dto.placeName
             expense.photo = dto.photo
+            expense.walletID = dto.walletID
             context.insert(expense)
         }
         for dto in plan.loans {
             let loan = Loan(person: dto.person, amount: dto.amount, date: dto.date)
             loan.id = dto.id
             loan.isRepaid = dto.isRepaid
+            loan.walletID = dto.walletID
             context.insert(loan)
         }
         for dto in plan.recurring {
@@ -130,6 +143,20 @@ extension ExpenseRecorder {
             let deposit = SavingsDeposit(goalID: dto.goalID, amount: dto.amount, date: dto.date, note: dto.note)
             deposit.id = dto.id
             context.insert(deposit)
+        }
+        for dto in plan.wallets {
+            let wallet = Wallet(
+                name: dto.name, kind: WalletKind(rawValue: dto.kind) ?? .cash, openingBalance: dto.openingBalance,
+                keywords: dto.keywords, createdAt: dto.createdAt
+            )
+            wallet.id = dto.id
+            wallet.startDate = dto.startDate
+            context.insert(wallet)
+        }
+        for dto in plan.transfers {
+            let transfer = WalletTransfer(fromID: dto.fromID, toID: dto.toID, amount: dto.amount, date: dto.date, note: dto.note)
+            transfer.id = dto.id
+            context.insert(transfer)
         }
         commit()
         return plan.newItemCount

@@ -4,7 +4,7 @@ import SwiftData
 enum XuStore {
     static let schema = Schema([
         Expense.self, Loan.self, CategoryRule.self, CustomCategory.self, RecurringExpense.self, CategoryBudget.self,
-        SavingsGoal.self, SavingsDeposit.self,
+        SavingsGoal.self, SavingsDeposit.self, Wallet.self, WalletTransfer.self,
     ])
 
     /// Kho dùng chung cho app và intent, đặt trong App Group khi có.
